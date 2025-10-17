@@ -38,6 +38,16 @@ public partial class ThunderController : Node
         if (timeTillNextLightning <= 0)
             TriggerLightning();
     }
+    
+    public override void _Input(InputEvent @event)
+    {
+        // Only listen for left mouse click events.
+        if (@event is InputEventKey keyEvent)
+        {
+            if (keyEvent.Keycode == Key.L && keyEvent.Pressed)
+                TriggerLightning();
+        }
+    }
 
     private float GetRandomTimeTillNextLightning()
     {
