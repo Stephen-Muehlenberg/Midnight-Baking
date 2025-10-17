@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=41 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/floor.tres" id="1_k5pu3"]
@@ -9,7 +9,9 @@
 [ext_resource type="Material" uid="uid://d11n6hmqm3ok3" path="res://materials/stove_burner.tres" id="3_0e4v7"]
 [ext_resource type="PackedScene" uid="uid://0sm1m8cgsy57" path="res://scenes/player_controller.tscn" id="3_6we3w"]
 [ext_resource type="Material" uid="uid://g05mcumj64wj" path="res://materials/fridge.tres" id="3_ondrs"]
+[ext_resource type="Script" uid="uid://dtlgeyhlbvmc0" path="res://scripts/KitchenLightController.cs" id="7_6nivd"]
 [ext_resource type="Script" uid="uid://d2slldesjpi65" path="res://scripts/ThunderController.cs" id="7_u2c82"]
+[ext_resource type="Script" uid="uid://yi2wfqhlo8us" path="res://scripts/InteractionTarget.cs" id="8_al56o"]
 [ext_resource type="AudioStream" uid="uid://n100tjw60ite" path="res://audio/thunder01.mp3" id="8_uk2yf"]
 [ext_resource type="AudioStream" uid="uid://bxbdoh1c5ioks" path="res://audio/thunder02.mp3" id="9_ondrs"]
 [ext_resource type="AudioStream" uid="uid://c1tgi16e83nu4" path="res://audio/thunder03.mp3" id="10_0e4v7"]
@@ -65,12 +67,6 @@ flip_faces = true
 size = Vector2(2, 1)
 orientation = 2
 
-[sub_resource type="BoxMesh" id="BoxMesh_6nivd"]
-size = Vector3(0.072, 0.096, 0.01)
-
-[sub_resource type="BoxMesh" id="BoxMesh_al56o"]
-size = Vector3(0.02, 0.072, 0.01)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_ynsf8"]
 material = ExtResource("1_qmak7")
 size = Vector2(3, 2.4)
@@ -80,6 +76,15 @@ orientation = 2
 material = ExtResource("1_qmak7")
 flip_faces = true
 size = Vector2(8.75, 4.48)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6nivd"]
+size = Vector3(0.072, 0.096, 0.01)
+
+[sub_resource type="BoxMesh" id="BoxMesh_al56o"]
+size = Vector3(0.02, 0.072, 0.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6nivd"]
+size = Vector3(0.0878906, 0.105469, 0.0625)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
 material = ExtResource("1_qmak7")
@@ -96,6 +101,15 @@ material = SubResource("StandardMaterial3D_ufxs0")
 flip_faces = true
 size = Vector2(0.008, 0.075)
 orientation = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_1bmon"]
+size = Vector3(0.5, 1, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_siio1"]
+size = Vector3(4, 1, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ndwfr"]
+size = Vector3(1, 1, 0.5)
 
 [node name="Level" type="Node3D"]
 
@@ -240,16 +254,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169178, 0)
 operation = 2
 size = Vector3(1, 2.18895, 0.82)
 
-[node name="Light Switch" type="Node3D" parent="Kitchen/Wall West"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0788188, 0.166325, 0.531922)
-
-[node name="Frame" type="MeshInstance3D" parent="Kitchen/Wall West/Light Switch"]
-mesh = SubResource("BoxMesh_6nivd")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Kitchen/Wall West/Light Switch"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, -0.004)
-mesh = SubResource("BoxMesh_al56o")
-
 [node name="Wall East" type="CSGBox3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.575, 1.2, 0)
 size = Vector3(0.15, 2.4, 2.57397)
@@ -274,11 +278,55 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -1)
 cast_shadow = 2
 mesh = SubResource("PlaneMesh_v3uhd")
 
-[node name="Ceiling Light" type="OmniLight3D" parent="Kitchen"]
+[node name="Kitchen Light" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("onLights", "offLights", "lightSwitch")]
+script = ExtResource("7_6nivd")
+onLights = [NodePath("Ceiling Light"), NodePath("Bounce Light East"), NodePath("Bounce Light West")]
+offLights = [NodePath("Unlit Kitchen Light")]
+lightSwitch = NodePath("Light Switch/Switch")
+
+[node name="Ceiling Light" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27259, 0)
 light_energy = 0.38
 shadow_enabled = true
 omni_range = 3.2371
+
+[node name="Bounce Light East" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4324, 1.26712, 0)
+light_energy = 0.015
+shadow_enabled = true
+omni_range = 5.1696
+
+[node name="Bounce Light West" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.432, 1.267, 0)
+light_energy = 0.015
+shadow_enabled = true
+omni_range = 5.1696
+
+[node name="Unlit Kitchen Light" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38253, 0)
+visible = false
+light_color = Color(0.89, 0.908333, 1, 1)
+light_energy = 0.016
+light_specular = 0.0
+shadow_enabled = true
+omni_range = 3.2371
+omni_attenuation = 0.0
+
+[node name="Light Switch" type="Node3D" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.49618, 1.36633, 0.531922)
+
+[node name="Frame" type="MeshInstance3D" parent="Kitchen/Kitchen Light/Light Switch"]
+mesh = SubResource("BoxMesh_6nivd")
+
+[node name="Switch" type="MeshInstance3D" parent="Kitchen/Kitchen Light/Light Switch"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, -0.004)
+mesh = SubResource("BoxMesh_al56o")
+
+[node name="Clickable Area" type="Area3D" parent="Kitchen/Kitchen Light/Light Switch"]
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Kitchen Light/Light Switch/Clickable Area"]
+shape = SubResource("BoxShape3D_6nivd")
 
 [node name="Rest of the House" type="Node3D" parent="."]
 
@@ -331,18 +379,6 @@ skeleton = NodePath("../../Kitchen")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.363, 1.2, -0.713415)
 mesh = SubResource("PlaneMesh_u2c82")
 skeleton = NodePath("../../Kitchen")
-
-[node name="Ambient Light East" type="OmniLight3D" parent="Rest of the House"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4324, 1.26712, 0)
-light_energy = 0.015
-shadow_enabled = true
-omni_range = 5.1696
-
-[node name="Ambient Light West" type="OmniLight3D" parent="Rest of the House"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.432, 1.267, 0)
-light_energy = 0.015
-shadow_enabled = true
-omni_range = 5.1696
 
 [node name="Outside" type="Node3D" parent="."]
 
@@ -397,4 +433,37 @@ enable_shadows = true
 transform = Transform3D(-0.968627, 0, 0.248521, 0, 1, 0, -0.248521, 0, -0.968627, 0.424002, 0, 0)
 visible = false
 invertCameraVertical = true
-moveSpeed = 2.0
+
+[node name="Room Colliders" type="Node3D" parent="."]
+
+[node name="West" type="CSGMesh3D" parent="Room Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92306, 0.5, 0)
+visible = false
+use_collision = true
+mesh = SubResource("BoxMesh_1bmon")
+
+[node name="North" type="CSGMesh3D" parent="Room Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 1.18155)
+visible = false
+use_collision = true
+mesh = SubResource("BoxMesh_siio1")
+
+[node name="South" type="CSGMesh3D" parent="Room Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1.182)
+visible = false
+use_collision = true
+mesh = SubResource("BoxMesh_siio1")
+
+[node name="Fridge" type="CSGMesh3D" parent="Room Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.34921, 0.5, -0.971998)
+visible = false
+use_collision = true
+mesh = SubResource("BoxMesh_ndwfr")
+
+[node name="East" type="CSGMesh3D" parent="Room Colliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.923, 0.5, 0)
+visible = false
+use_collision = true
+mesh = SubResource("BoxMesh_1bmon")
+
+[connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnLightSwitchPressed"]

@@ -1,4 +1,5 @@
 using Godot;
+using ScarySub.scripts;
 
 namespace MidnightBaking.scripts;
 
@@ -10,7 +11,7 @@ public partial class PlayerLookController : Node3D
 {
     [Export] private Camera3D camera;
     private float MAX_LOOK_DISTANCE = 10f; //TODO
-/*
+
     public override void _Input(InputEvent @event)
     {
         // Only listen for left mouse click events.
@@ -27,6 +28,7 @@ public partial class PlayerLookController : Node3D
     /// </summary>
     private void Interact()
     {
+        GD.Print("Interact()");
         // Perform raycast.
         Vector3 origin = camera.GlobalPosition;
         Vector3 offset = -camera.GlobalBasis.Z * MAX_LOOK_DISTANCE;
@@ -52,5 +54,5 @@ public partial class PlayerLookController : Node3D
             GD.Print($"LookController.Interact(): clicked on non-interactive Node3D: {node.Name}");
         else
             GD.Print($"LookController.Interact(): clicked on something but not sure what???");
-    }*/
+    }
 }
