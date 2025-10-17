@@ -1,0 +1,400 @@
+[gd_scene load_steps=35 format=3 uid="uid://dfgt17r2p5uf3"]
+
+[ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/counter_top.tres" id="1_bq26l"]
+[ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/floor.tres" id="1_k5pu3"]
+[ext_resource type="Material" uid="uid://tvabgvyuu3hq" path="res://materials/wall.tres" id="1_qmak7"]
+[ext_resource type="Texture2D" uid="uid://b1r5h21nkt3t0" path="res://images/basic_particle.png" id="1_v3uhd"]
+[ext_resource type="Material" uid="uid://dp2j5xw8elfa8" path="res://materials/window_frame.tres" id="2_8ra5a"]
+[ext_resource type="AudioStream" uid="uid://bu5us3gbjnvt8" path="res://audio/rain.mp3" id="2_ufxs0"]
+[ext_resource type="Material" uid="uid://d11n6hmqm3ok3" path="res://materials/stove_burner.tres" id="3_0e4v7"]
+[ext_resource type="PackedScene" uid="uid://0sm1m8cgsy57" path="res://scenes/player_controller.tscn" id="3_6we3w"]
+[ext_resource type="Material" uid="uid://g05mcumj64wj" path="res://materials/fridge.tres" id="3_ondrs"]
+[ext_resource type="Script" uid="uid://d2slldesjpi65" path="res://scripts/ThunderController.cs" id="7_u2c82"]
+[ext_resource type="AudioStream" uid="uid://n100tjw60ite" path="res://audio/thunder01.mp3" id="8_uk2yf"]
+[ext_resource type="AudioStream" uid="uid://bxbdoh1c5ioks" path="res://audio/thunder02.mp3" id="9_ondrs"]
+[ext_resource type="AudioStream" uid="uid://c1tgi16e83nu4" path="res://audio/thunder03.mp3" id="10_0e4v7"]
+[ext_resource type="AudioStream" uid="uid://c4pdeyy3afw24" path="res://audio/thunder04.mp3" id="11_6nivd"]
+[ext_resource type="AudioStream" uid="uid://c12wkt4q0t0dg" path="res://audio/thunder05.mp3" id="12_al56o"]
+[ext_resource type="AudioStream" uid="uid://1kmhv1rvfixu" path="res://audio/thunder06.mp3" id="13_1bmon"]
+[ext_resource type="AudioStream" uid="uid://cl5kteh28tssu" path="res://audio/thunder07.mp3" id="14_siio1"]
+[ext_resource type="AudioStream" uid="uid://20lx04v5nibw" path="res://audio/thunder08.mp3" id="15_ndwfr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Sky" id="Sky_v3uhd"]
+sky_material = SubResource("ProceduralSkyMaterial_ynsf8")
+
+[sub_resource type="Environment" id="Environment_ufxs0"]
+background_mode = 1
+sky = SubResource("Sky_v3uhd")
+ambient_light_source = 1
+ambient_light_energy = 0.0
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_uk2yf"]
+size = Vector3(0.42, 0.3, 0.03)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6nivd"]
+material = ExtResource("3_0e4v7")
+top_radius = 0.08
+bottom_radius = 0.09
+height = 0.01
+
+[sub_resource type="BoxMesh" id="BoxMesh_ondrs"]
+material = ExtResource("3_ondrs")
+size = Vector3(0.55, 0.5, 0.055)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0e4v7"]
+material = ExtResource("3_ondrs")
+size = Vector3(0.55, 0.935, 0.055)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynsf8"]
+transparency = 1
+albedo_color = Color(0.353334, 0.456611, 0.541918, 0.0784314)
+metallic_specular = 1.0
+roughness = 0.1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ufxs0"]
+material = SubResource("StandardMaterial3D_ynsf8")
+flip_faces = true
+size = Vector2(2, 1)
+orientation = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_6nivd"]
+size = Vector3(0.072, 0.096, 0.01)
+
+[sub_resource type="BoxMesh" id="BoxMesh_al56o"]
+size = Vector3(0.02, 0.072, 0.01)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ynsf8"]
+material = ExtResource("1_qmak7")
+size = Vector2(3, 2.4)
+orientation = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_v3uhd"]
+material = ExtResource("1_qmak7")
+flip_faces = true
+size = Vector2(8.75, 4.48)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
+material = ExtResource("1_qmak7")
+size = Vector2(4, 2.4)
+orientation = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ufxs0"]
+transparency = 1
+albedo_color = Color(0.617455, 0.617455, 0.617455, 1)
+albedo_texture = ExtResource("1_v3uhd")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6we3w"]
+material = SubResource("StandardMaterial3D_ufxs0")
+flip_faces = true
+size = Vector2(0.008, 0.075)
+orientation = 2
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ufxs0")
+
+[node name="Kitchen" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -2.32427)
+size = Vector3(9, 0.1, 7.19371)
+material = ExtResource("1_k5pu3")
+
+[node name="Counter North (Window)" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.448, 0.945)
+size = Vector3(3, 0.895, 0.59)
+material = ExtResource("1_bq26l")
+
+[node name="Microwave" type="Node3D" parent="Kitchen/Counter North (Window)"]
+transform = Transform3D(0.994338, 0, 0.106264, 0, 1, 0, -0.106264, 0, 0.994338, 1.17897, 0.613248, 0.0229561)
+
+[node name="Body" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave"]
+size = Vector3(0.52, 0.3, 0.37)
+
+[node name="Cavity" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0610352, 0, -0.0318457)
+operation = 2
+size = Vector3(0.327148, 0.238281, 0.337129)
+
+[node name="Door Indent" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave/Body"]
+transform = Transform3D(0.999995, 0, -7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 0.999995, 0.0525194, 0, -0.177599)
+operation = 2
+size = Vector3(0.434753, 0.357422, 0.0517578)
+
+[node name="Door Pivot" type="Node3D" parent="Kitchen/Counter North (Window)/Microwave"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256274, 0, -0.152976)
+
+[node name="Door" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Microwave/Door Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20857, 0, -0.0174332)
+mesh = SubResource("BoxMesh_uk2yf")
+skeleton = NodePath("../..")
+
+[node name="Counter South" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41, 0.448, -0.945)
+size = Vector3(2.18, 0.895, 0.59)
+material = ExtResource("1_bq26l")
+
+[node name="Stove" type="Node3D" parent="Kitchen/Counter South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.448, 0)
+
+[node name="Burner" type="Node3D" parent="Kitchen/Counter South/Stove"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.896, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Kitchen/Counter South/Stove/Burner"]
+size = Vector3(0.6, 0.015, 0.51)
+material = ExtResource("3_0e4v7")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Kitchen/Counter South/Stove/Burner/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00867248, 0)
+operation = 2
+size = Vector3(0.58, 0.01, 0.45)
+
+[node name="Burner TL" type="MeshInstance3D" parent="Kitchen/Counter South/Stove/Burner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.162584, 0.005, -0.105845)
+mesh = SubResource("CylinderMesh_6nivd")
+
+[node name="Burner TR" type="MeshInstance3D" parent="Kitchen/Counter South/Stove/Burner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128546, 0.005, -0.105845)
+mesh = SubResource("CylinderMesh_6nivd")
+
+[node name="Burner BL" type="MeshInstance3D" parent="Kitchen/Counter South/Stove/Burner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.162584, 0.005, 0.109169)
+mesh = SubResource("CylinderMesh_6nivd")
+
+[node name="Burner BR" type="MeshInstance3D" parent="Kitchen/Counter South/Stove/Burner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128546, 0.005, 0.109169)
+mesh = SubResource("CylinderMesh_6nivd")
+
+[node name="Fridge" type="Node3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.055, 0, -0.945)
+
+[node name="Body" type="CSGBox3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.725, -0.027)
+size = Vector3(0.55, 1.45, 0.545)
+material = ExtResource("3_ondrs")
+
+[node name="Freezer Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.464582, 0.147759)
+operation = 2
+size = Vector3(0.462891, 0.471191, 0.644531)
+
+[node name="Freezer Cavity2" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.235144, 0.147759)
+operation = 2
+size = Vector3(0.462891, 0.801758, 0.644531)
+
+[node name="Freezer Door (Upper)" type="MeshInstance3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19537, 0.275)
+mesh = SubResource("BoxMesh_ondrs")
+
+[node name="Fridge Door (Lower)" type="MeshInstance3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.468, 0.275)
+mesh = SubResource("BoxMesh_0e4v7")
+
+[node name="Wall North (Window)" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.315)
+size = Vector3(3, 2.4, 0.15)
+material = ExtResource("1_qmak7")
+
+[node name="Window Frame" type="CSGBox3D" parent="Kitchen/Wall North (Window)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.467744, 0)
+size = Vector3(2.26562, 1.26099, 0.240234)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Gap" type="CSGBox3D" parent="Kitchen/Wall North (Window)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.473512, 0)
+operation = 2
+size = Vector3(2.11133, 1.1192, 0.571289)
+
+[node name="Window Beam" type="CSGBox3D" parent="Kitchen/Wall North (Window)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.486756, 0)
+size = Vector3(0.0449219, 1.14569, 0.106445)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Glass" type="MeshInstance3D" parent="Kitchen/Wall North (Window)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.288, -0.052265)
+mesh = SubResource("PlaneMesh_ufxs0")
+skeleton = NodePath("../..")
+
+[node name="Wall West" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.575, 1.2, 0)
+size = Vector3(0.15, 2.4, 2.57397)
+material = ExtResource("1_qmak7")
+
+[node name="Window Frame" type="CSGBox3D" parent="Kitchen/Wall West"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.185387, 0)
+size = Vector3(0.19043, 2.32974, 0.919922)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Gap" type="CSGBox3D" parent="Kitchen/Wall West"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169178, 0)
+operation = 2
+size = Vector3(1, 2.18895, 0.82)
+
+[node name="Light Switch" type="Node3D" parent="Kitchen/Wall West"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0788188, 0.166325, 0.531922)
+
+[node name="Frame" type="MeshInstance3D" parent="Kitchen/Wall West/Light Switch"]
+mesh = SubResource("BoxMesh_6nivd")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Kitchen/Wall West/Light Switch"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, -0.004)
+mesh = SubResource("BoxMesh_al56o")
+
+[node name="Wall East" type="CSGBox3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.575, 1.2, 0)
+size = Vector3(0.15, 2.4, 2.57397)
+material = ExtResource("1_qmak7")
+
+[node name="Window Frame" type="CSGBox3D" parent="Kitchen/Wall East"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.185387, 0)
+size = Vector3(0.19043, 2.32974, 0.919922)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Gap" type="CSGBox3D" parent="Kitchen/Wall East"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169178, 0)
+operation = 2
+size = Vector3(1, 2.18895, 0.82)
+
+[node name="Wall South" type="MeshInstance3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1.24)
+mesh = SubResource("PlaneMesh_ynsf8")
+
+[node name="Ceiling" type="MeshInstance3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -1)
+cast_shadow = 2
+mesh = SubResource("PlaneMesh_v3uhd")
+
+[node name="Ceiling Light" type="OmniLight3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27259, 0)
+light_energy = 0.38
+shadow_enabled = true
+omni_range = 3.2371
+
+[node name="Rest of the House" type="Node3D" parent="."]
+
+[node name="Wall North-West" type="CSGBox3D" parent="Rest of the House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99133, 1.2, 1.315)
+size = Vector3(3, 2.4, 0.15)
+material = ExtResource("1_qmak7")
+
+[node name="Window Frame" type="CSGBox3D" parent="Rest of the House/Wall North-West"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427827, 0)
+size = Vector3(2.05859, 1.18115, 0.240234)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Gap" type="CSGBox3D" parent="Rest of the House/Wall North-West"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.411164, 0)
+operation = 2
+size = Vector3(1.86743, 0.994507, 0.571289)
+
+[node name="Window Glass" type="MeshInstance3D" parent="Rest of the House/Wall North-West"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.288, -0.052265)
+mesh = SubResource("PlaneMesh_ufxs0")
+skeleton = NodePath("../..")
+
+[node name="Wall North-East" type="CSGBox3D" parent="Rest of the House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96163, 1.2, 1.315)
+size = Vector3(3, 2.4, 0.15)
+material = ExtResource("1_qmak7")
+
+[node name="Window Frame" type="CSGBox3D" parent="Rest of the House/Wall North-East"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427827, 0)
+size = Vector3(2.05859, 1.18115, 0.240234)
+material = ExtResource("2_8ra5a")
+
+[node name="Window Gap" type="CSGBox3D" parent="Rest of the House/Wall North-East"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.411164, 0)
+operation = 2
+size = Vector3(1.86743, 0.994507, 0.571289)
+
+[node name="Window Glass" type="MeshInstance3D" parent="Rest of the House/Wall North-East"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.288, -0.052265)
+mesh = SubResource("PlaneMesh_ufxs0")
+skeleton = NodePath("../..")
+
+[node name="Wall East" type="MeshInstance3D" parent="Rest of the House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.36267, 1.2, -0.652985)
+mesh = SubResource("PlaneMesh_u2c82")
+skeleton = NodePath("../../Kitchen")
+
+[node name="Wall East2" type="MeshInstance3D" parent="Rest of the House"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.363, 1.2, -0.713415)
+mesh = SubResource("PlaneMesh_u2c82")
+skeleton = NodePath("../../Kitchen")
+
+[node name="Ambient Light East" type="OmniLight3D" parent="Rest of the House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4324, 1.26712, 0)
+light_energy = 0.015
+shadow_enabled = true
+omni_range = 5.1696
+
+[node name="Ambient Light West" type="OmniLight3D" parent="Rest of the House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.432, 1.267, 0)
+light_energy = 0.015
+shadow_enabled = true
+omni_range = 5.1696
+
+[node name="Outside" type="Node3D" parent="."]
+
+[node name="Rain Audio" type="AudioStreamPlayer3D" parent="Outside"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4926, 1.62698)
+stream = ExtResource("2_ufxs0")
+autoplay = true
+
+[node name="Rain Particles" type="CPUParticles3D" parent="Outside"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.35363, 2.48306)
+amount = 200
+mesh = SubResource("PlaneMesh_6we3w")
+emission_shape = 3
+emission_box_extents = Vector3(3, 0.2, 1)
+direction = Vector3(0, -1, 0)
+spread = 1.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+
+[node name="Thunder Controller" type="Node3D" parent="Outside" node_paths=PackedStringArray("directionalLight", "omniLight", "thunderAudio")]
+script = ExtResource("7_u2c82")
+directionalLight = NodePath("Directional Light")
+omniLight = NodePath("Omni Light")
+thunderAudio = NodePath("Thunder Audio")
+thunderSounds = Array[Object]([ExtResource("8_uk2yf"), ExtResource("9_ondrs"), ExtResource("10_0e4v7"), ExtResource("11_6nivd"), ExtResource("12_al56o"), ExtResource("13_1bmon"), ExtResource("14_siio1"), ExtResource("15_ndwfr")])
+
+[node name="Directional Light" type="DirectionalLight3D" parent="Outside/Thunder Controller"]
+transform = Transform3D(1, 0, 0, 0, 0.964714, 0.263301, 0, -0.263301, 0.964714, 0, 3, 0)
+light_color = Color(0.952941, 1, 1, 1)
+light_energy = 0.2
+shadow_enabled = true
+
+[node name="Omni Light" type="OmniLight3D" parent="Outside/Thunder Controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_energy = 0.0
+omni_range = 8.72852
+omni_attenuation = 0.0
+
+[node name="Thunder Audio" type="AudioStreamPlayer3D" parent="Outside/Thunder Controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4926, 1.62698)
+stream = ExtResource("8_uk2yf")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66291, 0)
+visible = false
+box_projection = true
+interior = true
+enable_shadows = true
+
+[node name="Player Controller" parent="." instance=ExtResource("3_6we3w")]
+transform = Transform3D(-0.968627, 0, 0.248521, 0, 1, 0, -0.248521, 0, -0.968627, 0.424002, 0, 0)
+visible = false
+invertCameraVertical = true
+moveSpeed = 2.0
