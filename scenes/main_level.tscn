@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=45 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/floor.tres" id="1_k5pu3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Material" uid="uid://d11n6hmqm3ok3" path="res://materials/stove_burner.tres" id="3_0e4v7"]
 [ext_resource type="PackedScene" uid="uid://0sm1m8cgsy57" path="res://scenes/player_controller.tscn" id="3_6we3w"]
 [ext_resource type="Material" uid="uid://g05mcumj64wj" path="res://materials/fridge.tres" id="3_ondrs"]
+[ext_resource type="AudioStream" uid="uid://ccgg77t8yyg0l" path="res://audio/clock.mp3" id="3_siio1"]
 [ext_resource type="Script" uid="uid://dtlgeyhlbvmc0" path="res://scripts/KitchenLightController.cs" id="7_6nivd"]
 [ext_resource type="Script" uid="uid://d2slldesjpi65" path="res://scripts/ThunderController.cs" id="7_u2c82"]
 [ext_resource type="Script" uid="uid://yi2wfqhlo8us" path="res://scripts/InteractionTarget.cs" id="8_al56o"]
@@ -21,6 +22,7 @@
 [ext_resource type="AudioStream" uid="uid://cl5kteh28tssu" path="res://audio/thunder07.mp3" id="14_siio1"]
 [ext_resource type="AudioStream" uid="uid://20lx04v5nibw" path="res://audio/thunder08.mp3" id="15_ndwfr"]
 [ext_resource type="Material" uid="uid://cg3di4ecqcsa1" path="res://materials/trees.tres" id="20_1bmon"]
+[ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -33,6 +35,7 @@ sky_material = SubResource("ProceduralSkyMaterial_ynsf8")
 
 [sub_resource type="Environment" id="Environment_ufxs0"]
 background_mode = 1
+background_color = Color(0.119456, 0.13339, 0.163879, 1)
 sky = SubResource("Sky_v3uhd")
 ambient_light_source = 1
 ambient_light_energy = 0.0
@@ -41,6 +44,11 @@ glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_uk2yf"]
 size = Vector3(0.42, 0.3, 0.03)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1bmon"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.05
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6nivd"]
 material = ExtResource("3_0e4v7")
@@ -56,16 +64,10 @@ size = Vector3(0.55, 0.5, 0.055)
 material = ExtResource("3_ondrs")
 size = Vector3(0.55, 0.935, 0.055)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynsf8"]
-transparency = 1
-albedo_color = Color(0.353334, 0.456611, 0.541918, 0.0784314)
-metallic_specular = 1.0
-roughness = 0.1
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_ufxs0"]
-material = SubResource("StandardMaterial3D_ynsf8")
+material = ExtResource("23_ndwfr")
 flip_faces = true
-size = Vector2(2, 1)
+size = Vector2(2.2, 1.1)
 orientation = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ynsf8"]
@@ -76,7 +78,7 @@ orientation = 2
 [sub_resource type="PlaneMesh" id="PlaneMesh_v3uhd"]
 material = ExtResource("1_qmak7")
 flip_faces = true
-size = Vector2(8.75, 4.48)
+size = Vector2(8.75, 14.48)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6nivd"]
 size = Vector3(0.072, 0.096, 0.01)
@@ -89,7 +91,7 @@ size = Vector3(0.0878906, 0.105469, 0.0625)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
 material = ExtResource("1_qmak7")
-size = Vector2(4, 2.4)
+size = Vector2(14, 2.4)
 orientation = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ufxs0"]
@@ -123,8 +125,8 @@ environment = SubResource("Environment_ufxs0")
 [node name="Kitchen" type="Node3D" parent="."]
 
 [node name="Floor" type="CSGBox3D" parent="Kitchen"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -2.32427)
-size = Vector3(9, 0.1, 7.19371)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -5.70944)
+size = Vector3(9, 0.1, 13.964)
 material = ExtResource("1_k5pu3")
 
 [node name="Counter North (Window)" type="CSGBox3D" parent="Kitchen"]
@@ -155,6 +157,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256274, 0, -0.152976)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20857, 0, -0.0174332)
 mesh = SubResource("BoxMesh_uk2yf")
 skeleton = NodePath("../..")
+
+[node name="Clock" type="Node3D" parent="Kitchen/Counter North (Window)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.450174, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Clock"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.111993, -4.89538e-09)
+mesh = SubResource("CylinderMesh_1bmon")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Kitchen/Counter North (Window)/Clock"]
+stream = ExtResource("3_siio1")
+volume_db = -30.0
+autoplay = true
 
 [node name="Counter South" type="CSGBox3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41, 0.448, -0.945)
@@ -239,7 +253,7 @@ size = Vector3(0.0449219, 1.14569, 0.106445)
 material = ExtResource("2_8ra5a")
 
 [node name="Window Glass" type="MeshInstance3D" parent="Kitchen/Wall North (Window)"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.288, -0.052265)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0)
 mesh = SubResource("PlaneMesh_ufxs0")
 skeleton = NodePath("../..")
 
@@ -278,7 +292,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1.24)
 mesh = SubResource("PlaneMesh_ynsf8")
 
 [node name="Ceiling" type="MeshInstance3D" parent="Kitchen"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -6)
 cast_shadow = 2
 mesh = SubResource("PlaneMesh_v3uhd")
 
@@ -359,28 +373,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96163, 1.2, 1.315)
 size = Vector3(3, 2.4, 0.15)
 material = ExtResource("1_qmak7")
 
-[node name="Window Frame" type="CSGBox3D" parent="Rest of the House/Wall North-East"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.427827, 0)
-size = Vector3(2.05859, 1.18115, 0.240234)
-material = ExtResource("2_8ra5a")
-
-[node name="Window Gap" type="CSGBox3D" parent="Rest of the House/Wall North-East"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.411164, 0)
-operation = 2
-size = Vector3(1.86743, 0.994507, 0.571289)
-
-[node name="Window Glass" type="MeshInstance3D" parent="Rest of the House/Wall North-East"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.288, -0.052265)
-mesh = SubResource("PlaneMesh_ufxs0")
-skeleton = NodePath("../..")
-
 [node name="Wall East" type="MeshInstance3D" parent="Rest of the House"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.36267, 1.2, -0.652985)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.363, 1.2, -5.653)
 mesh = SubResource("PlaneMesh_u2c82")
 skeleton = NodePath("../../Kitchen")
 
 [node name="Wall East2" type="MeshInstance3D" parent="Rest of the House"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.363, 1.2, -0.713415)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.363, 1.2, -5.713)
 mesh = SubResource("PlaneMesh_u2c82")
 skeleton = NodePath("../../Kitchen")
 
@@ -389,6 +388,7 @@ skeleton = NodePath("../../Kitchen")
 [node name="Rain Audio" type="AudioStreamPlayer3D" parent="Outside"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4926, 1.62698)
 stream = ExtResource("2_ufxs0")
+volume_db = 5.0
 autoplay = true
 
 [node name="Rain Particles" type="CPUParticles3D" parent="Outside"]
@@ -411,7 +411,7 @@ thunderAudio = NodePath("Thunder Audio")
 thunderSounds = Array[Object]([ExtResource("8_uk2yf"), ExtResource("9_ondrs"), ExtResource("10_0e4v7"), ExtResource("11_6nivd"), ExtResource("12_al56o"), ExtResource("13_1bmon"), ExtResource("14_siio1"), ExtResource("15_ndwfr")])
 
 [node name="Directional Light" type="DirectionalLight3D" parent="Outside/Thunder Controller"]
-transform = Transform3D(1, 0, 0, 0, 0.964714, 0.263301, 0, -0.263301, 0.964714, 0, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 0.732579, 0.680683, 0, -0.680683, 0.732579, 0, 3, 0)
 light_color = Color(0.952941, 1, 1, 1)
 light_energy = 0.2
 light_specular = 0.0
@@ -467,7 +467,7 @@ cast_shadow = 0
 mesh = SubResource("SphereMesh_siio1")
 
 [node name="Sphere3" type="MeshInstance3D" parent="Outside/Treetops"]
-transform = Transform3D(1.79202, 0, 0, 0, 1.79202, 0, 0, 0, 1.79202, -1.66997, 1.38118, 1.87491)
+transform = Transform3D(1.79202, 0, 0, 0, 1.79202, 0, 0, 0, 1.79202, -1.66997, 1.12812, 1.87491)
 cast_shadow = 0
 mesh = SubResource("SphereMesh_siio1")
 
@@ -482,7 +482,7 @@ cast_shadow = 0
 mesh = SubResource("SphereMesh_siio1")
 
 [node name="Sphere6" type="MeshInstance3D" parent="Outside/Treetops"]
-transform = Transform3D(2.2639, 0, 0, 0, 1.93697, 0, 0, 0, 2.2639, -0.201369, 1.24115, 2.43058)
+transform = Transform3D(2.2639, 0, 0, 0, 1.93697, 0, 0, 0, 2.2639, -0.201369, 0.975234, 2.43058)
 cast_shadow = 0
 mesh = SubResource("SphereMesh_siio1")
 
