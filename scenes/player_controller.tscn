@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://crn07tsnkg0da" path="res://scripts/PlayerController.cs" id="1_d4y06"]
 [ext_resource type="Texture2D" uid="uid://b1r5h21nkt3t0" path="res://images/basic_particle.png" id="2_6agyq"]
-[ext_resource type="Script" uid="uid://cw25kgrv1qb6u" path="res://scripts/PlayerLookController.cs" id="2_8xumb"]
+[ext_resource type="Script" uid="uid://cw25kgrv1qb6u" path="res://scripts/PlayerInteractionController.cs" id="2_8xumb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iof21"]
 albedo_color = Color(0.91806, 0.575202, 0.222449, 1)
@@ -58,6 +58,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Crosshair Sprite" type="Sprite2D" parent="Crosshair Control"]
-modulate = Color(1, 1, 1, 0.615686)
+modulate = Color(1, 1, 1, 0.462745)
 scale = Vector2(0.075, 0.075)
 texture = ExtResource("2_6agyq")

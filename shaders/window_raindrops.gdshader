@@ -28,11 +28,11 @@ vec2 RainDrops(vec2 uv, float drop_scale, float drop_speed, float drop_wiggle) {
 	uv.y -= t * 0.25;
 	vec2 grid_uv = fract(uv) - 0.5;
 	vec2 id = floor(uv);
-	
+
 	float random_number = RandomNumber(id);
 	t += random_number * TAU;
 	wiggle *= random_number;
-	
+
 	float drop_radius = 0.05 * base_uv_y;
 	float drop_offset = 0.5 - drop_radius;
 	float x = (random_number - 0.5) * drop_offset;
@@ -41,11 +41,11 @@ vec2 RainDrops(vec2 uv, float drop_scale, float drop_speed, float drop_wiggle) {
 	y += (grid_uv.x - x) * (grid_uv.x - x);
 	vec2 drop_position = grid_uv - vec2(x, y);
 	float drop = smoothstep(drop_radius, 0.01, length(drop_position));
-	
+
 	float trail = smoothstep(drop_radius, -drop_radius, drop_position.y);
 	trail *= smoothstep(drop_radius, 0.01, abs(drop_position.x));
 	trail *= smoothstep(-0.5, y, grid_uv.y);
-	
+
 	vec2 output = vec2(0);
 	output += drop * drop_strength * base_uv_y;
 	output += trail * trail_strength;

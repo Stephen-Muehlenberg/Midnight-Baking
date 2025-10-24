@@ -1,8 +1,8 @@
 using Godot;
 
-namespace MidnightBaking.scripts;
+namespace MidnightBaking.scripts.interactables;
 
-public partial class KitchenLightController : Node3D
+public partial class KitchenLightController : Interactable
 {
     /// <summary>Lights enabled when the kitchen light is on. Includes bounce lights etc.</summary>
     [Export] private Light3D[] onLights;
@@ -12,20 +12,19 @@ public partial class KitchenLightController : Node3D
     
     private bool lightOn;
 
-    public override void _Ready()
+    protected override void _ResetToGameStartState()
     {
-        SetLightOn(true);
+        SetLightOn(false);
     }
 
     public void OnLightSwitchPressed()
     {
-        GD.Print("OnLightSwitchPressed()");
         SetLightOn(!lightOn);
+        onClickCallback?.Invoke();
     }
 
     private void SetLightOn(bool on)
     {
-        GD.Print($"SetLightOn({on})");
         lightOn = on;
 
         if (on)

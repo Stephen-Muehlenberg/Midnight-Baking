@@ -1,13 +1,12 @@
 using Godot;
-using ScarySub.scripts;
 
 namespace MidnightBaking.scripts;
 
 /// <summary>
-/// Manages player interactions which occur when the player looks at an object,
-/// or clicks an object they're looking at.
+/// Manages player interactions which occur when the player clicks
+/// an object they're looking at.
 /// </summary>
-public partial class PlayerLookController : Node3D
+public partial class PlayerInteractionController : Node3D
 {
     [Export] private Camera3D camera;
     private float MAX_LOOK_DISTANCE = 10f; //TODO

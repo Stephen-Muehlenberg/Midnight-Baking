@@ -1,6 +1,6 @@
 using Godot;
 
-namespace ScarySub.scripts;
+namespace MidnightBaking.scripts;
 
 public partial class InteractionTarget : Node3D
 {

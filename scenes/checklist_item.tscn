@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://coyg13sa4dp6y"]
+
+[ext_resource type="Script" uid="uid://cf6nkrx81ed5f" path="res://scripts/ChecklistItem.cs" id="1_5m7np"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pfmml"]
+font_size = 38
+
+[node name="HBoxContainer2" type="HBoxContainer" node_paths=PackedStringArray("textField", "strikeThrough")]
+size_flags_horizontal = 0
+size_flags_vertical = 4
+script = ExtResource("1_5m7np")
+textField = NodePath("Label")
+strikeThrough = NodePath("Label/Strikethrough")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "☑ Example text"
+label_settings = SubResource("LabelSettings_pfmml")
+
+[node name="Strikethrough" type="ColorRect" parent="Label"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 19.5
+offset_top = 0.5
+offset_right = 19.5
+offset_bottom = 4.5
+grow_horizontal = 2
+grow_vertical = 2

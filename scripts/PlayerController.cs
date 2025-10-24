@@ -3,6 +3,9 @@ using Godot;
 
 namespace MidnightBaking.scripts;
 
+/// <summary>
+/// Handles player first person camera and movement.
+/// </summary>
 public partial class PlayerController : CharacterBody3D
 {
     public bool canMove = true;
@@ -19,6 +22,9 @@ public partial class PlayerController : CharacterBody3D
     [Export] public string inputName_MoveRight = "move_right";
     [Export] public string inputName_MoveForward = "move_forward";
     [Export] public string inputName_MoveBack = "move_backward";
+    
+    [Signal] public delegate void OnPlayerLookEventHandler();
+    [Signal] public delegate void OnPlayerMoveEventHandler();
 
     private bool mouseCaptured;
     private Vector2 lookRotation;
@@ -26,6 +32,9 @@ public partial class PlayerController : CharacterBody3D
 
     private Node3D head;
     private CollisionShape3D collider;
+
+    private readonly float MIN_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(-85);
+    private readonly float MAX_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(85);
     
     public override void _Ready()
     {
@@ -60,10 +69,14 @@ public partial class PlayerController : CharacterBody3D
             Vector2 inputDirection = Input.GetVector(inputName_MoveLeft, inputName_MoveRight, inputName_MoveForward, inputName_MoveBack);
             Vector3 normalisedWorldMovementDirection = (Transform.Basis * new Vector3(inputDirection.X, 0, inputDirection.Y)).Normalized();
             if (normalisedWorldMovementDirection != Vector3.Zero)
+            {
                 Velocity = new Vector3(
                     normalisedWorldMovementDirection.X * moveSpeed,
                     0,
                     normalisedWorldMovementDirection.Z * moveSpeed);
+                
+                EmitSignalOnPlayerMove();
+            }
             else
                 Velocity = Velocity.MoveToward(Vector3.Zero, moveSpeed);
         }
@@ -80,12 +93,16 @@ public partial class PlayerController : CharacterBody3D
             Mathf.Clamp(rotationInput.Y * lookSpeedVertical * (invertCameraVertical ? -1 : 1), Mathf.DegToRad(-85), Mathf.DegToRad(85)),
             -rotationInput.X * lookSpeedHorizontal
         );
+        
         // Left/right movements rotate the player base.
-        // Rotation = Vector3.Zero;
         RotateY(lookRotation.Y);
         // Up/down movements rotate the player head.
-        //  head.Rotation = Vector3.Zero;
         head.RotateX(lookRotation.X);
+        
+        head.Rotation = new Vector3(float.Clamp(head.Rotation.X, MIN_VERTICAL_ANGLE_RADIANS, MAX_VERTICAL_ANGLE_RADIANS), 0, 0);
+
+        if (lookRotation.LengthSquared() > 0)
+            EmitSignalOnPlayerLook();
     }
 
     private void SetMouseCaptured(bool captured)
