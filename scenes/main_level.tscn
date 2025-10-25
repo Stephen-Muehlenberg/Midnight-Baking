@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=81 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/floor.tres" id="1_k5pu3"]
@@ -179,6 +179,9 @@ size = Vector3(0.0878906, 0.105469, 0.0625)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sjhni"]
 size = Vector3(0.5, 0.02, 0.59)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uxuvg"]
+size = Vector3(3, 0.04, 0.59)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
 material = ExtResource("1_qmak7")
@@ -385,7 +388,6 @@ horizontal_alignment = 0
 vertical_alignment = 0
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Tablet/Screen"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("8_al56o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area"]
@@ -483,6 +485,7 @@ material = ExtResource("2_8ra5a")
 
 [node name="Window Glass" type="MeshInstance3D" parent="Kitchen/Wall North (Window)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0)
+layers = 2
 mesh = SubResource("PlaneMesh_ufxs0")
 skeleton = NodePath("../..")
 
@@ -558,18 +561,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -6)
 cast_shadow = 2
 mesh = SubResource("PlaneMesh_v3uhd")
 
-[node name="Kitchen Light" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("onLights", "offLights", "lightSwitch", "highlightMeshes", "highlightCsgs")]
+[node name="Kitchen Light" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("onLights", "offLights", "lightSwitch", "reflectionProbe", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("7_6nivd")
-onLights = [NodePath("Ceiling Light"), NodePath("Bounce Light East"), NodePath("Bounce Light West")]
+onLights = [NodePath("Ceiling Light"), NodePath("Bounce Light East"), NodePath("Bounce Light West"), NodePath("Raindrops only light")]
 offLights = [NodePath("Unlit Kitchen Light")]
 lightSwitch = NodePath("Light Switch/Switch")
+reflectionProbe = NodePath("ReflectionProbe")
 itemId = 3
 highlightMeshes = [NodePath("Light Switch/Frame"), NodePath("Light Switch/Switch")]
 highlightCsgs = []
 
 [node name="Ceiling Light" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27259, 0)
-light_energy = 0.38
+light_energy = 0.19
+shadow_enabled = true
+omni_range = 3.2371
+
+[node name="Raindrops only light" type="OmniLight3D" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27259, 0)
+light_energy = 0.4
+light_cull_mask = 4294967294
 shadow_enabled = true
 omni_range = 3.2371
 
@@ -593,6 +604,13 @@ light_energy = 0.016
 light_specular = 0.0
 omni_range = 3.2371
 omni_attenuation = 0.0
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Kitchen/Kitchen Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+size = Vector3(5, 6, 9)
+box_projection = true
+interior = true
+enable_shadows = true
 
 [node name="Light Switch" type="Node3D" parent="Kitchen/Kitchen Light"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.49618, 1.36633, 0.531922)
@@ -623,20 +641,26 @@ operation = 2
 size = Vector3(0.5, 2.36, 0.59)
 
 [node name="Shelf" type="MeshInstance3D" parent="Kitchen/Pantry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
 [node name="Shelf2" type="MeshInstance3D" parent="Kitchen/Pantry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
 [node name="Shelf3" type="MeshInstance3D" parent="Kitchen/Pantry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
 [node name="Shelf4" type="MeshInstance3D" parent="Kitchen/Pantry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource("BoxMesh_sjhni")
+
+[node name="Upper Cupboard South" type="Node3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.945)
+
+[node name="Bottom panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+mesh = SubResource("BoxMesh_uxuvg")
 
 [node name="Rest of the House" type="Node3D" parent="."]
 
@@ -811,13 +835,6 @@ mesh = SubResource("SphereMesh_siio1")
 [node name="Grass" type="MeshInstance3D" parent="Outside"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.91012)
 mesh = SubResource("PlaneMesh_ndwfr")
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66291, 0)
-visible = false
-box_projection = true
-interior = true
-enable_shadows = true
 
 [node name="Player Controller" parent="." instance=ExtResource("3_6we3w")]
 transform = Transform3D(-0.968627, 0, 0.248521, 0, 1, 0, -0.248521, 0, -0.968627, 0.424002, 0, 0)

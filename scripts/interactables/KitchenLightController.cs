@@ -9,6 +9,7 @@ public partial class KitchenLightController : Interactable
     /// <summary>Lights enabled when the kitchen light is off. Includes ambient minimal light etc.</summary>
     [Export] private Light3D[] offLights;
     [Export] private Node3D lightSwitch;
+    [Export] private ReflectionProbe reflectionProbe;
     
     private bool lightOn;
 
@@ -33,6 +34,7 @@ public partial class KitchenLightController : Interactable
                 light.Show();
             foreach (var light in offLights)
                 light.Hide();
+            reflectionProbe.Show();
         }
         else
         {
@@ -40,6 +42,7 @@ public partial class KitchenLightController : Interactable
                 light.Hide();
             foreach (var light in offLights)
                 light.Show();
+            reflectionProbe.Hide();
         }
         
         lightSwitch.RotationDegrees = new Vector3(on ? -30 : 30, 0, 0);
