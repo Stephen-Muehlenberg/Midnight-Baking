@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
 public partial class Game : Node
 {
-    public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK, SUGAR, TOWEL, TABLET, }
+    public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK, SUGAR, TOWEL, TABLET, MICROWAVE, }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;
@@ -45,6 +46,7 @@ public partial class Game : Node
         {
             GD.Print($"Game - Registered interactables = {Interactables.Count}");
             StartTaskGroup(0);
+            (Interactables[ItemId.MICROWAVE] as Microwave).SetTimeToMidnightAndStartClock();
         };
     }
 

@@ -86,14 +86,15 @@ public static class Tasks
         public override string description => "Wash hands";
         protected override void OnStart()
         {
-            //Game.SetHint("Use sink");
+            hints.Add("Use sink");
             Game.Interactables[Game.ItemId.SINK].EnableInteractions(OnSinkClicked);
         }
 
         private void OnSinkClicked()
         {
             Game.Interactables[Game.ItemId.SINK].DisableInteractions();
-            //   Game.SetHint("Use towel");
+            hints.Add("Dry hands on towel");
+            Game.UpdateUi();
             Game.Interactables[Game.ItemId.TOWEL].EnableInteractions(OnTowelClicked);
         }
 

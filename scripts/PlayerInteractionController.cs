@@ -9,7 +9,6 @@ namespace MidnightBaking.scripts;
 public partial class PlayerInteractionController : Node3D
 {
     [Export] private Camera3D camera;
-    private float MAX_LOOK_DISTANCE = 10f; //TODO
 
     public override void _Input(InputEvent @event)
     {
@@ -30,7 +29,7 @@ public partial class PlayerInteractionController : Node3D
         GD.Print("Interact()");
         // Perform raycast.
         Vector3 origin = camera.GlobalPosition;
-        Vector3 offset = -camera.GlobalBasis.Z * MAX_LOOK_DISTANCE;
+        Vector3 offset = -camera.GlobalBasis.Z * 5f;
         Vector3 end = origin + offset;
         var query = PhysicsRayQueryParameters3D.Create(origin, end);
         query.CollideWithAreas = true;
@@ -47,7 +46,15 @@ public partial class PlayerInteractionController : Node3D
         if (collisionObject is InteractionTarget target)
         {
             GD.Print($"LookController.Interact(): clicked on an INTERACTION TARGET: {target.Name}");
-            target.OnClick();
+            
+            // Check if the object is within the collider's maximum interaction distance.
+            var collisionPoint = (Vector3) result["position"].Obj;
+            float distance = (collisionPoint - origin).Length();
+            GD.Print($"- object distance is {distance}; max distance is {target.maxInteractionDistance}");
+            if (distance <= target.maxInteractionDistance)
+            {
+                target.OnClick();
+            }
         }
         else if (collisionObject is Node3D node)
             GD.Print($"LookController.Interact(): clicked on non-interactive Node3D: {node.Name}");

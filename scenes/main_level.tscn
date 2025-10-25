@@ -1,21 +1,23 @@
-[gd_scene load_steps=81 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=90 format=3 uid="uid://dfgt17r2p5uf3"]
 
-[ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/counter_top.tres" id="1_bq26l"]
-[ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/floor.tres" id="1_k5pu3"]
+[ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
+[ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
 [ext_resource type="Material" uid="uid://tvabgvyuu3hq" path="res://materials/wall.tres" id="1_qmak7"]
 [ext_resource type="Script" uid="uid://tt7wi5kqo8p6" path="res://scripts/Game.cs" id="1_rcrbw"]
 [ext_resource type="Material" uid="uid://do4eiy8meeefy" path="res://materials/kitchen_floor.tres" id="1_sjhni"]
 [ext_resource type="Texture2D" uid="uid://b1r5h21nkt3t0" path="res://images/basic_particle.png" id="1_v3uhd"]
 [ext_resource type="Material" uid="uid://dp2j5xw8elfa8" path="res://materials/window_frame.tres" id="2_8ra5a"]
-[ext_resource type="Material" uid="uid://uef7dowbhtp3" path="res://materials/item_flash_highlight.tres" id="2_c88u2"]
+[ext_resource type="Material" uid="uid://uef7dowbhtp3" path="res://materials/ui ux/item_flash_highlight.tres" id="2_c88u2"]
 [ext_resource type="AudioStream" uid="uid://bu5us3gbjnvt8" path="res://audio/rain.mp3" id="2_ufxs0"]
 [ext_resource type="Material" uid="uid://d11n6hmqm3ok3" path="res://materials/stove_burner.tres" id="3_0e4v7"]
 [ext_resource type="PackedScene" uid="uid://0sm1m8cgsy57" path="res://scenes/player_controller.tscn" id="3_6we3w"]
-[ext_resource type="Material" uid="uid://g05mcumj64wj" path="res://materials/fridge.tres" id="3_ondrs"]
+[ext_resource type="Material" uid="uid://g05mcumj64wj" path="res://materials/plastic_fridge.tres" id="3_ondrs"]
 [ext_resource type="AudioStream" uid="uid://ccgg77t8yyg0l" path="res://audio/clock.mp3" id="3_siio1"]
+[ext_resource type="FontFile" uid="uid://c44q086dsxaa8" path="res://fonts/digital-7 (mono italic).ttf" id="5_nk5s2"]
+[ext_resource type="Script" uid="uid://bmcmnhehbx5my" path="res://scripts/interactables/Microwave.cs" id="5_xgm4f"]
 [ext_resource type="Script" uid="uid://xvidpfstdufv" path="res://scripts/Interactable.cs" id="6_cycrt"]
 [ext_resource type="Material" uid="uid://djop5kvvpufk1" path="res://materials/soap.tres" id="6_gr2jy"]
-[ext_resource type="Material" uid="uid://bxbbwu6mfaub7" path="res://materials/stainless_steel.tres" id="7_3iae7"]
+[ext_resource type="Material" uid="uid://bxbbwu6mfaub7" path="res://materials/metal_stainless_steel.tres" id="7_3iae7"]
 [ext_resource type="Script" uid="uid://dtlgeyhlbvmc0" path="res://scripts/interactables/KitchenLightController.cs" id="7_6nivd"]
 [ext_resource type="Script" uid="uid://d2slldesjpi65" path="res://scripts/ThunderController.cs" id="7_u2c82"]
 [ext_resource type="Script" uid="uid://yi2wfqhlo8us" path="res://scripts/InteractionTarget.cs" id="8_al56o"]
@@ -37,9 +39,10 @@
 [ext_resource type="Material" uid="uid://bxaqcfokc4m0h" path="res://materials/tablet_stand.tres" id="14_hdbb3"]
 [ext_resource type="AudioStream" uid="uid://cl5kteh28tssu" path="res://audio/thunder07.mp3" id="14_siio1"]
 [ext_resource type="AudioStream" uid="uid://20lx04v5nibw" path="res://audio/thunder08.mp3" id="15_ndwfr"]
-[ext_resource type="Material" uid="uid://cg3di4ecqcsa1" path="res://materials/trees.tres" id="20_1bmon"]
-[ext_resource type="Material" uid="uid://drd7k3dep2m4o" path="res://materials/grass.tres" id="23_nc5r2"]
+[ext_resource type="Material" uid="uid://cg3di4ecqcsa1" path="res://materials/exterior/trees.tres" id="20_1bmon"]
+[ext_resource type="Material" uid="uid://drd7k3dep2m4o" path="res://materials/exterior/grass.tres" id="23_nc5r2"]
 [ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
+[ext_resource type="Material" uid="uid://ctqdrmvgoa43h" path="res://materials/plastic_off_yellow.tres" id="24_eokwq"]
 [ext_resource type="PackedScene" uid="uid://bi743dwfbtpno" path="res://scenes/checklist.tscn" id="36_7ul7a"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
@@ -62,6 +65,11 @@ glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_uk2yf"]
 size = Vector3(0.42, 0.3, 0.03)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_eokwq"]
+material = ExtResource("12_gwyuf")
+size = Vector2(0.085, 0.05)
+orientation = 2
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_1bmon"]
 top_radius = 0.1
@@ -103,7 +111,7 @@ material = ExtResource("10_pfmml")
 size = Vector3(0.22, 0.28, 0.01)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pfmml"]
-size = Vector3(0.236328, 0.345947, 0.0517578)
+size = Vector3(0.236328, 0.402588, 0.0654297)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yl4j0"]
 material = ExtResource("11_kxeow")
@@ -158,13 +166,33 @@ height = 0.14
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ynsf8"]
 material = ExtResource("1_qmak7")
-size = Vector2(3, 2.4)
+size = Vector2(3, 3)
 orientation = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_v3uhd"]
 material = ExtResource("1_qmak7")
 flip_faces = true
 size = Vector2(8.75, 14.48)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_uxuvg"]
+top_radius = 0.13
+bottom_radius = 0.13
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_eokwq"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nk5s2"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.05
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xgm4f"]
+top_radius = 0.095
+bottom_radius = 0.095
+height = 0.01
 
 [sub_resource type="BoxMesh" id="BoxMesh_6nivd"]
 material = ExtResource("13_iycfq")
@@ -181,7 +209,10 @@ size = Vector3(0.0878906, 0.105469, 0.0625)
 size = Vector3(0.5, 0.02, 0.59)
 
 [sub_resource type="BoxMesh" id="BoxMesh_uxuvg"]
-size = Vector3(3, 0.04, 0.59)
+size = Vector3(3, 0.04, 0.79)
+
+[sub_resource type="BoxMesh" id="BoxMesh_eokwq"]
+size = Vector3(0.02, 1, 0.79)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
 material = ExtResource("1_qmak7")
@@ -237,8 +268,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.448, 0.945)
 size = Vector3(3, 0.895, 0.59)
 material = ExtResource("1_bq26l")
 
-[node name="Microwave" type="Node3D" parent="Kitchen/Counter North (Window)"]
+[node name="Microwave" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("timeText", "colonText", "highlightMeshes", "highlightCsgs")]
 transform = Transform3D(0.994338, 0, 0.106264, 0, 1, 0, -0.106264, 0, 0.994338, 1.17897, 0.613248, 0.0229561)
+script = ExtResource("5_xgm4f")
+timeText = NodePath("Screen time text")
+colonText = NodePath("Screen colon text")
+itemId = 8
+highlightMeshes = []
+highlightCsgs = []
 
 [node name="Body" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave"]
 size = Vector3(0.52, 0.3, 0.37)
@@ -247,6 +284,11 @@ size = Vector3(0.52, 0.3, 0.37)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0610352, 0, -0.0318457)
 operation = 2
 size = Vector3(0.327148, 0.238281, 0.337129)
+
+[node name="Display cavity" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.211205, 0.114772, -0.204793)
+operation = 2
+size = Vector3(0.0820312, 0.0341796, 0.0494239)
 
 [node name="Door Indent" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Microwave/Body"]
 transform = Transform3D(0.999995, 0, -7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 0.999995, 0.0525194, 0, -0.177599)
@@ -260,6 +302,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256274, 0, -0.152976)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20857, 0, -0.0174332)
 mesh = SubResource("BoxMesh_uk2yf")
 skeleton = NodePath("../..")
+
+[node name="Screen time text" type="Label3D" parent="Kitchen/Counter North (Window)/Microwave"]
+transform = Transform3D(-0.1, 0, -8.74228e-09, 0, 0.1, 0, 8.74228e-09, 0, -0.1, -0.2432, 0.116597, -0.180533)
+modulate = Color(0, 0.71, 0.1065, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "11 59"
+font = ExtResource("5_nk5s2")
+font_size = 60
+horizontal_alignment = 2
+
+[node name="Screen colon text" type="Label3D" parent="Kitchen/Counter North (Window)/Microwave"]
+transform = Transform3D(-0.1, 0, -8.74228e-09, 0, 0.1, 0, 8.74228e-09, 0, -0.1, -0.208062, 0.116597, -0.180533)
+modulate = Color(0, 0.71, 0.1065, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = ":
+"
+font = ExtResource("5_nk5s2")
+font_size = 60
+
+[node name="Screen background" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Microwave"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.210602, 0.117, -0.180119)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_eokwq")
 
 [node name="Clock" type="Node3D" parent="Kitchen/Counter North (Window)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.550366, 0.67759, 0.258595)
@@ -289,6 +354,7 @@ mesh = SubResource("CapsuleMesh_gr2jy")
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Sink"]
 script = ExtResource("8_al56o")
+maxInteractionDistance = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Sink/Clickable Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0512085, -0.03125)
@@ -337,9 +403,10 @@ mesh = SubResource("BoxMesh_pfmml")
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Towel"]
 script = ExtResource("8_al56o")
+maxInteractionDistance = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Towel/Clickable Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.149048, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, -0.00683594)
 shape = SubResource("BoxShape3D_pfmml")
 
 [node name="Tablet" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("screenOff", "screenOn", "text", "highlightMeshes", "highlightCsgs")]
@@ -389,6 +456,7 @@ vertical_alignment = 0
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Tablet/Screen"]
 script = ExtResource("8_al56o")
+maxInteractionDistance = 0.4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area"]
 shape = SubResource("BoxShape3D_uxuvg")
@@ -561,6 +629,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -6)
 cast_shadow = 2
 mesh = SubResource("PlaneMesh_v3uhd")
 
+[node name="Light" type="Node3D" parent="Kitchen/Ceiling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Outer rim" type="CSGMesh3D" parent="Kitchen/Ceiling/Light"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0451052, 0)
+mesh = SubResource("CylinderMesh_uxuvg")
+material = ExtResource("24_eokwq")
+
+[node name="Inner rim" type="CSGMesh3D" parent="Kitchen/Ceiling/Light/Outer rim"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00621152, 0)
+mesh = SubResource("CylinderMesh_eokwq")
+material = ExtResource("7_3iae7")
+
+[node name="Cavity" type="CSGMesh3D" parent="Kitchen/Ceiling/Light/Outer rim"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0626957, 0)
+operation = 2
+mesh = SubResource("CylinderMesh_nk5s2")
+
+[node name="Light panel" type="MeshInstance3D" parent="Kitchen/Ceiling/Light"]
+mesh = SubResource("CylinderMesh_xgm4f")
+
 [node name="Kitchen Light" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("onLights", "offLights", "lightSwitch", "reflectionProbe", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("7_6nivd")
 onLights = [NodePath("Ceiling Light"), NodePath("Bounce Light East"), NodePath("Bounce Light West"), NodePath("Raindrops only light")]
@@ -624,6 +713,7 @@ mesh = SubResource("BoxMesh_al56o")
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Kitchen Light/Light Switch"]
 script = ExtResource("8_al56o")
+maxInteractionDistance = 0.55
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Kitchen Light/Light Switch/Clickable Area"]
 shape = SubResource("BoxShape3D_6nivd")
@@ -660,7 +750,16 @@ mesh = SubResource("BoxMesh_sjhni")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.945)
 
 [node name="Bottom panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
 mesh = SubResource("BoxMesh_uxuvg")
+
+[node name="Vertical panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.499, -0.1)
+mesh = SubResource("BoxMesh_eokwq")
+
+[node name="Vertical panel2" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.499, -0.1)
+mesh = SubResource("BoxMesh_eokwq")
 
 [node name="Rest of the House" type="Node3D" parent="."]
 
@@ -837,7 +936,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.91012)
 mesh = SubResource("PlaneMesh_ndwfr")
 
 [node name="Player Controller" parent="." instance=ExtResource("3_6we3w")]
-transform = Transform3D(-0.968627, 0, 0.248521, 0, 1, 0, -0.248521, 0, -0.968627, 0.424002, 0, 0)
+transform = Transform3D(-0.886163, 0, 0.463374, 0, 1, 0, -0.463374, 0, -0.886163, 0.898049, 0, 0.267224)
 visible = false
 invertCameraVertical = true
 
