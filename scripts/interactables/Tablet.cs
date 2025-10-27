@@ -12,16 +12,15 @@ public partial class Tablet : Interactable
     
     protected override void _ResetToGameStartState()
     {
-        SetOn(false);
+        SetTabletOn(false);
     }
 
-    public void OnTabletPressed()
+    protected override void HandleClick()
     {
-        SetOn(!on);
-        onClickCallback?.Invoke();
+        SetTabletOn(!on);
     }
 
-    private void SetOn(bool on)
+    public void SetTabletOn(bool on)
     {
         this.on = on;
 

@@ -16,15 +16,15 @@ public partial class KitchenLightController : Interactable
     protected override void _ResetToGameStartState()
     {
         SetLightOn(false);
+        SetCanInteract(true);
     }
 
-    public void OnLightSwitchPressed()
+    protected override void HandleClick()
     {
         SetLightOn(!lightOn);
-        onClickCallback?.Invoke();
     }
 
-    private void SetLightOn(bool on)
+    public void SetLightOn(bool on)
     {
         lightOn = on;
 

@@ -1,0 +1,18 @@
+using Godot;
+
+namespace MidnightBaking.scripts.interactables;
+
+public partial class Apron : Interactable
+{
+    [Export] private Node3D apronModel;
+    protected override void _ResetToGameStartState()
+    {
+        SetApronVisible(true);
+        SetCanInteract(false);
+    }
+
+    public void SetApronVisible(bool visible)
+    {
+        apronModel.Visible = visible;
+    }
+}

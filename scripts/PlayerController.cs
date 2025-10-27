@@ -36,6 +36,10 @@ public partial class PlayerController : CharacterBody3D
     private readonly float MIN_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(-85);
     private readonly float MAX_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(85);
     
+    public static PlayerController FetchInstance()
+        // Hardcoded string is gross, but Godot lacks proper type searching.
+        => Game.instance.GetTree().Root.GetNode<PlayerController>("Level/Player Controller");
+    
     public override void _Ready()
     {
         head = GetNode<Node3D>("Head");

@@ -13,22 +13,7 @@ public partial class Game : Node
     
     public static Game instance;
     public static readonly Dictionary<ItemId, Interactable> Interactables = new();
-    private static readonly List<TaskGroup> tasks =
-    [
-        new TaskGroup(name: "Tutorial", tasks: [
-            new Tasks.Group0_MouseLook(),
-            new Tasks.Group0_Move(),
-            new Tasks.Group0_Interact(),
-        ]),
-        new TaskGroup(name: "Initial prep", tasks: [
-            new Tasks.Group1_WashHands(),
-            new Tasks.Group1_PutOnApron(),
-            new Tasks.Group1_OpenRecipe(),
-        ]),
-        new TaskGroup(name: "Gather ingredients", tasks: [
-            
-        ])
-    ];
+    private List<TaskGroup> tasks;
 
     [Export] public ChecklistManager checklistUi;
     [Export] public Material _flashMaterialOverlay;
@@ -40,14 +25,78 @@ public partial class Game : Node
         if (instance != null)
             throw new Exception("Duplicate Game instance. Should be exactly 1.");
         instance = this;
+        
+        // Wait 1/10th of a second before starting so that the various interactables can
+        // register themselves.
+        // This hack will be removed once we set up a main menu and fade in from black effect.
+        GetTree().CreateTimer(0.1).Timeout += StartGame;
+    }
 
-        GD.Print("Game._Ready()");
-        GetTree().CreateTimer(1.0).Timeout += () =>
+    public void StartGame()
+    {
+        // Reset interactable objects.
+        foreach (var interactable in Interactables.Values)
+            interactable.ResetToGameStartState();
+        
+        // Get (or reset) list of tasks, then initialise it.
+        tasks = Tasks.CreateTaskList();
+        foreach (var taskGroup in tasks)
+            foreach (var task in taskGroup.tasks)
+                task.Initialise();
+        
+        // Set the in-game time to midnight and start the clocks.
+        (Interactables[ItemId.MICROWAVE] as Microwave).SetTimeToMidnightAndStartClock();
+        
+        // Begin the first set of tasks.
+        StartTaskGroup(0);
+    }
+    
+    // Listen to key presses for debugging / testing purposes.
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent)
         {
-            GD.Print($"Game - Registered interactables = {Interactables.Count}");
-            StartTaskGroup(0);
-            (Interactables[ItemId.MICROWAVE] as Microwave).SetTimeToMidnightAndStartClock();
-        };
+            if (keyEvent.Keycode == Key.Right && keyEvent.Pressed)
+                SkipTask();
+            else if (keyEvent.Keycode == Key.Down && keyEvent.Pressed)
+                SkipTaskGroup();
+        }
+    }
+
+    private void SkipTask()
+    {
+        // Find the next incomplete task.
+        var taskGroup = tasks[currentTaskGroupIndex];
+        Task currentTask = taskGroup.tasks[0];
+        for (int i = 0; i < taskGroup.tasks.Count; i++)
+        {
+            var task = taskGroup.tasks[i];
+            if (!task.complete)
+            {
+                currentTask = task;
+                break;
+            }
+        }
+        
+        // If the task has subtasks, find the next incomplete subtask, and set it to complete.
+        if (currentTask.subtasks.Count > 0)
+        {
+            for (int i = 0; i < currentTask.subtasks.Count; i++)
+            {
+                var subtask = currentTask.subtasks[i];
+                if (subtask.complete) continue;
+                subtask.Complete();
+                return;
+            }
+        }
+        
+        // If it has no subtasks, set the task itself to complete.
+        currentTask.Complete();
+    }
+
+    private void SkipTaskGroup()
+    {
+        
     }
 
     /// <summary>
@@ -60,7 +109,8 @@ public partial class Game : Node
         interactable.ResetToGameStartState();
     }
 
-    private void OnCurrentTaskCompleted()
+    // TODO also handle UI updates when a subtask is completed.
+    private void OnTaskOrSubtaskComplete()
     {
         var currentTasksGroup = tasks[currentTaskGroupIndex];
         if (currentTasksGroup.tasks.All(task => task.complete))
@@ -80,15 +130,14 @@ public partial class Game : Node
         
         var newTaskGroup = tasks[index];
         foreach (var task in newTaskGroup.tasks)
-            task.Start(OnCurrentTaskCompleted);
+            task.Start(OnTaskOrSubtaskComplete);
         
         UpdateUi();
     }
 
-    // TODO UpdateUi after settings changed
     public static void UpdateUi()
     {
-        var taskGroup = tasks[currentTaskGroupIndex];
+        var taskGroup = instance.tasks[currentTaskGroupIndex];
         
         foreach (Task task in taskGroup.tasks)
             GD.Print($"[{(task.complete ? "x" : " ")}] {task.description}");
@@ -101,55 +150,5 @@ public partial class Game : Node
         /// <summary> The name is not meant for UI purposes, but for debugging. </summary>
         public readonly string name = name;
         public readonly List<Task> tasks = tasks;
-    }
-
-    public abstract class Task
-    {
-        public abstract string description { get; }
-        public bool complete { get; private set; }
-        public List<SubTask> subtasks = new();
-        public List<string> hints = new();
-        private Action onCompleteCallback;
-
-        public void Start(Action onComplete)
-        {
-            GD.Print($"Task \"{description}\".Start()");
-            complete = false;
-            onCompleteCallback = onComplete;
-            hints.Clear();
-            OnStart();
-            foreach (var subtask in subtasks)
-                subtask.OnStart();
-        }
-
-        /// <summary>
-        /// Mark this Task as completed, perform any OnComplete teardown functions, then notify the game.
-        /// </summary>
-        protected void Complete()
-        {
-            GD.Print($"Task \"{description}\".Complete()");
-            complete = true;
-            OnComplete();
-            foreach (var subtask in subtasks)
-                subtask.OnComplete();
-            onCompleteCallback.Invoke();
-        }
-
-        /// <summary> Empty hook method. Override to perform setup functions upon Task start. </summary>
-        protected virtual void OnStart() {}
-        /// <summary> Empty hook method. Override to perform wrap up / teardown functions upon Task completion. </summary>
-        protected virtual void OnComplete() {}
-    }
-
-    public abstract class SubTask
-    {
-        public string description;
-        public bool complete;
-        public List<string> hints = new();
-        
-        public virtual void OnStart() {}
-        public virtual void OnInteract(ItemId item) {}
-        public virtual void OnComplete() {}
-
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=100 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
@@ -43,6 +43,8 @@
 [ext_resource type="Material" uid="uid://drd7k3dep2m4o" path="res://materials/exterior/grass.tres" id="23_nc5r2"]
 [ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
 [ext_resource type="Material" uid="uid://ctqdrmvgoa43h" path="res://materials/plastic_off_yellow.tres" id="24_eokwq"]
+[ext_resource type="Material" uid="uid://cnv82dnpuphi8" path="res://materials/apron.tres" id="29_gvvxt"]
+[ext_resource type="Script" uid="uid://7tuyeues83t7" path="res://scripts/interactables/Apron.cs" id="29_qdukv"]
 [ext_resource type="PackedScene" uid="uid://bi743dwfbtpno" path="res://scenes/checklist.tscn" id="36_7ul7a"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
@@ -207,6 +209,42 @@ size = Vector3(0.0878906, 0.105469, 0.0625)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sjhni"]
 size = Vector3(0.5, 0.02, 0.59)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xgm4f"]
+size = Vector3(0.52, 3, 0.02)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gvvxt"]
+material = ExtResource("3_ondrs")
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.01
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qdukv"]
+material = ExtResource("3_ondrs")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.007
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nstfs"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.05
+radial_segments = 32
+
+[sub_resource type="BoxMesh" id="BoxMesh_gvvxt"]
+size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qdukv"]
+material = ExtResource("29_gvvxt")
+size = Vector3(0.1, 1, 0.003)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nstfs"]
+material = ExtResource("29_gvvxt")
+size = Vector3(0.01, 0.1, 0.003)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gvvxt"]
+size = Vector3(0.118164, 0.896729, 0.0263672)
 
 [sub_resource type="BoxMesh" id="BoxMesh_uxuvg"]
 size = Vector3(3, 0.04, 0.79)
@@ -746,6 +784,61 @@ mesh = SubResource("BoxMesh_sjhni")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
+[node name="Pantry door pivot" type="Node3D" parent="Kitchen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.494, 1.5, -0.626)
+
+[node name="Door" type="MeshInstance3D" parent="Kitchen/Pantry door pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 0, -0.01)
+mesh = SubResource("BoxMesh_xgm4f")
+skeleton = NodePath("../../Upper Cupboard South")
+
+[node name="Hook" type="Node3D" parent="Kitchen/Pantry door pivot/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.138106, 0)
+
+[node name="Base" type="MeshInstance3D" parent="Kitchen/Pantry door pivot/Door/Hook"]
+transform = Transform3D(0.7, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.0117373)
+mesh = SubResource("CylinderMesh_gvvxt")
+skeleton = NodePath("../..")
+
+[node name="Curve" type="CSGMesh3D" parent="Kitchen/Pantry door pivot/Door/Hook"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -9.31832e-10, 0.0213534, 0.0077433)
+mesh = SubResource("CylinderMesh_qdukv")
+
+[node name="Curve subtraction" type="CSGMesh3D" parent="Kitchen/Pantry door pivot/Door/Hook/Curve"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00584686, -2.55574e-10, -0.0028789)
+operation = 2
+mesh = SubResource("CylinderMesh_nstfs")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Kitchen/Pantry door pivot/Door/Hook/Curve"]
+transform = Transform3D(0.961717, 0, -0.274043, 0, 1, 0, 0.274043, 0, 0.961717, 0.0273733, -1.19653e-09, 0.0336025)
+operation = 2
+mesh = SubResource("BoxMesh_gvvxt")
+
+[node name="Apron" type="Node3D" parent="Kitchen/Pantry door pivot/Door" node_paths=PackedStringArray("apronModel", "highlightMeshes", "highlightCsgs")]
+script = ExtResource("29_qdukv")
+apronModel = NodePath(".")
+highlightMeshes = [NodePath("MeshInstance3D"), NodePath("MeshInstance3D2"), NodePath("MeshInstance3D3")]
+highlightCsgs = []
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Kitchen/Pantry door pivot/Door/Apron"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.706533, 0.0161403)
+mesh = SubResource("BoxMesh_qdukv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Kitchen/Pantry door pivot/Door/Apron"]
+transform = Transform3D(0.96844, 0.249248, 0, -0.249248, 0.96844, 0, 0, 0, 1, -0.0177521, -0.176535, 0.0161403)
+mesh = SubResource("BoxMesh_nstfs")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Kitchen/Pantry door pivot/Door/Apron"]
+transform = Transform3D(0.968583, -0.24869, 0, 0.24869, 0.968583, 0, 0, 0, 1, 0.018, -0.177, 0.016)
+mesh = SubResource("BoxMesh_nstfs")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Pantry door pivot/Door/Apron"]
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Pantry door pivot/Door/Apron/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.557281, 0.02089)
+shape = SubResource("BoxShape3D_gvvxt")
+
 [node name="Upper Cupboard South" type="Node3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.945)
 
@@ -755,6 +848,10 @@ mesh = SubResource("BoxMesh_uxuvg")
 
 [node name="Vertical panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.499, -0.1)
+mesh = SubResource("BoxMesh_eokwq")
+
+[node name="Vertical panel3" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.499, -0.1)
 mesh = SubResource("BoxMesh_eokwq")
 
 [node name="Vertical panel2" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
@@ -984,7 +1081,8 @@ mouse_filter = 1
 [node name="Checklist Vertical Group" parent="Control" instance=ExtResource("36_7ul7a")]
 layout_mode = 1
 
-[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Sink/Clickable Area" to="Kitchen/Counter North (Window)/Sink" method="OnClick"]
-[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Towel/Clickable Area" to="Kitchen/Counter North (Window)/Towel" method="OnClick"]
-[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area" to="Kitchen/Counter North (Window)/Tablet" method="OnTabletPressed"]
-[connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnLightSwitchPressed"]
+[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Sink/Clickable Area" to="Kitchen/Counter North (Window)/Sink" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Towel/Clickable Area" to="Kitchen/Counter North (Window)/Towel" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area" to="Kitchen/Counter North (Window)/Tablet" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Apron/Area3D" to="Kitchen/Pantry door pivot/Door/Apron" method="OnInteractableClicked"]

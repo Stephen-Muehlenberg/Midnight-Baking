@@ -21,31 +21,41 @@ public partial class Interactable : Node3D
 
     public void ResetToGameStartState()
     {
-        DisableInteractions();
         _ResetToGameStartState();
     }
     protected virtual void _ResetToGameStartState() { }
 
-    public void EnableInteractions(Action onClick) => SetInteractionsOn(true, onClick);
-    public void DisableInteractions() => SetInteractionsOn(false, null);
+    /// <summary>
+    /// Set whether the user can interact with this object.
+    /// </summary>
+    public void SetCanInteract(bool canInteract) => SetInteractions(canInteract, null);
+
+    /// <summary>
+    /// Enable interactions and highlight this object.
+    /// </summary>
+    public void SetHighlighted(Action onClickCallback) => SetInteractions(true, onClickCallback);
     
-    private void SetInteractionsOn(bool on, Action onClick)
+    private void SetInteractions(bool on, Action onClick)
     {
-        GD.Print($"{Name}.SetInteractionsOn({on})");
         interactionsOn = on;
         onClickCallback = onClick;
+        
+        bool showHighlight = onClick != null; // Objects are only highlighted if there is a callback.
         foreach (var mesh in highlightMeshes)
-            mesh.MaterialOverlay = on ? Game.flashMaterialOverlay : null;
+            mesh.MaterialOverlay = showHighlight ? Game.flashMaterialOverlay : null;
         foreach (var csg in highlightCsgs)
-            csg.MaterialOverlay = on ? Game.flashMaterialOverlay : null;
+            csg.MaterialOverlay = showHighlight ? Game.flashMaterialOverlay : null;
     }
 
     /// <summary>
     /// Should be invoked by this object's associated collider (often a child),
     /// via its attached <see cref="InteractionTarget"/>.
     /// </summary>
-    public void OnClick()
+    public void OnInteractableClicked()
     {
+        if (!interactionsOn) return;
+        HandleClick();
         onClickCallback?.Invoke();
     }
+    protected virtual void HandleClick() {}
 }
