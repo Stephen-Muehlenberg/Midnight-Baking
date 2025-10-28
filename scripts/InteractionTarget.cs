@@ -2,7 +2,7 @@ using Godot;
 
 namespace MidnightBaking.scripts;
 
-public partial class InteractionTarget : Node3D
+public partial class InteractionTarget : Area3D
 {
     [Signal] public delegate void OnClickedEventHandler();
     /// <summary>

@@ -8,7 +8,8 @@ namespace MidnightBaking.scripts;
 
 public partial class Game : Node
 {
-    public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK, SUGAR, TOWEL, TABLET, MICROWAVE, }
+    public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK,
+        SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;

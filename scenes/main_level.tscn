@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=102 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
@@ -44,6 +44,7 @@
 [ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
 [ext_resource type="Material" uid="uid://ctqdrmvgoa43h" path="res://materials/plastic_off_yellow.tres" id="24_eokwq"]
 [ext_resource type="Material" uid="uid://cnv82dnpuphi8" path="res://materials/apron.tres" id="29_gvvxt"]
+[ext_resource type="Script" uid="uid://dcnp2arr124gt" path="res://scripts/interactables/PantryDoor.cs" id="29_nstfs"]
 [ext_resource type="Script" uid="uid://7tuyeues83t7" path="res://scripts/interactables/Apron.cs" id="29_qdukv"]
 [ext_resource type="PackedScene" uid="uid://bi743dwfbtpno" path="res://scenes/checklist.tscn" id="36_7ul7a"]
 
@@ -246,6 +247,9 @@ size = Vector3(0.01, 0.1, 0.003)
 [sub_resource type="BoxShape3D" id="BoxShape3D_gvvxt"]
 size = Vector3(0.118164, 0.896729, 0.0263672)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_urjsn"]
+size = Vector3(0.527344, 2.96387, 0.0178223)
+
 [sub_resource type="BoxMesh" id="BoxMesh_uxuvg"]
 size = Vector3(3, 0.04, 0.79)
 
@@ -441,7 +445,7 @@ mesh = SubResource("BoxMesh_pfmml")
 
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Towel"]
 script = ExtResource("8_al56o")
-maxInteractionDistance = 0.8
+maxInteractionDistance = 0.9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Towel/Clickable Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, -0.00683594)
@@ -784,8 +788,13 @@ mesh = SubResource("BoxMesh_sjhni")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
-[node name="Pantry door pivot" type="Node3D" parent="Kitchen"]
+[node name="Pantry door pivot" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("doorPivot", "highlightMeshes", "highlightCsgs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.494, 1.5, -0.626)
+script = ExtResource("29_nstfs")
+doorPivot = NodePath(".")
+itemId = 9
+highlightMeshes = [NodePath("Door")]
+highlightCsgs = []
 
 [node name="Door" type="MeshInstance3D" parent="Kitchen/Pantry door pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 0, -0.01)
@@ -814,9 +823,10 @@ transform = Transform3D(0.961717, 0, -0.274043, 0, 1, 0, 0.274043, 0, 0.961717, 
 operation = 2
 mesh = SubResource("BoxMesh_gvvxt")
 
-[node name="Apron" type="Node3D" parent="Kitchen/Pantry door pivot/Door" node_paths=PackedStringArray("apronModel", "highlightMeshes", "highlightCsgs")]
+[node name="Apron" type="Node3D" parent="Kitchen/Pantry door pivot/Door" node_paths=PackedStringArray("apronModel", "apronCollider", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("29_qdukv")
 apronModel = NodePath(".")
+apronCollider = NodePath("Area3D")
 highlightMeshes = [NodePath("MeshInstance3D"), NodePath("MeshInstance3D2"), NodePath("MeshInstance3D3")]
 highlightCsgs = []
 
@@ -838,6 +848,12 @@ script = ExtResource("8_al56o")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Pantry door pivot/Door/Apron/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.557281, 0.02089)
 shape = SubResource("BoxShape3D_gvvxt")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Pantry door pivot/Door"]
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Pantry door pivot/Door/Area3D"]
+shape = SubResource("BoxShape3D_urjsn")
 
 [node name="Upper Cupboard South" type="Node3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.945)
@@ -1086,3 +1102,4 @@ layout_mode = 1
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area" to="Kitchen/Counter North (Window)/Tablet" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Apron/Area3D" to="Kitchen/Pantry door pivot/Door/Apron" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Area3D" to="Kitchen/Pantry door pivot" method="OnInteractableClicked"]
