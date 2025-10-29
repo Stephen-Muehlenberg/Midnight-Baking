@@ -26,12 +26,11 @@ public partial class PlayerInteractionController : Node3D
     /// </summary>
     private void Interact()
     {
-        GD.Print("Interact()");
         // Perform raycast.
         Vector3 origin = camera.GlobalPosition;
         Vector3 offset = -camera.GlobalBasis.Z * 5f;
         Vector3 end = origin + offset;
-        var query = PhysicsRayQueryParameters3D.Create(origin, end);
+        var query = PhysicsRayQueryParameters3D.Create(origin, end, 1);
         query.CollideWithAreas = true;
         var result = GetWorld3D().DirectSpaceState.IntersectRay(query);
 
@@ -57,7 +56,7 @@ public partial class PlayerInteractionController : Node3D
             }
         }
         else if (collisionObject is Node3D node)
-            GD.Print($"LookController.Interact(): clicked on non-interactive Node3D: {node.Name}");
+            GD.Print($"LookController.Interact(): clicked on non-interactive Node3D: {node.GetParent().Name}.{node.Name}");
         else
             GD.Print($"LookController.Interact(): clicked on something but not sure what???");
     }

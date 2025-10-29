@@ -44,7 +44,6 @@ public abstract class Task
     /// used for debugging purposes.</param>
     public void Complete(bool invokeOnCompleteCallback)
     {
-        GD.Print($"Task \"{description}\".Complete()");
         complete = true;
         SetState_TaskComplete();
         foreach (var subtask in subtasks)

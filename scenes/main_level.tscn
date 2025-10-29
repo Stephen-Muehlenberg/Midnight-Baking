@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=107 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
@@ -27,6 +27,7 @@
 [ext_resource type="AudioStream" uid="uid://c1tgi16e83nu4" path="res://audio/thunder03.mp3" id="10_0e4v7"]
 [ext_resource type="Material" uid="uid://c0yxqsjmcaxw5" path="res://materials/pot_plant_soil.tres" id="10_cssx7"]
 [ext_resource type="Material" uid="uid://vp5v5ixygnsp" path="res://materials/towel.tres" id="10_pfmml"]
+[ext_resource type="Script" uid="uid://cdfh0knk52qdb" path="res://scripts/interactables/Soap.cs" id="10_urjsn"]
 [ext_resource type="Material" uid="uid://ddqm1vtndv864" path="res://materials/pot_plant_plant.tres" id="11_1irq3"]
 [ext_resource type="AudioStream" uid="uid://c4pdeyy3afw24" path="res://audio/thunder04.mp3" id="11_6nivd"]
 [ext_resource type="Material" uid="uid://3vnb4t7u83v2" path="res://materials/tablet_screen_on.tres" id="11_kxeow"]
@@ -40,6 +41,7 @@
 [ext_resource type="AudioStream" uid="uid://cl5kteh28tssu" path="res://audio/thunder07.mp3" id="14_siio1"]
 [ext_resource type="AudioStream" uid="uid://20lx04v5nibw" path="res://audio/thunder08.mp3" id="15_ndwfr"]
 [ext_resource type="Material" uid="uid://cg3di4ecqcsa1" path="res://materials/exterior/trees.tres" id="20_1bmon"]
+[ext_resource type="Script" uid="uid://lgnuqd1n2gju" path="res://scripts/interactables/Fridge.cs" id="20_njqd0"]
 [ext_resource type="Material" uid="uid://drd7k3dep2m4o" path="res://materials/exterior/grass.tres" id="23_nc5r2"]
 [ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
 [ext_resource type="Material" uid="uid://ctqdrmvgoa43h" path="res://materials/plastic_off_yellow.tres" id="24_eokwq"]
@@ -79,19 +81,25 @@ top_radius = 0.1
 bottom_radius = 0.1
 height = 0.05
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gr2jy"]
+material = ExtResource("6_gr2jy")
+radius = 0.03
+height = 0.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_njqd0"]
+size = Vector3(0.12793, 0.117188, 0.0742188)
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_c88u2"]
 material = ExtResource("7_3iae7")
 top_radius = 0.015
 bottom_radius = 0.015
 height = 0.2
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_gr2jy"]
-material = ExtResource("6_gr2jy")
-radius = 0.03
-height = 0.1
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_cycrt"]
-size = Vector3(0.451172, 1.10242, 0.516602)
+size = Vector3(0.451172, 0.953568, 0.516602)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3b3m7"]
+size = Vector3(0.0544434, 0.3125, 0.0507812)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_cycrt"]
 material = ExtResource("7_3iae7")
@@ -141,13 +149,16 @@ top_radius = 0.08
 bottom_radius = 0.09
 height = 0.01
 
-[sub_resource type="BoxMesh" id="BoxMesh_ondrs"]
-material = ExtResource("3_ondrs")
-size = Vector3(0.55, 0.5, 0.055)
-
 [sub_resource type="BoxMesh" id="BoxMesh_0e4v7"]
 material = ExtResource("3_ondrs")
 size = Vector3(0.55, 0.935, 0.055)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hj1cc"]
+size = Vector3(0.553711, 0.959229, 0.0537109)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ondrs"]
+material = ExtResource("3_ondrs")
+size = Vector3(0.55, 0.5, 0.055)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ufxs0"]
 material = ExtResource("23_ndwfr")
@@ -380,6 +391,27 @@ stream = ExtResource("3_siio1")
 volume_db = -30.0
 autoplay = true
 
+[node name="Soap" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
+transform = Transform3D(-4.31732e-08, 0.987688, -0.156434, -1, -4.37114e-08, 0, -6.83797e-09, 0.156434, 0.987688, -0.121755, 0.459, 0.26054)
+script = ExtResource("10_urjsn")
+itemId = 10
+highlightMeshes = [NodePath("Mesh")]
+highlightCsgs = []
+
+[node name="Mesh" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Soap"]
+transform = Transform3D(0.392351, -5.35074e-10, -6.83823e-09, 2.11156e-10, 1, 0.000454009, 2.68288e-09, -0.000454009, 1, 0.000472009, 0.000175521, -0.000483394)
+mesh = SubResource("CapsuleMesh_gr2jy")
+skeleton = NodePath("../../Sink")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Counter North (Window)/Soap"]
+transform = Transform3D(1, 3.66374e-15, -6.83821e-09, 3.10459e-12, 1, 0.000454009, 6.83821e-09, -0.000454009, 1, 0.000472009, 0.000175521, -0.000483394)
+script = ExtResource("8_al56o")
+maxInteractionDistance = 1.9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Soap/Area3D"]
+transform = Transform3D(1, -8.51318e-14, 8.7895e-13, 2.41382e-14, 1, -5.96046e-08, -2.00951e-14, 5.96046e-08, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_njqd0")
+
 [node name="Sink" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
 script = ExtResource("6_cycrt")
 itemId = 4
@@ -390,17 +422,17 @@ highlightCsgs = [NodePath("../Sink Rim")]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.505771, 0.180775)
 mesh = SubResource("CylinderMesh_c88u2")
 
-[node name="Soap" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Sink"]
-transform = Transform3D(-1.71502e-08, 0.987759, -0.155986, -0.392351, -4.31763e-08, 6.81838e-09, 0, 0.155986, 0.987759, -0.123751, 0.458528, 0.26055)
-mesh = SubResource("CapsuleMesh_gr2jy")
-
 [node name="Clickable Area" type="Area3D" parent="Kitchen/Counter North (Window)/Sink"]
 script = ExtResource("8_al56o")
-maxInteractionDistance = 0.5
+maxInteractionDistance = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Sink/Clickable Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0512085, -0.03125)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.013786, -0.03125)
 shape = SubResource("BoxShape3D_cycrt")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Sink/Clickable Area"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.464641, 0.204658)
+shape = SubResource("BoxShape3D_3b3m7")
 
 [node name="Sink Rim" type="CSGBox3D" parent="Kitchen/Counter North (Window)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.158, -0.025)
@@ -408,9 +440,9 @@ size = Vector3(0.45, 0.6, 0.51)
 material = ExtResource("7_3iae7")
 
 [node name="Sink Cavity" type="CSGBox3D" parent="Kitchen/Counter North (Window)"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.431, -0.025)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.335716, -0.025)
 operation = 2
-size = Vector3(0.41, 0.5, 0.47)
+size = Vector3(0.41, 0.25, 0.47)
 
 [node name="Towel" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.290688, -0.337237)
@@ -547,31 +579,59 @@ mesh = SubResource("CylinderMesh_6nivd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128546, 0.005, 0.109169)
 mesh = SubResource("CylinderMesh_6nivd")
 
-[node name="Fridge" type="Node3D" parent="Kitchen"]
+[node name="Fridge" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("light", "doorPivot", "highlightMeshes", "highlightCsgs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.055, 0, -0.945)
+script = ExtResource("20_njqd0")
+light = NodePath("Fridge Light")
+doorPivot = NodePath("Upper Hinge")
+itemId = 11
+highlightMeshes = [NodePath("Upper Hinge/Fridge Door (Upper)")]
+highlightCsgs = []
 
 [node name="Body" type="CSGBox3D" parent="Kitchen/Fridge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.725, -0.027)
 size = Vector3(0.55, 1.45, 0.545)
 material = ExtResource("3_ondrs")
 
-[node name="Freezer Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.464582, 0.147759)
-operation = 2
-size = Vector3(0.462891, 0.471191, 0.644531)
-
-[node name="Freezer Cavity2" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.235144, 0.147759)
+[node name="Fridge Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30983, 0.147759)
 operation = 2
 size = Vector3(0.462891, 0.801758, 0.644531)
 
-[node name="Freezer Door (Upper)" type="MeshInstance3D" parent="Kitchen/Fridge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19537, 0.275)
-mesh = SubResource("BoxMesh_ondrs")
+[node name="Freezer Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45059, 0.147759)
+operation = 2
+size = Vector3(0.462891, 0.471191, 0.644531)
 
-[node name="Fridge Door (Lower)" type="MeshInstance3D" parent="Kitchen/Fridge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.468, 0.275)
+[node name="Upper Hinge" type="Node3D" parent="Kitchen/Fridge"]
+transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -0.273113, 0, 0.246645)
+
+[node name="Fridge Door (Upper)" type="MeshInstance3D" parent="Kitchen/Fridge/Upper Hinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273113, 0.981682, 0.0283555)
 mesh = SubResource("BoxMesh_0e4v7")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Fridge/Upper Hinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273, 0.982, 0.028)
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Fridge/Upper Hinge/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_hj1cc")
+
+[node name="Lower Hinge" type="Node3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.273113, 0, 0.246645)
+
+[node name="Freezer Door (Lower)" type="MeshInstance3D" parent="Kitchen/Fridge/Lower Hinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273113, 0.253191, 0.0283555)
+mesh = SubResource("BoxMesh_ondrs")
+skeleton = NodePath("../..")
+
+[node name="Fridge Light" type="OmniLight3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30303, 0)
+light_energy = 0.5
+shadow_enabled = true
+omni_range = 2.0
 
 [node name="Wall North (Window)" type="CSGBox3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.315)
@@ -1059,30 +1119,40 @@ invertCameraVertical = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92306, 0.5, 0)
 visible = false
 use_collision = true
+collision_layer = 2
+collision_mask = 2
 mesh = SubResource("BoxMesh_1bmon")
 
 [node name="North" type="CSGMesh3D" parent="Room Colliders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 1.18155)
 visible = false
 use_collision = true
+collision_layer = 2
+collision_mask = 2
 mesh = SubResource("BoxMesh_siio1")
 
 [node name="South" type="CSGMesh3D" parent="Room Colliders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1.182)
 visible = false
 use_collision = true
+collision_layer = 2
+collision_mask = 2
 mesh = SubResource("BoxMesh_siio1")
 
 [node name="Fridge" type="CSGMesh3D" parent="Room Colliders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.34921, 0.5, -0.971998)
 visible = false
 use_collision = true
+collision_layer = 2
+collision_mask = 2
 mesh = SubResource("BoxMesh_ndwfr")
 
 [node name="East" type="CSGMesh3D" parent="Room Colliders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.923, 0.5, 0)
 visible = false
 use_collision = true
+collision_layer = 2
+collision_mask = 2
 mesh = SubResource("BoxMesh_1bmon")
 
 [node name="Control" type="Control" parent="."]
@@ -1097,9 +1167,11 @@ mouse_filter = 1
 [node name="Checklist Vertical Group" parent="Control" instance=ExtResource("36_7ul7a")]
 layout_mode = 1
 
+[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Soap/Area3D" to="Kitchen/Counter North (Window)/Soap" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Sink/Clickable Area" to="Kitchen/Counter North (Window)/Sink" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Towel/Clickable Area" to="Kitchen/Counter North (Window)/Towel" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area" to="Kitchen/Counter North (Window)/Tablet" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Fridge/Upper Hinge/Area3D" to="Kitchen/Fridge" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Apron/Area3D" to="Kitchen/Pantry door pivot/Door/Apron" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Area3D" to="Kitchen/Pantry door pivot" method="OnInteractableClicked"]

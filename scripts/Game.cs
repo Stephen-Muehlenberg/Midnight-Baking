@@ -9,7 +9,7 @@ namespace MidnightBaking.scripts;
 public partial class Game : Node
 {
     public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK,
-        SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, }
+        SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, SOAP, FRIDGE }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;
@@ -139,10 +139,6 @@ public partial class Game : Node
     public static void UpdateUi()
     {
         var taskGroup = instance.tasks[currentTaskGroupIndex];
-        
-        foreach (Task task in taskGroup.tasks)
-            GD.Print($"[{(task.complete ? "x" : " ")}] {task.description}");
-        
         instance.checklistUi.Show(taskGroup);
     }
 

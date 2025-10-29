@@ -108,15 +108,25 @@ public static class Tasks
 
         private void OnSinkClicked()
         {
+            GD.Print("OnSinkClicked()");
             Game.Interactables[Game.ItemId.SINK].SetCanInteract(true);
+            Game.Interactables[Game.ItemId.SOAP].SetHighlighted(onClickCallback: OnSoapClicked);
+            hints.Add("Use soap");
+            Game.UpdateUi();
+        }
+
+        private void OnSoapClicked()
+        {
+            Game.Interactables[Game.ItemId.SOAP].SetCanInteract(true);
+            Game.Interactables[Game.ItemId.TOWEL].SetHighlighted(onClickCallback: Complete);
             hints.Add("Dry hands on towel");
             Game.UpdateUi();
-            Game.Interactables[Game.ItemId.TOWEL].SetHighlighted(onClickCallback: Complete);
         }
 
         protected override void SetState_TaskComplete()
         {
             Game.Interactables[Game.ItemId.SINK].SetCanInteract(true);
+            Game.Interactables[Game.ItemId.SOAP].SetCanInteract(false);
             Game.Interactables[Game.ItemId.TOWEL].SetCanInteract(false);
         }
     }

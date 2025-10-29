@@ -49,6 +49,11 @@ move_backward={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Player Interaction"
+3d_physics/layer_2="Player Movement"
+
 [rendering]
 
 lights_and_shadows/directional_shadow/size=8192
