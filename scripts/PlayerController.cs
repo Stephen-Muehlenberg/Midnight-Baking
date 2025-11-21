@@ -8,25 +8,32 @@ namespace MidnightBaking.scripts;
 /// </summary>
 public partial class PlayerController : CharacterBody3D
 {
+    public static PlayerController instance { get; private set; }
+
+    private bool enabled = false;
     public bool canMove = true;
     public bool canLook = true;
+    private bool holdingItem = false;
+    public bool canHoldItem => !holdingItem;
+
+    [Export] public Node3D heldObjectPoint;
+    [Export] private Control crosshair;
 
     [ExportGroup("Speeds")]
-    [Export] public float lookSpeedHorizontal = 0.002f;
-    [Export] public float lookSpeedVertical = 0.002f;
-    [Export] public bool invertCameraVertical = false;
-    [Export] public float moveSpeed = 3.0f;
+    [Export] private float lookSpeedHorizontal = 0.002f;
+    [Export] private float lookSpeedVertical = 0.002f;
+    [Export] private bool invertCameraVertical = false;
+    [Export] private float moveSpeed = 3.0f;
 
     [ExportGroup("Input Names")]
-    [Export] public string inputName_MoveLeft = "move_left";
-    [Export] public string inputName_MoveRight = "move_right";
-    [Export] public string inputName_MoveForward = "move_forward";
-    [Export] public string inputName_MoveBack = "move_backward";
+    [Export] private string inputName_MoveLeft = "move_left";
+    [Export] private string inputName_MoveRight = "move_right";
+    [Export] private string inputName_MoveForward = "move_forward";
+    [Export] private string inputName_MoveBack = "move_backward";
     
     [Signal] public delegate void OnPlayerLookEventHandler();
     [Signal] public delegate void OnPlayerMoveEventHandler();
 
-    private bool mouseCaptured;
     private Vector2 lookRotation;
     private float currentMoveSpeed;
 
@@ -36,29 +43,33 @@ public partial class PlayerController : CharacterBody3D
     private readonly float MIN_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(-85);
     private readonly float MAX_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(85);
     
-    public static PlayerController FetchInstance()
-        // Hardcoded string is gross, but Godot lacks proper type searching.
-        => Game.instance.GetTree().Root.GetNode<PlayerController>("Level/Player Controller");
-    
     public override void _Ready()
     {
+        if (instance != null)
+            throw new Exception("Duplicate PlayerController instance. Should be exactly 1.");
+        instance = this;
+        
         head = GetNode<Node3D>("Head");
         collider = GetNode<CollisionShape3D>("Collider");
         CheckInputMappings();
         lookRotation.Y = Rotation.Y;
         lookRotation.X = head.Rotation.X;
+        
+        SetEnabled(false);
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        this.enabled = enabled;
+        crosshair.Visible = enabled;
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        // Capture input.
-        if (!mouseCaptured && Input.IsMouseButtonPressed(MouseButton.Left))
-            SetMouseCaptured(true);
-        if (Input.IsKeyPressed(Key.Escape))
-            SetMouseCaptured(false);
+        if (!enabled || !canLook) return;
         
         // Look around.
-        if (mouseCaptured && @event is InputEventMouseMotion motionEvent)
+        if (@event is InputEventMouseMotion motionEvent)
         {
             RotateLook(motionEvent.Relative);
             GetViewport().SetInputAsHandled();
@@ -67,6 +78,8 @@ public partial class PlayerController : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (!enabled) return;
+        
         // Add input to velocity.
         if (canMove)
         {
@@ -108,14 +121,6 @@ public partial class PlayerController : CharacterBody3D
         if (lookRotation.LengthSquared() > 0)
             EmitSignalOnPlayerLook();
     }
-
-    private void SetMouseCaptured(bool captured)
-    {
-        Input.SetMouseMode(captured
-            ? Input.MouseModeEnum.Captured
-            : Input.MouseModeEnum.Visible);
-        mouseCaptured = captured;
-    }
     
     /// <summary>
     /// Check if any expected Input Actions haven't been mapped.
@@ -131,5 +136,18 @@ public partial class PlayerController : CharacterBody3D
             throw new Exception("Missing input map for forward movement.");
         if (!InputMap.HasAction(inputName_MoveBack))
             throw new Exception("Missing input map for back movement.");
+    }
+
+    public void HoldItem(Interactable item)
+    {
+        holdingItem = true;
+        item.Reparent(heldObjectPoint);
+        item.Position = Vector3.Zero;
+        item.RotationDegrees = Vector3.Zero;
+    }
+
+    public void StopHoldingItem()
+    {
+        holdingItem = false;
     }
 }

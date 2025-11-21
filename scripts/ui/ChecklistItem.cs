@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MidnightBaking.scripts;
+namespace MidnightBaking.scripts.ui;
 
 public partial class ChecklistItem : Control
 {

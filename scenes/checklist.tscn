@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bi743dwfbtpno"]
 
 [ext_resource type="PackedScene" uid="uid://coyg13sa4dp6y" path="res://scenes/checklist_item.tscn" id="1_0t00m"]
-[ext_resource type="Script" uid="uid://dbpnab787iveb" path="res://scripts/ChecklistManager.cs" id="1_6of4w"]
+[ext_resource type="Script" uid="uid://dbpnab787iveb" path="res://scripts/ui/ChecklistManager.cs" id="1_6of4w"]
 
 [node name="Checklist Vertical Group" type="VBoxContainer"]
 modulate = Color(1, 1, 1, 0.501961)

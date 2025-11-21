@@ -9,14 +9,18 @@ namespace MidnightBaking.scripts;
 public partial class Game : Node
 {
     public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK,
-        SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, SOAP, FRIDGE }
+        SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, SOAP, FRIDGE, EGG_CARTON, BENCH_PREP_AREA,
+        BUTTER, CUPBOARD_UPPER_DOOR, FLOUR_JAR }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;
+    public static bool started = false;
+    public static bool paused = false;
     public static readonly Dictionary<ItemId, Interactable> Interactables = new();
-    private List<TaskGroup> tasks;
+    private List<Tasks.TaskGroup> tasks;
 
-    [Export] public ChecklistManager checklistUi;
+    [Export] public Control pauseMenu;
+    [Export] public ui.ChecklistManager checklistUi;
     [Export] public Material _flashMaterialOverlay;
     
     private static int currentTaskGroupIndex;
@@ -27,14 +31,23 @@ public partial class Game : Node
             throw new Exception("Duplicate Game instance. Should be exactly 1.");
         instance = this;
         
-        // Wait 1/10th of a second before starting so that the various interactables can
-        // register themselves.
-        // This hack will be removed once we set up a main menu and fade in from black effect.
-        GetTree().CreateTimer(0.1).Timeout += StartGame;
+        Input.SetMouseMode(Input.MouseModeEnum.Visible);
+    }
+
+    /// <summary>
+    /// Adds Interactable instance to the dictionary.
+    /// Should be invoked by all <see cref="Interactable"/>s during their <see cref="_Ready()"/>.
+    /// </summary>
+    public static void RegisterInteractable(Interactable interactable)
+    {
+        Interactables.Add(interactable.itemId, interactable);
+        interactable.ResetToGameStartState();
     }
 
     public void StartGame()
     {
+        started = true;
+        
         // Reset interactable objects.
         foreach (var interactable in Interactables.Values)
             interactable.ResetToGameStartState();
@@ -49,26 +62,71 @@ public partial class Game : Node
         (Interactables[ItemId.MICROWAVE] as Microwave).SetTimeToMidnightAndStartClock();
         
         // Begin the first set of tasks.
+        checklistUi.Show();
         StartTaskGroup(0);
+        
+        Input.SetMouseMode(Input.MouseModeEnum.Captured);
+        PlayerController.instance.SetEnabled(true);
     }
     
-    // Listen to key presses for debugging / testing purposes.
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventKey keyEvent)
+        if (@event is not InputEventKey keyEvent || !keyEvent.Pressed || !started) return;
+        
+        if (keyEvent.Keycode == Key.Escape)
         {
-            if (keyEvent.Keycode == Key.Right && keyEvent.Pressed)
-                SkipTask();
-            else if (keyEvent.Keycode == Key.Down && keyEvent.Pressed)
-                SkipTaskGroup();
+            if (started && !paused)
+                ShowPauseMenu(true);
         }
+        // Debug shortcuts
+        else if (keyEvent.Keycode == Key.Right)
+            SkipTask();
+        else if (keyEvent.Keycode == Key.Down)
+            SkipTaskGroup();
+    }
+
+    private void ShowPauseMenu(bool show)
+    {
+        paused = show;
+        PlayerController.instance.SetEnabled(!show);
+        pauseMenu.Visible = show;
+        Input.SetMouseMode(show
+            ? Input.MouseModeEnum.Visible
+            : Input.MouseModeEnum.Captured);
+        // TODO pause/resume in-game clock
+    }
+
+    private void StartTaskGroup(int index)
+    {
+        currentTaskGroupIndex = index;
+        if (index >= tasks.Count)
+        {
+            // TODO handle game completion
+            GD.Print($"Tried to start task group #{index}, but there's only {tasks.Count} task groups. Game finished?");
+            return;
+        }
+        
+        var newTaskGroup = tasks[index];
+        foreach (var task in newTaskGroup.tasks)
+            task.Start(OnTaskOrSubtaskComplete);
+        
+        UpdateUi();
+    }
+
+    // TODO also handle UI updates when a subtask is completed.
+    private void OnTaskOrSubtaskComplete()
+    {
+        var currentTasksGroup = tasks[currentTaskGroupIndex];
+        if (currentTasksGroup.tasks.All(task => task.complete))
+            StartTaskGroup(currentTaskGroupIndex + 1);
+        UpdateUi();
     }
 
     private void SkipTask()
     {
         // Find the next incomplete task.
         var taskGroup = tasks[currentTaskGroupIndex];
-        Task currentTask = taskGroup.tasks[0];
+        ParentTask currentTask = taskGroup.tasks[0];
         for (int i = 0; i < taskGroup.tasks.Count; i++)
         {
             var task = taskGroup.tasks[i];
@@ -97,55 +155,15 @@ public partial class Game : Node
 
     private void SkipTaskGroup()
     {
-        
-    }
-
-    /// <summary>
-    /// Adds Interactable instance to the dictionary.
-    /// Should be invoked by all <see cref="Interactable"/>s during their <see cref="_Ready"/>.
-    /// </summary>
-    public static void RegisterInteractable(Interactable interactable)
-    {
-        Interactables.Add(interactable.itemId, interactable);
-        interactable.ResetToGameStartState();
-    }
-
-    // TODO also handle UI updates when a subtask is completed.
-    private void OnTaskOrSubtaskComplete()
-    {
-        var currentTasksGroup = tasks[currentTaskGroupIndex];
-        if (currentTasksGroup.tasks.All(task => task.complete))
-            StartTaskGroup(currentTaskGroupIndex + 1);
-        UpdateUi();
-    }
-
-    private void StartTaskGroup(int index)
-    {
-        currentTaskGroupIndex = index;
-        if (index >= tasks.Count)
-        {
-            // TODO handle game completion
-            GD.Print($"Tried to start task group #{index}, but there's only {tasks.Count} task groups. Game finished?");
-            return;
-        }
-        
-        var newTaskGroup = tasks[index];
-        foreach (var task in newTaskGroup.tasks)
-            task.Start(OnTaskOrSubtaskComplete);
-        
-        UpdateUi();
+        var taskGroup = tasks[currentTaskGroupIndex];
+        foreach (var task in taskGroup.tasks)
+            task.Complete();
+        OnTaskOrSubtaskComplete();
     }
 
     public static void UpdateUi()
     {
         var taskGroup = instance.tasks[currentTaskGroupIndex];
         instance.checklistUi.Show(taskGroup);
-    }
-
-    public class TaskGroup(string name, List<Task> tasks)
-    {
-        /// <summary> The name is not meant for UI purposes, but for debugging. </summary>
-        public readonly string name = name;
-        public readonly List<Task> tasks = tasks;
     }
 }

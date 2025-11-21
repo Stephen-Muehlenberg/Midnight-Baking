@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://ejd0v5oomoav"]
+
+[ext_resource type="Script" uid="uid://6bmm2ma63jyb" path="res://scripts/ui/MainMenu.cs" id="1_ekxnf"]
+[ext_resource type="Theme" uid="uid://bye0d71olcw3d" path="res://themes/main_menu_button.tres" id="2_bqqt6"]
+
+[node name="Main Menu" type="Control" node_paths=PackedStringArray("blackFadeFill")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_ekxnf")
+blackFadeFill = NodePath("Fade In Fill")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 524.0
+offset_right = 438.0
+offset_bottom = 806.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bqqt6")
+text = "Start"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bqqt6")
+text = "Settings"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bqqt6")
+text = "Exit"
+
+[node name="Fade In Fill" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="OnStartClicked"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="OnMenuClicked"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="OnExitClicked"]

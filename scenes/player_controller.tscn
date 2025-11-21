@@ -15,14 +15,17 @@ height = 1.7
 radius = 0.3
 height = 1.7
 
-[node name="Player Controller" type="CharacterBody3D"]
+[node name="Player Controller" type="CharacterBody3D" node_paths=PackedStringArray("heldObjectPoint", "crosshair")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_d4y06")
+heldObjectPoint = NodePath("Head/Object Holding Point")
+crosshair = NodePath("Crosshair Control")
 moveSpeed = 1.5
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
 material_override = SubResource("StandardMaterial3D_iof21")
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_ucva2")
@@ -38,11 +41,8 @@ camera = NodePath("Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="Flashlight" type="SpotLight3D" parent="Head"]
-transform = Transform3D(0.999293, 0.000379813, 0.0375836, 0, 0.999949, -0.0101053, -0.0375855, 0.0100981, 0.999242, 0.281584, -0.102886, 0)
-visible = false
-spot_range = 18.6773
-spot_angle = 21.056
+[node name="Object Holding Point" type="Node3D" parent="Head"]
+transform = Transform3D(-0.351588, -0.0427345, -0.935179, -0.00434893, 0.999021, -0.0440169, 0.936145, -0.0114088, -0.35143, 0.230863, -0.0931382, -0.256446)
 
 [node name="Crosshair Control" type="Control" parent="."]
 layout_mode = 3

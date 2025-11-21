@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://coyg13sa4dp6y"]
 
-[ext_resource type="Script" uid="uid://cf6nkrx81ed5f" path="res://scripts/ChecklistItem.cs" id="1_5m7np"]
+[ext_resource type="Script" uid="uid://cf6nkrx81ed5f" path="res://scripts/ui/ChecklistItem.cs" id="1_5m7np"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pfmml"]
 font_size = 38

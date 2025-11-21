@@ -15,7 +15,7 @@ public partial class Tablet : Interactable
         SetTabletOn(false);
     }
 
-    protected override void HandleClick()
+    protected override void _HandleClick()
     {
         SetTabletOn(!on);
     }

@@ -2,11 +2,11 @@ using Godot;
 
 namespace MidnightBaking.scripts.interactables;
 
-public partial class Fridge : Interactable
+public partial class Door : Interactable
 {
-    [Export] private Light3D light;
     [Export] private Node3D doorPivot;
-    // TODO have the frdige beep if the door is left open for too long
+    [Export] private float doorClosedY = 0;
+    [Export] private float doorOpenY = 90;
     
     public bool isOpen {get; private set;}
     
@@ -19,8 +19,7 @@ public partial class Fridge : Interactable
     public void SetOpen(bool open)
     {
         isOpen = open;
-        doorPivot.RotationDegrees = new Vector3(0, open ? -105 : 0, 0);
-        light.Visible = open;
+        doorPivot.RotationDegrees = new Vector3(0, open ? doorOpenY : doorClosedY, 0);
     }
 
     protected override void _HandleClick()

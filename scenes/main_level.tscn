@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=137 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
@@ -16,7 +16,7 @@
 [ext_resource type="FontFile" uid="uid://c44q086dsxaa8" path="res://fonts/digital-7 (mono italic).ttf" id="5_nk5s2"]
 [ext_resource type="Script" uid="uid://bmcmnhehbx5my" path="res://scripts/interactables/Microwave.cs" id="5_xgm4f"]
 [ext_resource type="Script" uid="uid://xvidpfstdufv" path="res://scripts/Interactable.cs" id="6_cycrt"]
-[ext_resource type="Material" uid="uid://djop5kvvpufk1" path="res://materials/soap.tres" id="6_gr2jy"]
+[ext_resource type="Material" uid="uid://djop5kvvpufk1" path="res://materials/interactables/soap.tres" id="6_gr2jy"]
 [ext_resource type="Material" uid="uid://bxbbwu6mfaub7" path="res://materials/metal_stainless_steel.tres" id="7_3iae7"]
 [ext_resource type="Script" uid="uid://dtlgeyhlbvmc0" path="res://scripts/interactables/KitchenLightController.cs" id="7_6nivd"]
 [ext_resource type="Script" uid="uid://d2slldesjpi65" path="res://scripts/ThunderController.cs" id="7_u2c82"]
@@ -26,29 +26,44 @@
 [ext_resource type="AudioStream" uid="uid://bxbdoh1c5ioks" path="res://audio/thunder02.mp3" id="9_ondrs"]
 [ext_resource type="AudioStream" uid="uid://c1tgi16e83nu4" path="res://audio/thunder03.mp3" id="10_0e4v7"]
 [ext_resource type="Material" uid="uid://c0yxqsjmcaxw5" path="res://materials/pot_plant_soil.tres" id="10_cssx7"]
-[ext_resource type="Material" uid="uid://vp5v5ixygnsp" path="res://materials/towel.tres" id="10_pfmml"]
+[ext_resource type="Material" uid="uid://vp5v5ixygnsp" path="res://materials/interactables/towel.tres" id="10_pfmml"]
 [ext_resource type="Script" uid="uid://cdfh0knk52qdb" path="res://scripts/interactables/Soap.cs" id="10_urjsn"]
 [ext_resource type="Material" uid="uid://ddqm1vtndv864" path="res://materials/pot_plant_plant.tres" id="11_1irq3"]
 [ext_resource type="AudioStream" uid="uid://c4pdeyy3afw24" path="res://audio/thunder04.mp3" id="11_6nivd"]
-[ext_resource type="Material" uid="uid://3vnb4t7u83v2" path="res://materials/tablet_screen_on.tres" id="11_kxeow"]
+[ext_resource type="Material" uid="uid://3vnb4t7u83v2" path="res://materials/interactables/tablet_screen_on.tres" id="11_kxeow"]
 [ext_resource type="Script" uid="uid://4mwuwe68s68o" path="res://scripts/interactables/Tablet.cs" id="11_uxuvg"]
-[ext_resource type="Material" uid="uid://dm8617gr2ceyb" path="res://materials/tablet_plastic.tres" id="11_yl4j0"]
+[ext_resource type="Material" uid="uid://dm8617gr2ceyb" path="res://materials/interactables/tablet_plastic.tres" id="11_yl4j0"]
 [ext_resource type="AudioStream" uid="uid://c12wkt4q0t0dg" path="res://audio/thunder05.mp3" id="12_al56o"]
-[ext_resource type="Material" uid="uid://uxphbjhnomag" path="res://materials/tablet_screen_off.tres" id="12_gwyuf"]
+[ext_resource type="Material" uid="uid://uxphbjhnomag" path="res://materials/interactables/tablet_screen_off.tres" id="12_gwyuf"]
 [ext_resource type="AudioStream" uid="uid://1kmhv1rvfixu" path="res://audio/thunder06.mp3" id="13_1bmon"]
-[ext_resource type="Material" uid="uid://cbe54a4u53qhg" path="res://materials/white_plastic.tres" id="13_iycfq"]
-[ext_resource type="Material" uid="uid://bxaqcfokc4m0h" path="res://materials/tablet_stand.tres" id="14_hdbb3"]
+[ext_resource type="Material" uid="uid://cbe54a4u53qhg" path="res://materials/plastic_white.tres" id="13_iycfq"]
+[ext_resource type="Material" uid="uid://bxaqcfokc4m0h" path="res://materials/interactables/tablet_stand.tres" id="14_hdbb3"]
 [ext_resource type="AudioStream" uid="uid://cl5kteh28tssu" path="res://audio/thunder07.mp3" id="14_siio1"]
 [ext_resource type="AudioStream" uid="uid://20lx04v5nibw" path="res://audio/thunder08.mp3" id="15_ndwfr"]
+[ext_resource type="Material" uid="uid://b2gdjxwxm8mp5" path="res://materials/ui ux/transparent_highlightable.tres" id="19_koxlt"]
+[ext_resource type="Script" uid="uid://dj287esnba2sm" path="res://scripts/interactables/BenchPrepArea.cs" id="19_q1qoo"]
 [ext_resource type="Material" uid="uid://cg3di4ecqcsa1" path="res://materials/exterior/trees.tres" id="20_1bmon"]
 [ext_resource type="Script" uid="uid://lgnuqd1n2gju" path="res://scripts/interactables/Fridge.cs" id="20_njqd0"]
+[ext_resource type="Material" uid="uid://bgxx4g648gsb7" path="res://materials/glass.tres" id="22_6l5nr"]
+[ext_resource type="Material" uid="uid://bpejlc0x1gg4v" path="res://materials/interactables/egg_carton_cardboard.tres" id="23_24g5d"]
+[ext_resource type="Script" uid="uid://dxsxh7hggqt41" path="res://scripts/interactables/EggCarton.cs" id="23_ivnhj"]
 [ext_resource type="Material" uid="uid://drd7k3dep2m4o" path="res://materials/exterior/grass.tres" id="23_nc5r2"]
 [ext_resource type="Material" uid="uid://tu4ileg48m10" path="res://materials/window_raindrops.tres" id="23_ndwfr"]
 [ext_resource type="Material" uid="uid://ctqdrmvgoa43h" path="res://materials/plastic_off_yellow.tres" id="24_eokwq"]
-[ext_resource type="Material" uid="uid://cnv82dnpuphi8" path="res://materials/apron.tres" id="29_gvvxt"]
+[ext_resource type="Script" uid="uid://dh3ug0plmbxvw" path="res://scripts/interactables/Butter.cs" id="27_gsutn"]
+[ext_resource type="Material" uid="uid://cte0qolyir31t" path="res://materials/interactables/butter_wrapper.tres" id="27_kl6rs"]
+[ext_resource type="Material" uid="uid://cnv82dnpuphi8" path="res://materials/interactables/apron.tres" id="29_gvvxt"]
 [ext_resource type="Script" uid="uid://dcnp2arr124gt" path="res://scripts/interactables/PantryDoor.cs" id="29_nstfs"]
 [ext_resource type="Script" uid="uid://7tuyeues83t7" path="res://scripts/interactables/Apron.cs" id="29_qdukv"]
+[ext_resource type="Material" uid="uid://by8o7rwkvxxib" path="res://materials/cupboard.tres" id="34_8b7d6"]
 [ext_resource type="PackedScene" uid="uid://bi743dwfbtpno" path="res://scenes/checklist.tscn" id="36_7ul7a"]
+[ext_resource type="Script" uid="uid://c7636ej7wweav" path="res://scripts/interactables/Door.cs" id="42_tykae"]
+[ext_resource type="Material" uid="uid://da37svy0djjat" path="res://materials/plastic_seethrough.tres" id="43_3oxv6"]
+[ext_resource type="Script" uid="uid://jjx0r2wffw8j" path="res://scripts/interactables/FlourJar.cs" id="43_tykae"]
+[ext_resource type="Material" uid="uid://cyw8ivk4b6rjm" path="res://materials/flour.tres" id="44_sys65"]
+[ext_resource type="Material" uid="uid://b678tn3wfkicb" path="res://materials/plastic_red.tres" id="45_r4cag"]
+[ext_resource type="PackedScene" uid="uid://ejd0v5oomoav" path="res://scenes/main_menu.tscn" id="50_3b3m7"]
+[ext_resource type="PackedScene" uid="uid://bfm05po3odou7" path="res://scenes/pause_menu.tscn" id="51_hj1cc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -143,6 +158,13 @@ size = Vector3(0.15, 0.005, 0.08)
 material = ExtResource("14_hdbb3")
 size = Vector3(0.27, 0.005, 0.14)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_ivnhj"]
+material = ExtResource("19_koxlt")
+size = Vector2(0.85, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_koxlt"]
+size = Vector3(0.85, 0.03, 0.5)
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_6nivd"]
 material = ExtResource("3_0e4v7")
 top_radius = 0.08
@@ -159,6 +181,31 @@ size = Vector3(0.553711, 0.959229, 0.0537109)
 [sub_resource type="BoxMesh" id="BoxMesh_ondrs"]
 material = ExtResource("3_ondrs")
 size = Vector3(0.55, 0.5, 0.055)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6l5nr"]
+material = ExtResource("22_6l5nr")
+size = Vector3(0.49, 0.005, 0.375)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ivnhj"]
+material = ExtResource("23_24g5d")
+size = Vector3(0.11, 0.025, 0.3)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_koxlt"]
+material = ExtResource("23_24g5d")
+radius = 0.025
+height = 0.07
+radial_segments = 32
+rings = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ivnhj"]
+size = Vector3(0.113281, 0.0791016, 0.300537)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gsutn"]
+material = ExtResource("27_kl6rs")
+size = Vector3(0.1, 0.05, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fg0xf"]
+size = Vector3(0.1, 0.05, 0.05)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ufxs0"]
 material = ExtResource("23_ndwfr")
@@ -220,9 +267,15 @@ size = Vector3(0.02, 0.072, 0.01)
 size = Vector3(0.0878906, 0.105469, 0.0625)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sjhni"]
+material = ExtResource("34_8b7d6")
 size = Vector3(0.5, 0.02, 0.59)
 
+[sub_resource type="BoxMesh" id="BoxMesh_fg0xf"]
+material = ExtResource("34_8b7d6")
+size = Vector3(1.2, 0.02, 0.59)
+
 [sub_resource type="BoxMesh" id="BoxMesh_xgm4f"]
+material = ExtResource("34_8b7d6")
 size = Vector3(0.52, 3, 0.02)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_gvvxt"]
@@ -262,10 +315,39 @@ size = Vector3(0.118164, 0.896729, 0.0263672)
 size = Vector3(0.527344, 2.96387, 0.0178223)
 
 [sub_resource type="BoxMesh" id="BoxMesh_uxuvg"]
+material = ExtResource("34_8b7d6")
 size = Vector3(3, 0.04, 0.79)
 
 [sub_resource type="BoxMesh" id="BoxMesh_eokwq"]
+material = ExtResource("34_8b7d6")
 size = Vector3(0.02, 1, 0.79)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8b7d6"]
+material = ExtResource("34_8b7d6")
+size = Vector3(0.56, 1, 0.02)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hj1cc"]
+material = ExtResource("34_8b7d6")
+size = Vector3(0.52, 1, 0.02)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3oxv6"]
+size = Vector3(0.52, 1, 0.02)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3oxv6"]
+material = ExtResource("44_sys65")
+top_radius = 0.077
+bottom_radius = 0.077
+height = 0.12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sys65"]
+material = ExtResource("45_r4cag")
+top_radius = 0.082
+bottom_radius = 0.082
+height = 0.02
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tykae"]
+height = 0.21
+radius = 0.09
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2c82"]
 material = ExtResource("1_qmak7")
@@ -301,8 +383,9 @@ size = Vector3(1, 1, 0.5)
 
 [node name="Level" type="Node3D"]
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("checklistUi")]
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("pauseMenu", "checklistUi")]
 script = ExtResource("1_rcrbw")
+pauseMenu = NodePath("../Pause Menu")
 checklistUi = NodePath("../Control/Checklist Vertical Group")
 _flashMaterialOverlay = ExtResource("2_c88u2")
 
@@ -543,6 +626,36 @@ mesh = SubResource("BoxMesh_7ul7a")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00279248, 0)
 mesh = SubResource("BoxMesh_kxeow")
 
+[node name="Preparation Area" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("eggCartonPlacement", "butterPlacement", "flourPlacement", "highlightMeshes", "highlightCsgs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716788, 0.447991, -0.0262935)
+script = ExtResource("19_q1qoo")
+eggCartonPlacement = NodePath("Item Placement Points/Egg Carton")
+butterPlacement = NodePath("Item Placement Points/Butter")
+flourPlacement = NodePath("Item Placement Points/Flour")
+itemId = 13
+highlightMeshes = [NodePath("MeshInstance3D")]
+highlightCsgs = []
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Kitchen/Counter North (Window)/Preparation Area"]
+mesh = SubResource("PlaneMesh_ivnhj")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Counter North (Window)/Preparation Area"]
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Counter North (Window)/Preparation Area/Area3D"]
+shape = SubResource("BoxShape3D_koxlt")
+
+[node name="Item Placement Points" type="Node3D" parent="Kitchen/Counter North (Window)/Preparation Area"]
+
+[node name="Egg Carton" type="Node3D" parent="Kitchen/Counter North (Window)/Preparation Area/Item Placement Points"]
+transform = Transform3D(0.270533, 0, 0.962711, 0, 1, 0, -0.962711, 0, 0.270533, -0.206643, 0, 0.138939)
+
+[node name="Butter" type="Node3D" parent="Kitchen/Counter North (Window)/Preparation Area/Item Placement Points"]
+transform = Transform3D(-0.0353708, 0, 0.999375, 0, 1, 0, -0.999375, 0, -0.0353708, -0.366791, 0, -0.00437585)
+
+[node name="Flour" type="Node3D" parent="Kitchen/Counter North (Window)/Preparation Area/Item Placement Points"]
+transform = Transform3D(-0.0353708, 0, 0.999375, 0, 1, 0, -0.999375, 0, -0.0353708, 0.35057, -5.96046e-08, 0.148694)
+
 [node name="Counter South" type="CSGBox3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.448, -0.945)
 size = Vector3(1.64, 0.895, 0.59)
@@ -583,9 +696,9 @@ mesh = SubResource("CylinderMesh_6nivd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.055, 0, -0.945)
 script = ExtResource("20_njqd0")
 light = NodePath("Fridge Light")
-doorPivot = NodePath("Upper Hinge")
+doorPivot = NodePath("Upper Door Hinge")
 itemId = 11
-highlightMeshes = [NodePath("Upper Hinge/Fridge Door (Upper)")]
+highlightMeshes = [NodePath("Upper Door Hinge/Fridge Door (Upper)")]
 highlightCsgs = []
 
 [node name="Body" type="CSGBox3D" parent="Kitchen/Fridge"]
@@ -603,35 +716,173 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45059, 0.147759)
 operation = 2
 size = Vector3(0.462891, 0.471191, 0.644531)
 
-[node name="Upper Hinge" type="Node3D" parent="Kitchen/Fridge"]
+[node name="Upper Door Hinge" type="Node3D" parent="Kitchen/Fridge"]
 transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -0.273113, 0, 0.246645)
 
-[node name="Fridge Door (Upper)" type="MeshInstance3D" parent="Kitchen/Fridge/Upper Hinge"]
+[node name="Fridge Door (Upper)" type="MeshInstance3D" parent="Kitchen/Fridge/Upper Door Hinge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273113, 0.981682, 0.0283555)
 mesh = SubResource("BoxMesh_0e4v7")
 skeleton = NodePath("../..")
 
-[node name="Area3D" type="Area3D" parent="Kitchen/Fridge/Upper Hinge"]
+[node name="Area3D" type="Area3D" parent="Kitchen/Fridge/Upper Door Hinge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273, 0.982, 0.028)
 script = ExtResource("8_al56o")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Fridge/Upper Hinge/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Fridge/Upper Door Hinge/Area3D"]
 shape = SubResource("BoxShape3D_hj1cc")
 
-[node name="Lower Hinge" type="Node3D" parent="Kitchen/Fridge"]
+[node name="Lower Door Hinge" type="Node3D" parent="Kitchen/Fridge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.273113, 0, 0.246645)
 
-[node name="Freezer Door (Lower)" type="MeshInstance3D" parent="Kitchen/Fridge/Lower Hinge"]
+[node name="Freezer Door (Lower)" type="MeshInstance3D" parent="Kitchen/Fridge/Lower Door Hinge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.273113, 0.253191, 0.0283555)
 mesh = SubResource("BoxMesh_ondrs")
 skeleton = NodePath("../..")
 
 [node name="Fridge Light" type="OmniLight3D" parent="Kitchen/Fridge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30303, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40792, 0)
 light_energy = 0.5
 shadow_enabled = true
 omni_range = 2.0
+
+[node name="Shelf Bottom" type="CSGBox3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86, -0.03)
+size = Vector3(0.49, 0.01, 0.375)
+material = ExtResource("3_ondrs")
+
+[node name="Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Shelf Bottom"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00611627)
+operation = 2
+size = Vector3(0.414062, 0.24707, 0.324463)
+
+[node name="Glass panel" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Bottom"]
+mesh = SubResource("BoxMesh_6l5nr")
+
+[node name="Shelf Middle" type="CSGBox3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03, -0.03)
+size = Vector3(0.49, 0.01, 0.375)
+material = ExtResource("3_ondrs")
+
+[node name="Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Shelf Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00611627)
+operation = 2
+size = Vector3(0.414062, 0.24707, 0.324463)
+
+[node name="Glass panel" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Middle"]
+mesh = SubResource("BoxMesh_6l5nr")
+
+[node name="Shelf Top" type="CSGBox3D" parent="Kitchen/Fridge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.03)
+size = Vector3(0.49, 0.01, 0.375)
+material = ExtResource("3_ondrs")
+
+[node name="Cavity" type="CSGBox3D" parent="Kitchen/Fridge/Shelf Top"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00611627)
+operation = 2
+size = Vector3(0.414062, 0.24707, 0.324463)
+
+[node name="Glass panel" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top"]
+mesh = SubResource("BoxMesh_6l5nr")
+
+[node name="Egg Carton" type="Node3D" parent="Kitchen/Fridge/Shelf Top" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
+transform = Transform3D(0.993407, 0, -0.114642, 0, 1, 0, 0.114642, 0, 0.993407, -0.128841, 0.00377928, 0.0358759)
+script = ExtResource("23_ivnhj")
+itemId = 12
+interactionRequiresFreeHands = true
+highlightMeshes = [NodePath("Vertical Offset/MeshInstance3D"), NodePath("Vertical Offset/MeshInstance3D2"), NodePath("Vertical Offset/MeshInstance3D6"), NodePath("Vertical Offset/MeshInstance3D4"), NodePath("Vertical Offset/MeshInstance3D5"), NodePath("Vertical Offset/MeshInstance3D3"), NodePath("Vertical Offset/MeshInstance3D7"), NodePath("Vertical Offset/MeshInstance3D8"), NodePath("Vertical Offset/MeshInstance3D9"), NodePath("Vertical Offset/MeshInstance3D10"), NodePath("Vertical Offset/MeshInstance3D11"), NodePath("Vertical Offset/MeshInstance3D12"), NodePath("Vertical Offset/MeshInstance3D13")]
+highlightCsgs = []
+
+[node name="Vertical Offset" type="Node3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0336514, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+mesh = SubResource("BoxMesh_ivnhj")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, -0.125)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0250001, 0, -0.125)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, -0.075)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0, -0.075)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, -0.025)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0250001, 0, -0.025)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0250001, 0, 0.025)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0, 0.025)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, 0.075)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0, 0.075)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, 0.125)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0250001, 0, 0.125)
+mesh = SubResource("CapsuleMesh_koxlt")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset"]
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset/Area3D"]
+shape = SubResource("BoxShape3D_ivnhj")
+
+[node name="Butter" type="Node3D" parent="Kitchen/Fridge/Shelf Top" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
+transform = Transform3D(0.134453, 0, -0.99092, 0, 1, 0, 0.99092, 0, 0.134453, 0.163765, 0.003, 0.10178)
+script = ExtResource("27_gsutn")
+itemId = 14
+interactionRequiresFreeHands = true
+highlightMeshes = [NodePath("MeshInstance3D")]
+highlightCsgs = []
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Kitchen/Fridge/Shelf Top/Butter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+mesh = SubResource("BoxMesh_gsutn")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Fridge/Shelf Top/Butter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Fridge/Shelf Top/Butter/Area3D"]
+shape = SubResource("BoxShape3D_fg0xf")
 
 [node name="Wall North (Window)" type="CSGBox3D" parent="Kitchen"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.315)
@@ -826,6 +1077,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23, 0, -0.945)
 [node name="Exterior" type="CSGBox3D" parent="Kitchen/Pantry"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 size = Vector3(0.54, 2.4, 0.59)
+material = ExtResource("34_8b7d6")
 
 [node name="Cavity" type="CSGBox3D" parent="Kitchen/Pantry/Exterior"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.02)
@@ -845,11 +1097,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("BoxMesh_sjhni")
 
 [node name="Shelf4" type="MeshInstance3D" parent="Kitchen/Pantry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = SubResource("BoxMesh_sjhni")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.265405, 2, 0)
+mesh = SubResource("BoxMesh_fg0xf")
 
 [node name="Pantry door pivot" type="Node3D" parent="Kitchen" node_paths=PackedStringArray("doorPivot", "highlightMeshes", "highlightCsgs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.494, 1.5, -0.626)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.494, 1.5, -0.626)
 script = ExtResource("29_nstfs")
 doorPivot = NodePath(".")
 itemId = 9
@@ -922,17 +1174,75 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.945)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
 mesh = SubResource("BoxMesh_uxuvg")
 
-[node name="Vertical panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.499, -0.1)
+[node name="Vertical panel E" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.499, -0.1)
 mesh = SubResource("BoxMesh_eokwq")
 
-[node name="Vertical panel3" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.499, -0.1)
+[node name="Vertical panel W" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435, 0.499, -0.1)
 mesh = SubResource("BoxMesh_eokwq")
 
-[node name="Vertical panel2" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.499, -0.1)
-mesh = SubResource("BoxMesh_eokwq")
+[node name="Rangehood panel" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.142217, 0.499, 0.309)
+mesh = SubResource("BoxMesh_8b7d6")
+
+[node name="Cupboard Upper" type="Node3D" parent="Kitchen/Upper Cupboard South" node_paths=PackedStringArray("doorPivot", "highlightMeshes", "highlightCsgs")]
+transform = Transform3D(-0.642788, 0, -0.766044, 0, 1, 0, 0.766044, 0, -0.642788, 0.435, 0.499, 0.309)
+script = ExtResource("42_tykae")
+doorPivot = NodePath(".")
+doorOpenY = -130.0
+itemId = 15
+highlightMeshes = [NodePath("Cupboard door")]
+highlightCsgs = []
+
+[node name="Cupboard door" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South/Cupboard Upper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.258344, 0, 0)
+mesh = SubResource("BoxMesh_hj1cc")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Upper Cupboard South/Cupboard Upper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.258, 0, 0)
+script = ExtResource("8_al56o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Upper Cupboard South/Cupboard Upper/Area3D"]
+shape = SubResource("BoxShape3D_3oxv6")
+
+[node name="Flour Jar" type="Node3D" parent="Kitchen/Upper Cupboard South" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.537927, 0.0247836, 0.196472)
+script = ExtResource("43_tykae")
+itemId = 16
+highlightMeshes = [NodePath("Lid")]
+highlightCsgs = [NodePath("Jar")]
+
+[node name="Jar" type="CSGCylinder3D" parent="Kitchen/Upper Cupboard South/Flour Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+radius = 0.08
+height = 0.2
+sides = 32
+material = ExtResource("43_3oxv6")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Kitchen/Upper Cupboard South/Flour Jar/Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00211514, 0)
+operation = 2
+radius = 0.077
+height = 0.2
+sides = 32
+
+[node name="Fill" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South/Flour Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.062, 0)
+mesh = SubResource("CylinderMesh_3oxv6")
+
+[node name="Lid" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South/Flour Jar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.195962, 0)
+mesh = SubResource("CylinderMesh_sys65")
+
+[node name="Area3D" type="Area3D" parent="Kitchen/Upper Cupboard South/Flour Jar"]
+script = ExtResource("8_al56o")
+maxInteractionDistance = 1.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Upper Cupboard South/Flour Jar/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105867, 0)
+shape = SubResource("CylinderShape3D_tykae")
 
 [node name="Rest of the House" type="Node3D" parent="."]
 
@@ -1110,7 +1420,6 @@ mesh = SubResource("PlaneMesh_ndwfr")
 
 [node name="Player Controller" parent="." instance=ExtResource("3_6we3w")]
 transform = Transform3D(-0.886163, 0, 0.463374, 0, 1, 0, -0.463374, 0, -0.886163, 0.898049, 0, 0.267224)
-visible = false
 invertCameraVertical = true
 
 [node name="Room Colliders" type="Node3D" parent="."]
@@ -1167,11 +1476,26 @@ mouse_filter = 1
 [node name="Checklist Vertical Group" parent="Control" instance=ExtResource("36_7ul7a")]
 layout_mode = 1
 
+[node name="Main Menu" parent="." node_paths=PackedStringArray("title") instance=ExtResource("50_3b3m7")]
+title = NodePath("../Title Label3D")
+
+[node name="Pause Menu" parent="." instance=ExtResource("51_hj1cc")]
+
+[node name="Title Label3D" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.383871, 1.64347, 1.14205)
+modulate = Color(0.3344, 0.35024, 0.44, 0.670588)
+text = "Midnight Baking"
+
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Soap/Area3D" to="Kitchen/Counter North (Window)/Soap" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Sink/Clickable Area" to="Kitchen/Counter North (Window)/Sink" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Towel/Clickable Area" to="Kitchen/Counter North (Window)/Towel" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Counter North (Window)/Tablet/Screen/Clickable Area" to="Kitchen/Counter North (Window)/Tablet" method="OnInteractableClicked"]
-[connection signal="OnClicked" from="Kitchen/Fridge/Upper Hinge/Area3D" to="Kitchen/Fridge" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Counter North (Window)/Preparation Area/Area3D" to="Kitchen/Counter North (Window)/Preparation Area" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Fridge/Upper Door Hinge/Area3D" to="Kitchen/Fridge" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Fridge/Shelf Top/Egg Carton/Vertical Offset/Area3D" to="Kitchen/Fridge/Shelf Top/Egg Carton" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Fridge/Shelf Top/Butter/Area3D" to="Kitchen/Fridge/Shelf Top/Butter" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Kitchen Light/Light Switch/Clickable Area" to="Kitchen/Kitchen Light" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Apron/Area3D" to="Kitchen/Pantry door pivot/Door/Apron" method="OnInteractableClicked"]
 [connection signal="OnClicked" from="Kitchen/Pantry door pivot/Door/Area3D" to="Kitchen/Pantry door pivot" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Upper Cupboard South/Cupboard Upper/Area3D" to="Kitchen/Upper Cupboard South/Cupboard Upper" method="OnInteractableClicked"]
+[connection signal="OnClicked" from="Kitchen/Upper Cupboard South/Flour Jar/Area3D" to="Kitchen/Upper Cupboard South/Flour Jar" method="OnInteractableClicked"]

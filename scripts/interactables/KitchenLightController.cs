@@ -19,7 +19,7 @@ public partial class KitchenLightController : Interactable
         SetCanInteract(true);
     }
 
-    protected override void HandleClick()
+    protected override void _HandleClick()
     {
         SetLightOn(!lightOn);
     }

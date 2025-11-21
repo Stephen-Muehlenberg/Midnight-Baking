@@ -20,7 +20,7 @@ public partial class PantryDoor : Interactable
         doorPivot.RotationDegrees = new Vector3(0, open ? 90 : 0, 0);
     }
 
-    protected override void HandleClick()
+    protected override void _HandleClick()
     {
         SetOpen(!isOpen);
     }
