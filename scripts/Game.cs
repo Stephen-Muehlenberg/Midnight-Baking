@@ -25,6 +25,13 @@ public partial class Game : Node
     
     private static int currentTaskGroupIndex;
 
+    public static Interactable Apron => Interactables[ItemId.APRON];
+    public static Interactable LightSwitch => Interactables[ItemId.LIGHT_SWITCH];
+    public static Interactable Sink => Interactables[ItemId.SINK];
+    public static Interactable Soap => Interactables[ItemId.SOAP];
+    public static Interactable Tablet => Interactables[ItemId.TABLET];
+    public static Interactable Towel => Interactables[ItemId.TOWEL];
+
     public override void _Ready()
     {
         if (instance != null)

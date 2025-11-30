@@ -10,7 +10,6 @@ public partial class Apron : Interactable
     protected override void _ResetToGameStartState()
     {
         SetApronVisible(true);
-        SetCanInteract(false);
     }
 
     public void SetApronVisible(bool visible)

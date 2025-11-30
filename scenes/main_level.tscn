@@ -1,4 +1,4 @@
-[gd_scene load_steps=137 format=3 uid="uid://dfgt17r2p5uf3"]
+[gd_scene load_steps=136 format=3 uid="uid://dfgt17r2p5uf3"]
 
 [ext_resource type="Material" uid="uid://nsokov7rf23p" path="res://materials/stone_counter_top.tres" id="1_bq26l"]
 [ext_resource type="Material" uid="uid://7pmn05uj4klo" path="res://materials/rest of the house/fabric_floor.tres" id="1_k5pu3"]
@@ -27,7 +27,6 @@
 [ext_resource type="AudioStream" uid="uid://c1tgi16e83nu4" path="res://audio/thunder03.mp3" id="10_0e4v7"]
 [ext_resource type="Material" uid="uid://c0yxqsjmcaxw5" path="res://materials/pot_plant_soil.tres" id="10_cssx7"]
 [ext_resource type="Material" uid="uid://vp5v5ixygnsp" path="res://materials/interactables/towel.tres" id="10_pfmml"]
-[ext_resource type="Script" uid="uid://cdfh0knk52qdb" path="res://scripts/interactables/Soap.cs" id="10_urjsn"]
 [ext_resource type="Material" uid="uid://ddqm1vtndv864" path="res://materials/pot_plant_plant.tres" id="11_1irq3"]
 [ext_resource type="AudioStream" uid="uid://c4pdeyy3afw24" path="res://audio/thunder04.mp3" id="11_6nivd"]
 [ext_resource type="Material" uid="uid://3vnb4t7u83v2" path="res://materials/interactables/tablet_screen_on.tres" id="11_kxeow"]
@@ -476,7 +475,7 @@ autoplay = true
 
 [node name="Soap" type="Node3D" parent="Kitchen/Counter North (Window)" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
 transform = Transform3D(-4.31732e-08, 0.987688, -0.156434, -1, -4.37114e-08, 0, -6.83797e-09, 0.156434, 0.987688, -0.121755, 0.459, 0.26054)
-script = ExtResource("10_urjsn")
+script = ExtResource("6_cycrt")
 itemId = 10
 highlightMeshes = [NodePath("Mesh")]
 highlightCsgs = []
@@ -573,7 +572,7 @@ screenOff = NodePath("Screen/BG Off")
 screenOn = NodePath("Screen/BG On")
 text = NodePath("Screen/Text")
 itemId = 7
-highlightMeshes = []
+highlightMeshes = [NodePath("Screen/BG Off")]
 highlightCsgs = [NodePath("Screen")]
 
 [node name="Screen" type="CSGBox3D" parent="Kitchen/Counter North (Window)/Tablet"]

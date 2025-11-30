@@ -14,7 +14,7 @@ public partial class InteractionTarget : Area3D
 
     public void OnClick()
     {
-        GD.Print($"{Name}.InteractionTarget.OnClick()");
+        GD.Print($"{GetParent().Name}.{Name}.InteractionTarget.OnClick()");
         EmitSignalOnClicked();
     }
 }

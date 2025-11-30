@@ -110,31 +110,31 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             hints.Add("Use sink");
-            Game.Interactables[Game.ItemId.SINK].AddClickListener(OnSinkClicked);
+            Game.Sink.AddClickListener(OnSinkClicked);
         }
 
         private void OnSinkClicked()
         {
             GD.Print("OnSinkClicked()");
-            Game.Interactables[Game.ItemId.SINK].RemoveClickListener(OnSinkClicked);
-            Game.Interactables[Game.ItemId.SOAP].AddClickListener(OnSoapClicked);
+            Game.Sink.RemoveClickListener(OnSinkClicked);
+            Game.Soap.AddClickListener(OnSoapClicked);
             hints.Add("Use soap");
             Game.UpdateUi();
         }
 
         private void OnSoapClicked()
         {
-            Game.Interactables[Game.ItemId.SOAP].RemoveClickListener(OnSinkClicked);
-            Game.Interactables[Game.ItemId.TOWEL].AddClickListener(Complete);
+            Game.Soap.RemoveClickListener(OnSoapClicked);
+            Game.Towel.AddClickListener(Complete);
             hints.Add("Dry hands on towel");
             Game.UpdateUi();
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.Interactables[Game.ItemId.SINK].RemoveClickListener(OnSinkClicked);
-            Game.Interactables[Game.ItemId.SOAP].RemoveClickListener(OnSoapClicked);
-            Game.Interactables[Game.ItemId.TOWEL].RemoveClickListener(Complete);
+            Game.Sink.RemoveClickListener(OnSinkClicked);
+            Game.Soap.RemoveClickListener(OnSoapClicked);
+            Game.Towel.RemoveClickListener(Complete);
         }
     }
 
