@@ -44,7 +44,13 @@ public partial class Microwave : Interactable
     {
         float seconds = Time.GetTicksMsec() / 1000f;
         float nextSecond = Mathf.Ceil(seconds);
-        midnightStartTimeMs = nextSecond * 1000f;
         updateClockInRealtime = true;
+        
+        // Set the clock to show midnight immediately, but secretly just
+        // set actual midnight to trigger at the start of the next second.
+        // This ensures various things sync up correctly, e.g. the clock ticking noise,
+        // the ':' flashing once per second, etc., all occur exactly on the second mark.
+        midnightStartTimeMs = nextSecond * 1000f;
+        timeText.SetText("12 00");
     }
 }

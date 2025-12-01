@@ -116,13 +116,20 @@ public partial class Interactable : Node3D
     public void SetPlacement(Node3D newParent)
     {
         // TODO figure out how to handle this during scene setup. A node's parent is readied AFTER its children.
-        if (GetParent() == null || newParent == null) return;
+        if (GetParent() == null || newParent == null)
+        {
+            GD.Print($"{Name}.Interactable tried to call SetPlacement() but the {(newParent == null ? "new" : "old")} parent was null.");
+            return;
+        }
 
         if (Player.heldItem == this)
             Player.PlaceItem(newParent);
         else
         {
-            Reparent(newParent);
+            // Using Reparent() during scene setup causes errors.
+            // So we use CallDeferred() to indirectly invoke Reparent() on the next free frame.
+            // This ensures Reparent() is only called once everything is set up.
+            CallDeferred("reparent", newParent);
             Position = Vector3.Zero;
             RotationDegrees = Vector3.Zero;
         }

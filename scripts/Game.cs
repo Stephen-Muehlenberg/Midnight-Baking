@@ -10,7 +10,7 @@ public partial class Game : Node
 {
     public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK,
         SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, SOAP, FRIDGE, EGG_CARTON, BENCH_PREP_AREA,
-        BUTTER, CUPBOARD_UPPER_DOOR, FLOUR_JAR }
+        BUTTER, CUPBOARD_UPPER_DOOR, FLOUR_JAR, VANILLA_JAR, CHOC_CHIP_BAG, OVEN }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;
@@ -25,12 +25,24 @@ public partial class Game : Node
     
     private static int currentTaskGroupIndex;
 
-    public static Interactable Apron => Interactables[ItemId.APRON];
-    public static Interactable LightSwitch => Interactables[ItemId.LIGHT_SWITCH];
+    public static Apron Apron => Interactables[ItemId.APRON] as Apron;
+    public static Pickupable BakingSoda => Interactables[ItemId.BAKING_SODA] as Pickupable;
+    public static BenchPrepArea BenchPrepArea => Interactables[ItemId.BENCH_PREP_AREA] as BenchPrepArea;
+    public static Pickupable BrownSugarJar => Interactables[ItemId.BROWN_SUGAR] as Pickupable;
+    public static Pickupable ChocChipBag => Interactables[ItemId.CHOC_CHIP_BAG] as Pickupable;
+    public static Door CupboardUpper => Interactables[ItemId.CUPBOARD_UPPER_DOOR] as Door;
+    public static Interactable Butter => Interactables[ItemId.BUTTER];
+    public static EggCarton EggCarton => Interactables[ItemId.EGG_CARTON] as EggCarton;
+    public static Fridge Fridge => Interactables[ItemId.FRIDGE] as Fridge;
+    public static FlourJar FlourJar => Interactables[ItemId.FLOUR_JAR] as FlourJar;
+    public static KitchenLightController LightSwitch => Interactables[ItemId.LIGHT_SWITCH] as KitchenLightController;
     public static Interactable Sink => Interactables[ItemId.SINK];
     public static Interactable Soap => Interactables[ItemId.SOAP];
-    public static Interactable Tablet => Interactables[ItemId.TABLET];
+    public static Interactable SugarJar => Interactables[ItemId.SUGAR];
+    public static OvenController Oven;
+    public static Tablet Tablet => Interactables[ItemId.TABLET] as Tablet;
     public static Interactable Towel => Interactables[ItemId.TOWEL];
+    public static Pickupable VanillaJar => Interactables[ItemId.VANILLA_JAR] as Pickupable;
 
     public override void _Ready()
     {

@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d4eome12oapna"]
+
+[resource]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.23, 0.18216, 0.1403, 0.709804)
+metallic_specular = 1.0
+roughness = 0.25
+uv1_scale = Vector3(4.5, 2.5, 4)
+disable_receive_shadows = true
