@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
-using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
@@ -31,7 +29,13 @@ public static class Tasks
         ]),
         new (name: "Gather ingredients", tasks: [
             new Group2_GatherIngredients(),
-        ])
+        ]),
+        new (name: "Preheat oven", tasks: [
+            new Group3_PreheatOven(),
+        ]),
+        new (name: "Sift dry ingredients", tasks: [
+            new Group4_SiftDryIngredients(),
+        ]),
     ];
     
     #region Group 0 Tutorial
@@ -473,6 +477,7 @@ public static class Tasks
 
         public override void SetState_TaskComplete()
         {
+            GD.Print("ChocChips.SetTaskComplete()");
             Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var benchPrepArea = Game.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
@@ -482,19 +487,177 @@ public static class Tasks
         }
     }
     #endregion
-    #region Group 2 Gather Ingredients
+    #region Group 3 Preheat Oven
     private class Group3_PreheatOven : ParentTask
     {
         // TODO allow user to set metrics vs imperial in the menu
         public override string description => "Preheat oven to 170°c";
         public override void SetState_TaskStart()
         {
-            Game.OvenKnob.AddClickListener(Complete);
+            Game.Oven.TemperatureDial.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.OvenKnob
+            var oven = Game.Oven;
+            oven.TemperatureDial.RemoveClickListener(Complete);
+            oven.SetOn(true);
+        }
+    }
+    #endregion
+    #region Group 4 Sift Dry Ingredients
+    private class Group4_SiftDryIngredients : ParentTask
+    {
+        // TODO allow user to set metrics vs imperial in the menu
+        public override string description => "Sift flour and bicarb soda into a medium bowl";
+        public override void SetState_TaskStart()
+        {
+            subtasks.Add(new Group4_SubCups());
+            subtasks.Add(new Group4_SubBowl());
+//            hints.Add("Get bowl, sieve, measuring cups, and measuring spoons on bench");
+  //          Game.MixingBowlMedium.AddClickListener(OnBowlPickedUp);
+        }
+
+        private void OnBowlPickedUp()
+        {
+            var bowl = Game.MixingBowlMedium;
+            bowl.RemoveClickListener(OnBowlPickedUp);
+            Player.HoldItem(bowl);
+            Game.BenchPrepArea.AddClickListener(OnBowlPlaced);
+        }
+
+        private void OnBowlPlaced()
+        {
+            var bench = Game.BenchPrepArea;
+            bench.RemoveClickListener(OnBowlPlaced);
+            Game.MixingBowlMedium.SetPlacement(bench.mixingBowlPlacement);
+            hints.Add("Place sieve in bowl");
+            Game.Sieve.AddClickListener(OnSievePickedUp);
+        }
+
+        private void OnSievePickedUp()
+        {
+            var sieve = Game.Sieve;
+            sieve.RemoveClickListener(OnSievePickedUp);
+            Player.HoldItem(sieve);
+            Game.MixingBowlMedium.AddClickListener(OnSievePlaced);
+        }
+
+        private void OnSievePlaced()
+        {
+            var bowl = Game.MixingBowlMedium;
+            var sieve =  Game.Sieve;
+            sieve.SetPlacement(bowl);
+            hints.Add("Get measuring cups and spoons");
+        }
+
+        public override void Complete(bool invokeOnCompleteCallback = true)
+        {
+            var bench = Game.BenchPrepArea;
+            bench.RemoveClickListener(OnBowlPlaced);
+            var bowl = Game.MixingBowlMedium;
+            bowl.RemoveClickListener(OnBowlPickedUp);
+            var sieve = Game.Sieve;
+            sieve.RemoveClickListener(OnSievePickedUp);
+            Game.MixingBowlMedium.SetPlacement(bench.mixingBowlPlacement);
+            
+        }
+    }
+    private class Group4_SubCups : Subtask
+    {
+        public override string description => "Get measuring cups (1 cup and 1/2 cup)";
+        private int cupsPlaced;
+        
+        public override void SetState_TaskStart()
+        {
+            cupsPlaced = 0;
+            var drawer = Game.DrawerUtensils;
+            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
+            Game.MeasuringCupOne.AddClickListener(OnCupOnePickedUp);
+            Game.MeasuringCupHalf.AddClickListener(OnCupHalfPickedUp);
+        }
+
+        private void OnDrawerClicked()
+        {
+            var drawer = Game.DrawerUtensils;
+            drawer.RemoveClickListener(OnDrawerClicked);
+            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
+        }
+
+        private void OnCupOnePickedUp()
+        {
+            if (!Player.canHoldItem) return;
+
+            var cup = Game.MeasuringCupOne;
+            cup.RemoveClickListener(OnCupOnePickedUp);
+            Player.HoldItem(cup);
+            Game.BenchPrepArea.AddClickListener(OnBenchClicked);
+        }
+
+        private void OnCupHalfPickedUp()
+        {
+            if (!Player.canHoldItem) return;
+
+            var cup = Game.MeasuringCupHalf;
+            cup.RemoveClickListener(OnCupHalfPickedUp);
+            Player.HoldItem(cup);
+            Game.BenchPrepArea.AddClickListener(OnBenchClicked);
+        }
+
+        private void OnBenchClicked()
+        {
+            cupsPlaced++;
+            if (cupsPlaced == 2)
+            {
+                Complete();
+                return;
+            }
+            var cup = Player.heldItem;
+            var bench = Game.BenchPrepArea;
+            bench.RemoveClickListener(OnBenchClicked);
+            var newPosition = cup.itemId == Game.ItemId.MEASURING_CUP_ONE
+                ? bench.measuringCupOnePlacement
+                : bench.measuringCupHalfPlacement;
+            cup.SetPlacement(newPosition);
+        }
+
+        public override void SetState_TaskComplete()
+        {
+            var cupOne = Game.MeasuringCupOne;
+            var cupHalf = Game.MeasuringCupHalf;
+            var bench = Game.BenchPrepArea;
+            Game.DrawerUtensils.RemoveClickListener(OnDrawerClicked);
+            bench.RemoveClickListener(OnBenchClicked);
+            cupOne.RemoveClickListener(OnCupOnePickedUp);
+            cupHalf.RemoveClickListener(OnCupHalfPickedUp);
+            cupOne.SetPlacement(bench.measuringCupOnePlacement);
+            cupHalf.SetPlacement(bench.measuringCupHalfPlacement);
+        }
+    }
+    private class Group4_SubBowl : Subtask
+    {
+        public override string description => "Get medium bowl";
+
+        public override void SetState_TaskStart()
+        {
+            Game.MixingBowlMedium.AddClickListener(OnBowlClicked);
+        }
+
+        private void OnBowlClicked()
+        {
+            var bowl = Game.MixingBowlMedium;
+            bowl.RemoveClickListener(OnBowlClicked);
+            Player.HoldItem(bowl);
+            Game.BenchPrepArea.AddClickListener(Complete);
+        }
+
+        public override void SetState_TaskComplete()
+        {
+            var bowl = Game.MixingBowlMedium;
+            var bench = Game.BenchPrepArea;
+            bowl.RemoveClickListener(OnBowlClicked);
+            bench.RemoveClickListener(Complete);
+            bowl.SetPlacement(bench.mixingBowlPlacement);
         }
     }
     #endregion

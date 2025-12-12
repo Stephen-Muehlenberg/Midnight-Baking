@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://wsrfbja0fbo6"]
+
+[ext_resource type="Script" uid="uid://b12yy3wjhapj0" path="res://scripts/interactables/Drawer.cs" id="1_lvudm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_w8un5"]
+size = Vector3(0.45, 0.1, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cuuiy"]
+size = Vector3(0.41, 0.08, 0.38)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6kvph"]
+size = Vector3(0.49, 0.12, 0.02)
+
+[node name="Drawer 2nd" type="Node3D" node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
+script = ExtResource("1_lvudm")
+itemId = 24
+highlightMeshes = []
+highlightCsgs = []
+
+[node name="Body" type="CSGMesh3D" parent="."]
+mesh = SubResource("BoxMesh_w8un5")
+
+[node name="Cavity" type="CSGMesh3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+operation = 2
+mesh = SubResource("BoxMesh_cuuiy")
+
+[node name="Front panel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.207455)
+mesh = SubResource("BoxMesh_6kvph")

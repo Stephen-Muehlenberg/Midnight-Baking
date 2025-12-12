@@ -12,4 +12,9 @@ public partial class BenchPrepArea : Interactable
     [Export] public Node3D flourPlacement;
     [Export] public Node3D sugarPlacement;
     [Export] public Node3D vanillaPlacement;
+    
+    [Export] public Node3D mixingBowlPlacement;
+    [Export] public Node3D measuringCupOnePlacement;
+    [Export] public Node3D measuringCupHalfPlacement;
+    [Export] public Node3D measuringSpoonPlacement;
 }

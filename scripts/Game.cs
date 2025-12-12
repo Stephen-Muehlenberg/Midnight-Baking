@@ -10,7 +10,10 @@ public partial class Game : Node
 {
     public enum ItemId { APRON, BAKING_SODA, BROWN_SUGAR, LIGHT_SWITCH, SINK,
         SUGAR, TOWEL, TABLET, MICROWAVE, PANTRY_DOOR, SOAP, FRIDGE, EGG_CARTON, BENCH_PREP_AREA,
-        BUTTER, CUPBOARD_UPPER_DOOR, FLOUR_JAR, VANILLA_JAR, CHOC_CHIP_BAG, OVEN }
+        BUTTER, CUPBOARD_UPPER_DOOR, FLOUR_JAR, VANILLA_JAR, CHOC_CHIP_BAG, OVEN, OVEN_TEMP_DIAL,
+        OVEN_DOOR, MIXING_BOWL_MEDIUM, SIEVE, DRAWER_UTENSILS, MEASURING_CUP_ONE, MEASURING_CUP_HALF,
+        MEASURING_SPOON, 
+    }
     public static Material flashMaterialOverlay => instance._flashMaterialOverlay;
     
     public static Game instance;
@@ -32,10 +35,16 @@ public partial class Game : Node
     public static Pickupable ChocChipBag => Interactables[ItemId.CHOC_CHIP_BAG] as Pickupable;
     public static Door CupboardUpper => Interactables[ItemId.CUPBOARD_UPPER_DOOR] as Door;
     public static Interactable Butter => Interactables[ItemId.BUTTER];
+    public static Drawer DrawerUtensils => Interactables[ItemId.DRAWER_UTENSILS] as Drawer;
     public static EggCarton EggCarton => Interactables[ItemId.EGG_CARTON] as EggCarton;
     public static Fridge Fridge => Interactables[ItemId.FRIDGE] as Fridge;
     public static FlourJar FlourJar => Interactables[ItemId.FLOUR_JAR] as FlourJar;
     public static KitchenLightController LightSwitch => Interactables[ItemId.LIGHT_SWITCH] as KitchenLightController;
+    public static Pickupable MeasuringCupOne => Interactables[ItemId.MEASURING_CUP_ONE] as Pickupable;
+    public static Pickupable MeasuringCupHalf => Interactables[ItemId.MEASURING_CUP_HALF] as Pickupable;
+    public static Pickupable MeasuringSpoon => Interactables[ItemId.MEASURING_SPOON] as Pickupable;
+    public static Pickupable MixingBowlMedium => Interactables[ItemId.MIXING_BOWL_MEDIUM] as Pickupable;
+    public static Pickupable Sieve => Interactables[ItemId.SIEVE] as Pickupable;
     public static Interactable Sink => Interactables[ItemId.SINK];
     public static Interactable Soap => Interactables[ItemId.SOAP];
     public static Interactable SugarJar => Interactables[ItemId.SUGAR];
@@ -70,6 +79,7 @@ public partial class Game : Node
         // Reset interactable objects.
         foreach (var interactable in Interactables.Values)
             interactable.ResetToGameStartState();
+        Oven.ResetToGameStartState();
         
         // Get (or reset) list of tasks, then initialise it.
         tasks = Tasks.CreateTaskList();

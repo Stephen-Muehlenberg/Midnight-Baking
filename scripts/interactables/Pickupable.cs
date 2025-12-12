@@ -8,6 +8,8 @@ public partial class Pickupable : Interactable
     
     protected override void _ResetToGameStartState()
     {
+        if (Name == "Choc Chips jar")
+            GD.Print("ChocChips._ResetToGameStartState()");
         // Reset position and rotation to fridge starting state.
         SetPlacement(initialPosition);
     }

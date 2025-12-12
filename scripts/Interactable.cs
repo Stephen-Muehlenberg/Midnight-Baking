@@ -5,7 +5,7 @@ using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
-public partial class Interactable : Node3D
+public partial class Interactable : Node3D, Resetable
 {
     [Export] public Game.ItemId itemId;
     [Export] public bool interactionRequiresFreeHands = false;
@@ -122,17 +122,22 @@ public partial class Interactable : Node3D
             return;
         }
 
+        // Using Reparent() during scene setup (and possibly other times) causes errors.
+        // So we use CallDeferred() to indirectly invoke Reparent() on the next free frame.
+        // This ensures Reparent() is only called once everything is set up.
+        CallDeferred("ReparentDeferred", newParent);
+    }
+
+    /// <summary>
+    /// Companion method to <see cref="SetPlacement()"/>. Should not be invoked by any other method.
+    /// </summary>
+    private void ReparentDeferred(Node3D newParent)
+    {
+        Reparent(newParent);
+        Position = Vector3.Zero;
+        RotationDegrees = Vector3.Zero;
         if (Player.heldItem == this)
-            Player.PlaceItem(newParent);
-        else
-        {
-            // Using Reparent() during scene setup causes errors.
-            // So we use CallDeferred() to indirectly invoke Reparent() on the next free frame.
-            // This ensures Reparent() is only called once everything is set up.
-            CallDeferred("reparent", newParent);
-            Position = Vector3.Zero;
-            RotationDegrees = Vector3.Zero;
-        }
+            Player.StopHoldingItem();
     }
 
     /// <summary>

@@ -28,11 +28,8 @@ public static class Player
             callback.Invoke();
     }
 
-    public static void PlaceItem(Node3D newParent)
+    public static void StopHoldingItem()
     {
-        heldItem.Reparent(newParent);
-        heldItem.Position = Vector3.Zero;
-        heldItem.RotationDegrees = Vector3.Zero;
         heldItem = null;
         foreach (var callback in OnItemHoldChangedCallbacks)
             callback.Invoke();
