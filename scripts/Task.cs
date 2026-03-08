@@ -8,7 +8,9 @@ public abstract class Task
     public abstract string description { get; }
     public bool complete { get; protected set; }
     public List<string> hints = new();
-    protected Action onCompleteCallback;
+    public event Action onCompleteCallback;
+    /// <summary>Workaround to the annoying limitation that children can't invoke a parent's event.</summary>
+    protected void onCompleteCallback_Invoke() => onCompleteCallback?.Invoke();
 
     /// <summary>
     /// Invoked when this task is started.

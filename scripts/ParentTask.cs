@@ -25,7 +25,7 @@ public abstract class ParentTask : Task
     {
         complete = false;
         hints.Clear();
-        this.onCompleteCallback = onCompleteCallback;
+        this.onCompleteCallback += onCompleteCallback;
         SetState_TaskStart();
         foreach (var subtask in subtasks)
             subtask.Start(OnSubtaskComplete);
@@ -38,7 +38,7 @@ public abstract class ParentTask : Task
         foreach (var subtask in subtasks)
             subtask.SetState_TaskComplete();
         if (invokeOnCompleteCallback)
-            onCompleteCallback.Invoke();
+            onCompleteCallback_Invoke();
     }
 
     private void OnSubtaskComplete()

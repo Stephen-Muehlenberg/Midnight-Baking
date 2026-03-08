@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bgynfmqtkqr7h"]
+
+[ext_resource type="Texture2D" uid="uid://by4fn471bye2m" path="res://images/mesh.jpeg" id="1_rm6gn"]
+
+[resource]
+transparency = 2
+alpha_scissor_threshold = 0.471
+alpha_antialiasing_mode = 0
+albedo_color = Color(0.906519, 0.911435, 0.920561, 1)
+albedo_texture = ExtResource("1_rm6gn")
+metallic = 1.0
+metallic_specular = 1.0
+roughness = 0.36
+uv1_scale = Vector3(10, 10, 1)

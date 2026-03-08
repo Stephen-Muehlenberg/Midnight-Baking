@@ -513,63 +513,32 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             subtasks.Add(new Group4_SubCups());
-            subtasks.Add(new Group4_SubBowl());
-//            hints.Add("Get bowl, sieve, measuring cups, and measuring spoons on bench");
-  //          Game.MixingBowlMedium.AddClickListener(OnBowlPickedUp);
+            var bowlTask = new Group4_SubBowl();
+            bowlTask.onCompleteCallback += OnBowlPlaced;
+            subtasks.Add(bowlTask);
+            
+            Game.BenchPrepArea.AddClickListener(OnBowlPlaced, highlight: false);
         }
-
-        private void OnBowlPickedUp()
-        {
-            var bowl = Game.MixingBowlMedium;
-            bowl.RemoveClickListener(OnBowlPickedUp);
-            Player.HoldItem(bowl);
-            Game.BenchPrepArea.AddClickListener(OnBowlPlaced);
-        }
-
+        
         private void OnBowlPlaced()
         {
-            var bench = Game.BenchPrepArea;
-            bench.RemoveClickListener(OnBowlPlaced);
-            Game.MixingBowlMedium.SetPlacement(bench.mixingBowlPlacement);
-            hints.Add("Place sieve in bowl");
-            Game.Sieve.AddClickListener(OnSievePickedUp);
-        }
-
-        private void OnSievePickedUp()
-        {
-            var sieve = Game.Sieve;
-            sieve.RemoveClickListener(OnSievePickedUp);
-            Player.HoldItem(sieve);
-            Game.MixingBowlMedium.AddClickListener(OnSievePlaced);
-        }
-
-        private void OnSievePlaced()
-        {
-            var bowl = Game.MixingBowlMedium;
-            var sieve =  Game.Sieve;
-            sieve.SetPlacement(bowl);
-            hints.Add("Get measuring cups and spoons");
+            subtasks.Add(new Group4_SubSieve());
         }
 
         public override void Complete(bool invokeOnCompleteCallback = true)
         {
-            var bench = Game.BenchPrepArea;
-            bench.RemoveClickListener(OnBowlPlaced);
-            var bowl = Game.MixingBowlMedium;
-            bowl.RemoveClickListener(OnBowlPickedUp);
-            var sieve = Game.Sieve;
-            sieve.RemoveClickListener(OnSievePickedUp);
-            Game.MixingBowlMedium.SetPlacement(bench.mixingBowlPlacement);
-            
+            Game.BenchPrepArea.RemoveClickListener(OnBowlPlaced);
         }
     }
     private class Group4_SubCups : Subtask
     {
         public override string description => "Get measuring cups (1 cup and 1/2 cup)";
+        private int cupsPickedUp;
         private int cupsPlaced;
         
         public override void SetState_TaskStart()
         {
+            cupsPickedUp = 0;
             cupsPlaced = 0;
             var drawer = Game.DrawerUtensils;
             drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
@@ -581,13 +550,14 @@ public static class Tasks
         {
             var drawer = Game.DrawerUtensils;
             drawer.RemoveClickListener(OnDrawerClicked);
-            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
+            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen && cupsPickedUp < 2);
         }
 
         private void OnCupOnePickedUp()
         {
             if (!Player.canHoldItem) return;
 
+            cupsPickedUp++;
             var cup = Game.MeasuringCupOne;
             cup.RemoveClickListener(OnCupOnePickedUp);
             Player.HoldItem(cup);
@@ -598,6 +568,7 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
 
+            cupsPickedUp++;
             var cup = Game.MeasuringCupHalf;
             cup.RemoveClickListener(OnCupHalfPickedUp);
             Player.HoldItem(cup);
@@ -658,6 +629,34 @@ public static class Tasks
             bowl.RemoveClickListener(OnBowlClicked);
             bench.RemoveClickListener(Complete);
             bowl.SetPlacement(bench.mixingBowlPlacement);
+        }
+    }
+    private class Group4_SubSieve : Subtask
+    {
+        public override string description => "Get sieve";
+
+        public override void SetState_TaskStart()
+        {
+            Game.Sieve.AddClickListener(OnSieveClicked);
+        }
+
+        private void OnSieveClicked()
+        {
+            if (!Player.canHoldItem) return;
+            
+            var sieve = Game.Sieve;
+            sieve.RemoveClickListener(OnSieveClicked);
+            Player.HoldItem(sieve);
+            Game.MixingBowlMedium.AddClickListener(Complete);
+        }
+
+        public override void SetState_TaskComplete()
+        {
+            var sieve = Game.Sieve;
+            var bowl = Game.MixingBowlMedium;
+            sieve.RemoveClickListener(OnSieveClicked);
+            bowl.RemoveClickListener(Complete);
+            sieve.SetPlacement(bowl.sievePivot);
         }
     }
     #endregion

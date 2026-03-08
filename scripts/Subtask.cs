@@ -11,14 +11,15 @@ public abstract class Subtask : Task
         complete = false;
         hints.Clear();
         SetState_TaskStart();
-        this.onCompleteCallback = onCompleteCallback;
+        this.onCompleteCallback += onCompleteCallback;
     }
-    
+
     public override void Complete(bool invokeOnCompleteCallback = true)
     {
         complete = true;
         SetState_TaskComplete();
         if (invokeOnCompleteCallback)
-            onCompleteCallback.Invoke();
+            onCompleteCallback_Invoke();
+        
     }
 }

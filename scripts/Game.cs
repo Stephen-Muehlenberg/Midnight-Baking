@@ -43,7 +43,7 @@ public partial class Game : Node
     public static Pickupable MeasuringCupOne => Interactables[ItemId.MEASURING_CUP_ONE] as Pickupable;
     public static Pickupable MeasuringCupHalf => Interactables[ItemId.MEASURING_CUP_HALF] as Pickupable;
     public static Pickupable MeasuringSpoon => Interactables[ItemId.MEASURING_SPOON] as Pickupable;
-    public static Pickupable MixingBowlMedium => Interactables[ItemId.MIXING_BOWL_MEDIUM] as Pickupable;
+    public static MixingBowlMedium MixingBowlMedium => Interactables[ItemId.MIXING_BOWL_MEDIUM] as MixingBowlMedium;
     public static Pickupable Sieve => Interactables[ItemId.SIEVE] as Pickupable;
     public static Interactable Sink => Interactables[ItemId.SINK];
     public static Interactable Soap => Interactables[ItemId.SOAP];
