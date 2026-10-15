@@ -77,12 +77,12 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             hints.Add("Turn on the lights by using the light switch by the door");
-            Game.LightSwitch.AddClickListener(Complete);
+            Item.LightSwitch.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var lights = Game.LightSwitch;
+            var lights = Item.LightSwitch;
             lights.RemoveClickListener(Complete);
             lights.SetLightOn(true);
         }
@@ -95,12 +95,12 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             hints.Add("(It's on the pantry door)");
-            Game.Apron.AddClickListener(Complete);
+            Item.Apron.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var apron = Game.Apron;
+            var apron = Item.Apron;
             apron.RemoveClickListener(Complete);
             apron.SetApronVisible(false);
         }
@@ -112,31 +112,31 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             hints.Add("Use sink");
-            Game.Sink.AddClickListener(OnSinkClicked);
+            Item.Sink.AddClickListener(OnSinkClicked);
         }
 
         private void OnSinkClicked()
         {
             GD.Print("OnSinkClicked()");
-            Game.Sink.RemoveClickListener(OnSinkClicked);
-            Game.Soap.AddClickListener(OnSoapClicked);
+            Item.Sink.RemoveClickListener(OnSinkClicked);
+            Item.Soap.AddClickListener(OnSoapClicked);
             hints.Add("Use soap");
             Game.UpdateUi();
         }
 
         private void OnSoapClicked()
         {
-            Game.Soap.RemoveClickListener(OnSoapClicked);
-            Game.Towel.AddClickListener(Complete);
+            Item.Soap.RemoveClickListener(OnSoapClicked);
+            Item.Towel.AddClickListener(Complete);
             hints.Add("Dry hands on towel");
             Game.UpdateUi();
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.Sink.RemoveClickListener(OnSinkClicked);
-            Game.Soap.RemoveClickListener(OnSoapClicked);
-            Game.Towel.RemoveClickListener(Complete);
+            Item.Sink.RemoveClickListener(OnSinkClicked);
+            Item.Soap.RemoveClickListener(OnSoapClicked);
+            Item.Towel.RemoveClickListener(Complete);
         }
     }
 
@@ -147,12 +147,12 @@ public static class Tasks
         public override void SetState_TaskStart()
         {
             hints.Add("Click on the tablet");
-            Game.Tablet.AddClickListener(Complete);
+            Item.Tablet.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var tablet = Game.Tablet;
+            var tablet = Item.Tablet;
             tablet.RemoveClickListener(Complete);
             tablet.SetTabletOn(true);
         }
@@ -179,35 +179,36 @@ public static class Tasks
         public override string description => "Butter";
         public override void SetState_TaskStart()
         {
-            var fridge = Game.Fridge;
+            var fridge = Item.Fridge;
             fridge.AddClickListener(OnFridgeClicked, highlight: !fridge.isOpen);
-            Game.Butter.AddClickListener(OnButterPickedUp);
+            Item.Butter.AddClickListener(OnButterPickedUp);
         }
 
         private void OnFridgeClicked()
         {
-            var fridge = Game.Fridge;
+            var fridge = Item.Fridge;
             fridge.RemoveClickListener(OnFridgeClicked);
             fridge.AddClickListener(OnFridgeClicked, highlight: !fridge.isOpen);
         }
 
         private void OnButterPickedUp()
         {
+            if (!Player.CanHoldItem(Interactable.Requirement.ONE_HAND))
             if (!Player.canHoldItem) return;
             
-            Game.Fridge.RemoveClickListener(OnFridgeClicked);
-            var butter = Game.Butter;
+            Item.Fridge.RemoveClickListener(OnFridgeClicked);
+            var butter = Item.Butter;
             butter.RemoveClickListener(OnButterPickedUp);
             Player.HoldItem(butter);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.Fridge.RemoveClickListener(OnFridgeClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.Fridge.RemoveClickListener(OnFridgeClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var butter = Game.Butter;
+            var butter = Item.Butter;
             butter.RemoveClickListener(OnButterPickedUp);
             butter.SetPlacement(benchPrepArea.butterPlacement);
         }
@@ -218,14 +219,14 @@ public static class Tasks
         public override string description => "Eggs";
         public override void SetState_TaskStart()
         {
-            var fridge = Game.Fridge;
+            var fridge = Item.Fridge;
             fridge.AddClickListener(OnFridgeClicked, highlight: !fridge.isOpen);
-            Game.EggCarton.AddClickListener(OnCartonPickedUp);
+            Item.EggCarton.AddClickListener(OnCartonPickedUp);
         }
 
         private void OnFridgeClicked()
         {
-            var fridge = Game.Fridge;
+            var fridge = Item.Fridge;
             fridge.RemoveClickListener(OnFridgeClicked);
             fridge.AddClickListener(OnFridgeClicked, highlight: !fridge.isOpen);
         }
@@ -234,19 +235,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.Fridge.RemoveClickListener(OnFridgeClicked);
-            var eggCarton = Game.EggCarton;
+            Item.Fridge.RemoveClickListener(OnFridgeClicked);
+            var eggCarton = Item.EggCarton;
             eggCarton.RemoveClickListener(OnCartonPickedUp);
             Player.HoldItem(eggCarton);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.Fridge.RemoveClickListener(OnFridgeClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.Fridge.RemoveClickListener(OnFridgeClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var eggCarton = Game.EggCarton;
+            var eggCarton = Item.EggCarton;
             eggCarton.RemoveClickListener(OnCartonPickedUp);
             eggCarton.SetPlacement(benchPrepArea.eggCartonPlacement);
         }
@@ -257,14 +258,14 @@ public static class Tasks
         public override string description => "Flour";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.FlourJar.AddClickListener(OnFlourClicked);
+            Item.FlourJar.AddClickListener(OnFlourClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -273,19 +274,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var flour = Game.FlourJar;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var flour = Item.FlourJar;
             flour.RemoveClickListener(OnFlourClicked);
             Player.HoldItem(flour);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var flour = Game.FlourJar;
+            var flour = Item.FlourJar;
             flour.RemoveClickListener(OnFlourClicked);
             flour.SetPlacement(benchPrepArea.flourPlacement);
         }
@@ -296,14 +297,14 @@ public static class Tasks
         public override string description => "Sugar";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.SugarJar.AddClickListener(OnSugarClicked);
+            Item.SugarJar.AddClickListener(OnSugarClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -312,19 +313,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var sugar = Game.SugarJar;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var sugar = Item.SugarJar;
             sugar.RemoveClickListener(OnSugarClicked);
             Player.HoldItem(sugar);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var sugar = Game.SugarJar;
+            var sugar = Item.SugarJar;
             sugar.RemoveClickListener(OnSugarClicked);
             sugar.SetPlacement(benchPrepArea.sugarPlacement);
         }
@@ -335,14 +336,14 @@ public static class Tasks
         public override string description => "Brown sugar";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.BrownSugarJar.AddClickListener(OnSugarClicked);
+            Item.BrownSugarJar.AddClickListener(OnSugarClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -351,19 +352,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var sugar = Game.BrownSugarJar;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var sugar = Item.BrownSugarJar;
             sugar.RemoveClickListener(OnSugarClicked);
             Player.HoldItem(sugar);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var sugar = Game.BrownSugarJar;
+            var sugar = Item.BrownSugarJar;
             sugar.RemoveClickListener(OnSugarClicked);
             sugar.SetPlacement(benchPrepArea.brownSugarPlacement);
         }
@@ -374,14 +375,14 @@ public static class Tasks
         public override string description => "Bicarb soda";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.BakingSoda.AddClickListener(OnSodaClicked);
+            Item.BakingSoda.AddClickListener(OnSodaClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -390,19 +391,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var soda = Game.BakingSoda;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var soda = Item.BakingSoda;
             soda.RemoveClickListener(OnSodaClicked);
             Player.HoldItem(soda);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var soda = Game.BakingSoda;
+            var soda = Item.BakingSoda;
             soda.RemoveClickListener(OnSodaClicked);
             soda.SetPlacement(benchPrepArea.bakingSodaPlacement);
         }
@@ -413,14 +414,14 @@ public static class Tasks
         public override string description => "Vanilla extract";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.VanillaJar.AddClickListener(OnVanillaClicked);
+            Item.VanillaJar.AddClickListener(OnVanillaClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -429,19 +430,19 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var vanilla = Game.VanillaJar;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var vanilla = Item.VanillaJar;
             vanilla.RemoveClickListener(OnVanillaClicked);
             Player.HoldItem(vanilla);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var vanilla = Game.VanillaJar;
+            var vanilla = Item.VanillaJar;
             vanilla.RemoveClickListener(OnVanillaClicked);
             vanilla.SetPlacement(benchPrepArea.vanillaPlacement);
         }
@@ -452,14 +453,14 @@ public static class Tasks
         public override string description => "Dark chocolate chips";
         public override void SetState_TaskStart()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
-            Game.ChocChipBag.AddClickListener(OnChocClicked);
+            Item.ChocChipBag.AddClickListener(OnChocClicked);
         }
 
         private void OnCupboardClicked()
         {
-            var cupboard = Game.CupboardUpper;
+            var cupboard = Item.CupboardUpper;
             cupboard.RemoveClickListener(OnCupboardClicked);
             cupboard.AddClickListener(OnCupboardClicked, highlight: !cupboard.isOpen);
         }
@@ -468,20 +469,20 @@ public static class Tasks
         {
             if (!Player.canHoldItem) return;
             
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var chocChips = Game.ChocChipBag;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var chocChips = Item.ChocChipBag;
             chocChips.RemoveClickListener(OnChocClicked);
             Player.HoldItem(chocChips);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
             GD.Print("ChocChips.SetTaskComplete()");
-            Game.CupboardUpper.RemoveClickListener(OnCupboardClicked);
-            var benchPrepArea = Game.BenchPrepArea;
+            Item.CupboardUpper.RemoveClickListener(OnCupboardClicked);
+            var benchPrepArea = Item.BenchPrepArea;
             benchPrepArea.RemoveClickListener(Complete);
-            var chocChips = Game.ChocChipBag;
+            var chocChips = Item.ChocChipBag;
             chocChips.RemoveClickListener(OnChocClicked);
             chocChips.SetPlacement(benchPrepArea.chocChipsPlacement);
         }
@@ -494,12 +495,12 @@ public static class Tasks
         public override string description => "Preheat oven to 170°c";
         public override void SetState_TaskStart()
         {
-            Game.Oven.TemperatureDial.AddClickListener(Complete);
+            Item.Oven.TemperatureDial.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var oven = Game.Oven;
+            var oven = Item.Oven;
             oven.TemperatureDial.RemoveClickListener(Complete);
             oven.SetOn(true);
         }
@@ -516,18 +517,15 @@ public static class Tasks
             var bowlTask = new Group4_SubBowl();
             bowlTask.onCompleteCallback += OnBowlPlaced;
             subtasks.Add(bowlTask);
-            
-            Game.BenchPrepArea.AddClickListener(OnBowlPlaced, highlight: false);
         }
         
         private void OnBowlPlaced()
         {
-            subtasks.Add(new Group4_SubSieve());
+            AddSubtask(new Group4_SubSieve(), startSubtask: true);
         }
 
         public override void Complete(bool invokeOnCompleteCallback = true)
         {
-            Game.BenchPrepArea.RemoveClickListener(OnBowlPlaced);
         }
     }
     private class Group4_SubCups : Subtask
@@ -540,15 +538,15 @@ public static class Tasks
         {
             cupsPickedUp = 0;
             cupsPlaced = 0;
-            var drawer = Game.DrawerUtensils;
+            var drawer = Item.DrawerUtensils;
             drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
-            Game.MeasuringCupOne.AddClickListener(OnCupOnePickedUp);
-            Game.MeasuringCupHalf.AddClickListener(OnCupHalfPickedUp);
+            Item.MeasuringCupOne.AddClickListener(OnCupOnePickedUp);
+            Item.MeasuringCupHalf.AddClickListener(OnCupHalfPickedUp);
         }
 
         private void OnDrawerClicked()
         {
-            var drawer = Game.DrawerUtensils;
+            var drawer = Item.DrawerUtensils;
             drawer.RemoveClickListener(OnDrawerClicked);
             drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen && cupsPickedUp < 2);
         }
@@ -558,10 +556,10 @@ public static class Tasks
             if (!Player.canHoldItem) return;
 
             cupsPickedUp++;
-            var cup = Game.MeasuringCupOne;
+            var cup = Item.MeasuringCupOne;
             cup.RemoveClickListener(OnCupOnePickedUp);
             Player.HoldItem(cup);
-            Game.BenchPrepArea.AddClickListener(OnBenchClicked);
+            Item.BenchPrepArea.AddClickListener(OnBenchClicked);
         }
 
         private void OnCupHalfPickedUp()
@@ -569,10 +567,10 @@ public static class Tasks
             if (!Player.canHoldItem) return;
 
             cupsPickedUp++;
-            var cup = Game.MeasuringCupHalf;
+            var cup = Item.MeasuringCupHalf;
             cup.RemoveClickListener(OnCupHalfPickedUp);
             Player.HoldItem(cup);
-            Game.BenchPrepArea.AddClickListener(OnBenchClicked);
+            Item.BenchPrepArea.AddClickListener(OnBenchClicked);
         }
 
         private void OnBenchClicked()
@@ -584,9 +582,9 @@ public static class Tasks
                 return;
             }
             var cup = Player.heldItem;
-            var bench = Game.BenchPrepArea;
+            var bench = Item.BenchPrepArea;
             bench.RemoveClickListener(OnBenchClicked);
-            var newPosition = cup.itemId == Game.ItemId.MEASURING_CUP_ONE
+            var newPosition = cup.idTest == Item.Id.Measuring_FullCup
                 ? bench.measuringCupOnePlacement
                 : bench.measuringCupHalfPlacement;
             cup.SetPlacement(newPosition);
@@ -594,10 +592,10 @@ public static class Tasks
 
         public override void SetState_TaskComplete()
         {
-            var cupOne = Game.MeasuringCupOne;
-            var cupHalf = Game.MeasuringCupHalf;
-            var bench = Game.BenchPrepArea;
-            Game.DrawerUtensils.RemoveClickListener(OnDrawerClicked);
+            var cupOne = Item.MeasuringCupOne;
+            var cupHalf = Item.MeasuringCupHalf;
+            var bench = Item.BenchPrepArea;
+            Item.DrawerUtensils.RemoveClickListener(OnDrawerClicked);
             bench.RemoveClickListener(OnBenchClicked);
             cupOne.RemoveClickListener(OnCupOnePickedUp);
             cupHalf.RemoveClickListener(OnCupHalfPickedUp);
@@ -611,21 +609,21 @@ public static class Tasks
 
         public override void SetState_TaskStart()
         {
-            Game.MixingBowlMedium.AddClickListener(OnBowlClicked);
+            Item.MixingBowlMedium.AddClickListener(OnBowlClicked);
         }
 
         private void OnBowlClicked()
         {
-            var bowl = Game.MixingBowlMedium;
+            var bowl = Item.MixingBowlMedium;
             bowl.RemoveClickListener(OnBowlClicked);
             Player.HoldItem(bowl);
-            Game.BenchPrepArea.AddClickListener(Complete);
+            Item.BenchPrepArea.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var bowl = Game.MixingBowlMedium;
-            var bench = Game.BenchPrepArea;
+            var bowl = Item.MixingBowlMedium;
+            var bench = Item.BenchPrepArea;
             bowl.RemoveClickListener(OnBowlClicked);
             bench.RemoveClickListener(Complete);
             bowl.SetPlacement(bench.mixingBowlPlacement);
@@ -637,23 +635,25 @@ public static class Tasks
 
         public override void SetState_TaskStart()
         {
-            Game.Sieve.AddClickListener(OnSieveClicked);
+            Item.Sieve.AddClickListener(OnSieveClicked);
+            GD.Print("SubSieve.SetState_TaskStart() - ");
         }
 
         private void OnSieveClicked()
         {
+            GD.Print("OnSieveClicked");
             if (!Player.canHoldItem) return;
             
-            var sieve = Game.Sieve;
+            var sieve = Item.Sieve;
             sieve.RemoveClickListener(OnSieveClicked);
             Player.HoldItem(sieve);
-            Game.MixingBowlMedium.AddClickListener(Complete);
+            Item.MixingBowlMedium.AddClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()
         {
-            var sieve = Game.Sieve;
-            var bowl = Game.MixingBowlMedium;
+            var sieve = Item.Sieve;
+            var bowl = Item.MixingBowlMedium;
             sieve.RemoveClickListener(OnSieveClicked);
             bowl.RemoveClickListener(Complete);
             sieve.SetPlacement(bowl.sievePivot);

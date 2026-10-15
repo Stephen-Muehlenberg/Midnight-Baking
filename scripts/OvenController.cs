@@ -13,7 +13,7 @@ public partial class OvenController : Node3D, Resetable
     public override void _Ready()
     {
         Door.AddClickListener(OnDoorClicked, highlight: false);
-        Game.Oven = this;
+        Item.Oven = this;
     }
 
     public void ResetToGameStartState()

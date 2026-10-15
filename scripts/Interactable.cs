@@ -1,13 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
+/// <summary>
+/// A physical object in the scene which the player can interact with.
+/// <br/><br/>The object's name <b>must</b> uniquely match with a corresponding <see cref="Item.Id"/>.
+/// Case, spaces, and underscores are ignored when checking for a match, e.g. "Foo 1", "foo1", and "FOO_1"
+/// are interchangeable.
+/// </summary>
 public partial class Interactable : Node3D, Resetable
 {
-    [Export] public Game.ItemId itemId;
+    public Item.Id idTest { get; private set; }
     [Export] public bool interactionRequiresFreeHands = false;
     /// <summary>Meshes to highlight when this object's interactions are enabled.</summary>
     [Export] public MeshInstance3D[] highlightMeshes;
@@ -20,7 +27,7 @@ public partial class Interactable : Node3D, Resetable
     
     public enum Requirement { ANY, ONE_HAND, BOTH_HANDS }
 
-    protected Dictionary<Action, Requirement> pendingInteractions = new();
+    protected System.Collections.Generic.Dictionary<Action, Requirement> pendingInteractions = new();
 
     public void AddInteraction(Action callback, Requirement requirement = Requirement.ANY)
     {
@@ -34,10 +41,20 @@ public partial class Interactable : Node3D, Resetable
     
     public override void _Ready()
     {
-        Game.RegisterInteractable(this);
+        idTest = Item.RegisterInteractable(this);
         if (interactionRequiresFreeHands)
             Player.RegisterItemHoldChangedListener(UpdateHighlights);
     }
+
+    /// <summary>
+    /// Set this Interactable's state based on a game state stored as json.
+    /// </summary>
+    public virtual void LoadState(Dictionary json) { }
+
+    /// <summary>
+    /// Save this Interactable's state to json.
+    /// </summary>
+    public virtual void SaveState(Dictionary json) { }
 
     public void ResetToGameStartState() => _ResetToGameStartState();
     

@@ -18,7 +18,7 @@ public abstract class ParentTask : Task
         hints.Clear();
         SetState_GameState();
         foreach (Subtask subtask in subtasks)
-            SetState_GameState();
+            subtask.SetState_GameState();
     }
 
     public override void Start(Action onCompleteCallback)
@@ -28,6 +28,21 @@ public abstract class ParentTask : Task
         this.onCompleteCallback += onCompleteCallback;
         SetState_TaskStart();
         foreach (var subtask in subtasks)
+            subtask.Start(OnSubtaskComplete);
+    }
+
+    /// <summary>
+    /// Adds the new subtask, and optionally starts it.
+    /// <br/>
+    /// <br/>If adding subtasks after <see cref="Start"/> has been called,
+    /// prefer this method over directly modifying the subtask List, as this method
+    /// explicitly requires you to choose whether to start to the subtask or not.
+    /// Helps prevent adding the task but forgetting to start it.
+    /// </summary>
+    protected void AddSubtask(Subtask subtask, bool startSubtask)
+    {
+        subtasks.Add(subtask);
+        if (startSubtask)
             subtask.Start(OnSubtaskComplete);
     }
 

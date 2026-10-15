@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://cm4gfi5d7kmyo"]
+
+[ext_resource type="Script" uid="uid://b8ameibx46r1d" path="res://scripts/interactables/Radio.cs" id="1_3mpwk"]
+[ext_resource type="Material" uid="uid://b2kphtsfuelri" path="res://materials/plastic_red_bright.tres" id="1_ldjbc"]
+[ext_resource type="Material" uid="uid://cfva48bh0bmur" path="res://materials/plastic_grey.tres" id="2_7h80l"]
+[ext_resource type="AudioStream" uid="uid://cafgpjyda3qx" path="res://audio/radio/jazz2.mp3" id="2_hhhqh"]
+[ext_resource type="AudioStream" uid="uid://e5x88lwem834" path="res://audio/radio/classical1.mp3" id="2_wvvpt"]
+[ext_resource type="Material" uid="uid://bxbbwu6mfaub7" path="res://materials/metal_stainless_steel.tres" id="3_7h80l"]
+[ext_resource type="AudioStream" uid="uid://6rplqfpan5ly" path="res://audio/radio/jazz1.mp3" id="3_ppvrc"]
+[ext_resource type="AudioStream" uid="uid://kgf47ygs6xu" path="res://audio/radio/asmr1.mp3" id="5_q5v4t"]
+[ext_resource type="Script" uid="uid://yi2wfqhlo8us" path="res://scripts/InteractionTarget.cs" id="6_hhhqh"]
+[ext_resource type="AudioStream" uid="uid://ci20esqrk8jwb" path="res://audio/radio/static.mp3" id="6_ppvrc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mqkar"]
+material = ExtResource("1_ldjbc")
+size = Vector3(0.25, 0.15, 0.08)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4b7o3"]
+material = ExtResource("2_7h80l")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.01
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3s8qx"]
+material = ExtResource("3_7h80l")
+top_radius = 0.005
+bottom_radius = 0.005
+height = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fo3mb"]
+size = Vector3(0.25, 0.15, 0.08)
+
+[node name="Radio" type="Node3D" unique_id=1633245670 node_paths=PackedStringArray("stationPlayer", "staticPlayer", "highlightMeshes", "highlightCsgs")]
+transform = Transform3D(0.99951255, 0, 0.031218866, 0, 1, 0, -0.031218866, 0, 0.99951255, 0, 0, 0)
+script = ExtResource("1_3mpwk")
+stationPlayer = NodePath("AudioStreamPlayer - Station")
+staticPlayer = NodePath("AudioStreamPlayer - Static")
+classicalTracks = Array[AudioStream]([ExtResource("2_wvvpt")])
+jazzTracks = Array[AudioStream]([ExtResource("3_ppvrc"), ExtResource("2_hhhqh")])
+asmrTracks = Array[AudioStream]([ExtResource("5_q5v4t")])
+itemId = 28
+highlightMeshes = []
+highlightCsgs = []
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1655507066]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+mesh = SubResource("BoxMesh_mqkar")
+
+[node name="Speaker" type="MeshInstance3D" parent="." unique_id=1173222880]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.059293717, 0.060154364, -0.04022562)
+mesh = SubResource("CylinderMesh_4b7o3")
+
+[node name="Antenna" type="MeshInstance3D" parent="." unique_id=1903179750]
+transform = Transform3D(0.25881898, -0.9659258, 0, 0.9659258, 0.25881898, 0, 0, 0, 1, 0.019010877, 0.17094095, 0.029880717)
+mesh = SubResource("CylinderMesh_3s8qx")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1499130739]
+script = ExtResource("6_hhhqh")
+maxInteractionDistance = 1.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1591255901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+shape = SubResource("BoxShape3D_fo3mb")
+
+[node name="AudioStreamPlayer - Static" type="AudioStreamPlayer3D" parent="." unique_id=252316096]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06547111, 0.061507706, -0.051158987)
+stream = ExtResource("6_ppvrc")
+volume_db = -50.0
+unit_size = 50.0
+
+[node name="AudioStreamPlayer - Station" type="AudioStreamPlayer3D" parent="." unique_id=808434013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06547111, 0.061507706, -0.051158987)
+volume_db = -40.0
+unit_size = 50.0
+
+[connection signal="OnClicked" from="Area3D" to="." method="OnInteractableClicked"]

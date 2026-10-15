@@ -7,12 +7,25 @@ namespace MidnightBaking.scripts;
 public static class Player
 {
     public static Interactable heldItem { get; private set; }
+    public static Interactable heldItemLeft { get; private set; }
+    public static Interactable heldItemRight { get; private set; }
     public static bool canHoldItem => heldItem == null;
     private static readonly List<Action> OnItemHoldChangedCallbacks = new();
 
     public static void RegisterItemHoldChangedListener(Action callback)
     {
         OnItemHoldChangedCallbacks.Add(callback);
+    }
+
+    public static bool CanHoldItem(Interactable.Requirement requirement)
+    {
+        // Can be interacted with even with both hands full.
+        if (requirement == Interactable.Requirement.ANY) return true;
+        // Can be interacted with if either hand is empty.
+        if (requirement == Interactable.Requirement.ONE_HAND &&
+            (heldItemLeft == null || heldItemRight == null)) return true;
+        // Requires both hands to be empty.
+        return heldItemLeft == null && heldItemRight == null;
     }
 
     public static void HoldItem(Interactable item)

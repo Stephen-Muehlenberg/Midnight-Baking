@@ -66,7 +66,6 @@ public partial class ThunderController : Node
         // todo screen shake (rare)
         
         LightningTest(lightning.intensity);
-//        PlayThunderSound();
         GetTree().CreateTimer(lightning.audioDelay).Timeout += PlayThunderSound;
         
         timeTillNextLightning = GetRandomTimeTillNextLightning();
