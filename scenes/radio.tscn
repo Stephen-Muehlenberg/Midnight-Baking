@@ -30,17 +30,18 @@ height = 0.2
 [sub_resource type="BoxShape3D" id="BoxShape3D_fo3mb"]
 size = Vector3(0.25, 0.15, 0.08)
 
-[node name="Radio" type="Node3D" unique_id=1633245670 node_paths=PackedStringArray("stationPlayer", "staticPlayer", "highlightMeshes", "highlightCsgs")]
+[node name="Radio" type="Node3D" unique_id=1633245670 node_paths=PackedStringArray("nowPlayingLabel", "stationPlayer", "staticPlayer", "highlightMeshes", "highlightCsgs")]
 transform = Transform3D(0.99951255, 0, 0.031218866, 0, 1, 0, -0.031218866, 0, 0.99951255, 0, 0, 0)
 script = ExtResource("1_3mpwk")
+nowPlayingLabel = NodePath("Now playing label")
 stationPlayer = NodePath("AudioStreamPlayer - Station")
 staticPlayer = NodePath("AudioStreamPlayer - Static")
 classicalTracks = Array[AudioStream]([ExtResource("2_wvvpt")])
 jazzTracks = Array[AudioStream]([ExtResource("3_ppvrc"), ExtResource("2_hhhqh")])
 asmrTracks = Array[AudioStream]([ExtResource("5_q5v4t")])
-itemId = 28
-highlightMeshes = []
+highlightMeshes = [NodePath("Body"), NodePath("Speaker"), NodePath("Antenna")]
 highlightCsgs = []
+requirement = 1
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=1655507066]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
@@ -72,5 +73,10 @@ unit_size = 50.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06547111, 0.061507706, -0.051158987)
 volume_db = -40.0
 unit_size = 50.0
+
+[node name="Now playing label" type="Label3D" parent="." unique_id=1812247869]
+transform = Transform3D(-1, 2.0493e-08, -8.498694e-08, 0, 0.9721372, 0.2344126, 8.742278e-08, 0.2344126, -0.9721372, 0, 0.241, 0)
+pixel_size = 0.0015
+text = "Now Playing: Jazz"
 
 [connection signal="OnClicked" from="Area3D" to="." method="OnInteractableClicked"]

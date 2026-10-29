@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 namespace MidnightBaking.scripts.ui;
@@ -36,6 +35,19 @@ public partial class MainMenu : Control
             float fadeFraction = fadeTime / FADE_IN_DURATION;
             blackFadeFill.Color = new Color(0,0,0, 1-fadeFraction);
         }
+    }
+    
+    // This is just temporary debugging shortcuts. Can remove later.
+    public override void _Input(InputEvent @event)
+    {
+        if (!Visible) return;
+        
+        if (@event is not InputEventKey keyEvent || !keyEvent.Pressed) return;
+
+        if (keyEvent.Keycode == Key.Equal)
+            OnStartClicked();
+        else if (keyEvent.Keycode == Key.Q)
+            GetTree().Quit();
     }
 
     public void OnStartClicked()

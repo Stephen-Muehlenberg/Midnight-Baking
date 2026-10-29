@@ -3,17 +3,17 @@ using Godot;
 
 namespace MidnightBaking.scripts.interactables;
 
-public partial class EggCarton : Interactable
+public partial class EggCarton : Pickupable
 {
-    [Export] private Node3D fridgeCartonPlacement;
- //   [Export] private Node3D lid;
+    [Export] public Node3D positionBenchPrepArea { get; private set; }
+    protected override Node3D[] GetLocations() => [positionBenchPrepArea];
+    
+    //   [Export] private Node3D lid;
   //  [Export] private Node3D egg1;
    // [Export] private Node3D egg2;
     
     protected override void _ResetToGameStartState()
     {
-        // Reset position and rotation to fridge starting state.
-        SetPlacement(fridgeCartonPlacement);
         SetLidOpen(false);
         SetEggsMissing(0);
     }

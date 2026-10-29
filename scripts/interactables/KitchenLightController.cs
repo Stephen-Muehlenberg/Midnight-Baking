@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Godot;
+using Godot.Collections;
 
 namespace MidnightBaking.scripts.interactables;
 
@@ -46,5 +48,15 @@ public partial class KitchenLightController : Interactable
         }
         
         lightSwitch.RotationDegrees = new Vector3(on ? -30 : 30, 0, 0);
+    }
+
+    public override void Save(Dictionary data)
+    {
+        data["on"] = lightOn;
+    }
+
+    public override void Load(Dictionary data)
+    {
+        SetLightOn(data["on"].AsBool());
     }
 }

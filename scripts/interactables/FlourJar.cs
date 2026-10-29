@@ -1,15 +1,22 @@
-using System;
+using System.Linq;
 using Godot;
 
 namespace MidnightBaking.scripts.interactables;
 
-public partial class FlourJar : Interactable
+public partial class FlourJar : Pickupable
 {
-    [Export] private Node3D jarPlacement;
-    
-    protected override void _ResetToGameStartState()
+    [Export] public FlourJarLid Lid { get; private set; }
+    [Export] public Node3D positionBenchPrepArea { get; private set; }
+    protected override Node3D[] GetLocations() => [positionBenchPrepArea];
+    private bool lidAttached = true;
+
+    public void SetLidAttached(bool attached)
     {
-        // Reset position and rotation to fridge starting state.
-        SetPlacement(jarPlacement);
-    }
+        if (lidAttached == attached) return;
+        lidAttached = attached;
+//        foreach (var mesh in Lid.highlightMeshes)
+  //          highlightMeshes
+//        highlightMeshes.
+        // TODO include / remove lid mesh from highlight meshes, depending on whether lid is attached or not.
+    } 
 }

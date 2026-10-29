@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using Godot;
 
-namespace MidnightBaking.scripts;
+namespace MidnightBaking.scripts.tasks;
 
 public abstract class Subtask : Task
 {
@@ -14,12 +12,12 @@ public abstract class Subtask : Task
         this.onCompleteCallback += onCompleteCallback;
     }
 
-    public override void Complete(bool invokeOnCompleteCallback = true)
+    public override void Complete(bool invokeOnCompleteCallback)
     {
         complete = true;
+        DoTeardown();
         SetState_TaskComplete();
         if (invokeOnCompleteCallback)
             onCompleteCallback_Invoke();
-        
     }
 }

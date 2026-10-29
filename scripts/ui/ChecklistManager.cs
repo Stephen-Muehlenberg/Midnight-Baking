@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Godot;
+using MidnightBaking.scripts.tasks;
 
 namespace MidnightBaking.scripts.ui;
 
 public partial class ChecklistManager : VBoxContainer
 {
-    private List<ui.ChecklistItem> items = new();
+    private readonly List<ChecklistItem> items = new();
 
     public override void _Ready()
     {
@@ -22,7 +23,7 @@ public partial class ChecklistManager : VBoxContainer
         public bool isComplete = isComplete;
     }
 
-    public void Show(Tasks.TaskGroup taskGroup)
+    public void Show(TaskGroup taskGroup)
     {
         var entries = MapTaskGroupToEntries(taskGroup);
         SetChecklistItemCount(entries.Count);
@@ -33,7 +34,7 @@ public partial class ChecklistManager : VBoxContainer
         }
     }
     
-    private static List<Entry> MapTaskGroupToEntries(Tasks.TaskGroup taskGroup)
+    private static List<Entry> MapTaskGroupToEntries(TaskGroup taskGroup)
     {
         List<Entry> entries = new();
 

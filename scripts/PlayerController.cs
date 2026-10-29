@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
 using Godot;
+using Godot.Collections;
+using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
@@ -13,10 +16,10 @@ public partial class PlayerController : CharacterBody3D
     private bool enabled = false;
     public bool canMove = true;
     public bool canLook = true;
-    private bool holdingItem = false;
-    public bool canHoldItem => !holdingItem;
 
-    [Export] public Node3D heldObjectPoint;
+    [Export] public Node3D heldObjectPointCentre;
+    [Export] public Node3D heldObjectPointLeftHand;
+    [Export] public Node3D heldObjectPointRightHand;
     [Export] private Control crosshair;
 
     [ExportGroup("Speeds")]
@@ -138,7 +141,7 @@ public partial class PlayerController : CharacterBody3D
             throw new Exception("Missing input map for back movement.");
     }
 
-    public void HoldItem(Interactable item)
+/*    public void HoldItem(Interactable item)
     {
         holdingItem = true;
         item.Reparent(heldObjectPoint);
@@ -149,5 +152,37 @@ public partial class PlayerController : CharacterBody3D
     public void StopHoldingItem()
     {
         holdingItem = false;
+    }*/
+
+    public void Save(Dictionary data)
+    {
+        data["position"] = Position;
+        Debug.Print($"player position data type: {data["position"].VariantType}");
+        data["rotation"] = new Vector2(head.Rotation.X, Rotation.Y);
+        data["right_hand"] = (int) (Player.heldItemRight?.id ?? 0);
+        data["left_hand"] = (int) (Player.heldItemLeft?.id ?? 0);
+    }
+
+    public void Load(Dictionary data)
+    {
+        Position = Utils.ParseVector3(data["position"]);
+        Vector2 rotation = Utils.ParseVector2(data["rotation"]);
+        head.SetRotation(new Vector3(rotation.X, 0, 0));
+        SetRotation(new Vector3(0, rotation.Y, 0));
+        
+        // TODO unload any currently held items 
+        
+        var rightItemId = (ItemId) data["right_hand"].AsInt32();
+        var leftItemId = (ItemId) data["left_hand"].AsInt32();
+        if (rightItemId != ItemId.UNDEFINED)
+        {
+            var rightItem = Items.All[rightItemId] as Pickupable;
+            Player.HoldItem(rightItem);
+        }
+        if (leftItemId != ItemId.UNDEFINED && leftItemId != rightItemId)
+        {
+            var leftItem = Items.All[leftItemId] as Pickupable;
+            Player.HoldItem(leftItem);
+        }
     }
 }

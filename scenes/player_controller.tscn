@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://0sm1m8cgsy57"]
+[gd_scene format=3 uid="uid://0sm1m8cgsy57"]
 
 [ext_resource type="Script" uid="uid://crn07tsnkg0da" path="res://scripts/PlayerController.cs" id="1_d4y06"]
 [ext_resource type="Texture2D" uid="uid://b1r5h21nkt3t0" path="res://images/basic_particle.png" id="2_6agyq"]
@@ -15,36 +15,44 @@ height = 1.7
 radius = 0.3
 height = 1.7
 
-[node name="Player Controller" type="CharacterBody3D" node_paths=PackedStringArray("heldObjectPoint", "crosshair")]
+[node name="Player Controller" type="CharacterBody3D" unique_id=37985123 node_paths=PackedStringArray("heldObjectPointCentre", "heldObjectPointLeftHand", "heldObjectPointRightHand", "crosshair")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_d4y06")
-heldObjectPoint = NodePath("Head/Object Holding Point")
+heldObjectPointCentre = NodePath("Head/Object Holding Point Centre")
+heldObjectPointLeftHand = NodePath("Head/Object Holding Point Left")
+heldObjectPointRightHand = NodePath("Head/Object Holding Point Right")
 crosshair = NodePath("Crosshair Control")
 moveSpeed = 1.5
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1950351062]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_iof21")
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_ucva2")
 
-[node name="Collider" type="CollisionShape3D" parent="."]
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1952692961]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_iof21")
 
-[node name="Head" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+[node name="Head" type="Node3D" parent="." unique_id=220209089 node_paths=PackedStringArray("camera")]
 transform = Transform3D(1, 0, 0, 0, 0.996341, -0.0854691, 0, 0.0854691, 0.996341, 0, 1.4, 0)
 script = ExtResource("2_8xumb")
 camera = NodePath("Camera3D")
 
-[node name="Camera3D" type="Camera3D" parent="Head"]
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=548607285]
 
-[node name="Object Holding Point" type="Node3D" parent="Head"]
+[node name="Object Holding Point Right" type="Node3D" parent="Head" unique_id=355406193]
 transform = Transform3D(-0.351588, -0.0427345, -0.935179, -0.00434893, 0.999021, -0.0440169, 0.936145, -0.0114088, -0.35143, 0.230863, -0.0931382, -0.256446)
 
-[node name="Crosshair Control" type="Control" parent="."]
+[node name="Object Holding Point Centre" type="Node3D" parent="Head" unique_id=256621698]
+transform = Transform3D(0.99999416, 0.0034906503, 0, -0.0034873302, 0.9990418, -0.04361939, -0.00015226011, 0.043619107, 0.99904835, -1.9351805e-13, -0.091289684, -0.29517275)
+
+[node name="Object Holding Point Left" type="Node3D" parent="Head" unique_id=1674208315]
+transform = Transform3D(-0.35198218, 0.039601922, 0.93516874, -0.0034873302, 0.9990418, -0.04361939, -0.9360005, -0.018614478, -0.3515069, -0.231, -0.093, -0.256)
+
+[node name="Crosshair Control" type="Control" parent="." unique_id=1088342761]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -59,7 +67,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Crosshair Sprite" type="Sprite2D" parent="Crosshair Control"]
+[node name="Crosshair Sprite" type="Sprite2D" parent="Crosshair Control" unique_id=159993047]
 modulate = Color(1, 1, 1, 0.462745)
 scale = Vector2(0.075, 0.075)
 texture = ExtResource("2_6agyq")

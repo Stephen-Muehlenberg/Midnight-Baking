@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
+using Godot.Collections;
 
-namespace MidnightBaking.scripts;
+namespace MidnightBaking.scripts.tasks;
 
 public abstract class ParentTask : Task
 {
@@ -16,9 +16,9 @@ public abstract class ParentTask : Task
     {
         complete = false;
         hints.Clear();
-        SetState_GameState();
+        SetState_GameStart();
         foreach (Subtask subtask in subtasks)
-            subtask.SetState_GameState();
+            subtask.SetState_GameStart();
     }
 
     public override void Start(Action onCompleteCallback)
@@ -29,6 +29,14 @@ public abstract class ParentTask : Task
         SetState_TaskStart();
         foreach (var subtask in subtasks)
             subtask.Start(OnSubtaskComplete);
+    }
+
+    public void Cancel()
+    {
+        ClearOnCompleteCallbacks();
+        DoTeardown();
+        foreach (var subtask in subtasks)
+            subtask.DoTeardown();
     }
 
     /// <summary>
@@ -46,12 +54,16 @@ public abstract class ParentTask : Task
             subtask.Start(OnSubtaskComplete);
     }
 
-    public override void Complete(bool invokeOnCompleteCallback = true)
+    public override void Complete(bool invokeOnCompleteCallback)
     {
         complete = true;
+        DoTeardown();
         SetState_TaskComplete();
         foreach (var subtask in subtasks)
+        {
+            subtask.DoTeardown();
             subtask.SetState_TaskComplete();
+        }
         if (invokeOnCompleteCallback)
             onCompleteCallback_Invoke();
     }
@@ -62,5 +74,19 @@ public abstract class ParentTask : Task
             Complete();
         else
             Game.UpdateUi();
+    }
+
+    public override void Save(Dictionary data)
+    {
+        Dictionary parentTaskSaveData = new();
+        foreach (var subtask in subtasks)
+            subtask.Save(data);
+//        data[]
+    }
+
+    public override void Load(Dictionary data)
+    {
+        foreach (var subtask in subtasks)
+            subtask.Load(data);
     }
 }

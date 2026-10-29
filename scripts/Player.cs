@@ -1,49 +1,91 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
+using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts;
 
 public static class Player
 {
-    public static Interactable heldItem { get; private set; }
     public static Interactable heldItemLeft { get; private set; }
     public static Interactable heldItemRight { get; private set; }
-    public static bool canHoldItem => heldItem == null;
     private static readonly List<Action> OnItemHoldChangedCallbacks = new();
 
     public static void RegisterItemHoldChangedListener(Action callback)
+        => OnItemHoldChangedCallbacks.Add(callback);
+    
+    public static void RemoveItemHoldChangedListener(Action callback)
+        => OnItemHoldChangedCallbacks.Remove(callback);
+
+    public static string HeldItemsToString()
     {
-        OnItemHoldChangedCallbacks.Add(callback);
+        if (heldItemLeft == heldItemRight) return $"{heldItemLeft?.Name?.ToString() ?? "nothing"} (both hands)";
+        return $"{heldItemLeft?.Name?.ToString() ?? "nothing"} (left hand) and {heldItemRight?.Name?.ToString() ?? "nothing"} (right hand)";
     }
 
-    public static bool CanHoldItem(Interactable.Requirement requirement)
+    /// <summary>
+    /// Returns true if the player is holding the specified item (in one or both hands).
+    /// If no item is specified (null argument), then returns true only if <b>both</b>
+    /// hands are empty.
+    /// </summary>
+    public static bool IsHolding(Interactable item)
     {
-        // Can be interacted with even with both hands full.
-        if (requirement == Interactable.Requirement.ANY) return true;
-        // Can be interacted with if either hand is empty.
-        if (requirement == Interactable.Requirement.ONE_HAND &&
+        if (item == null) return heldItemLeft == null && heldItemRight == null;
+        return heldItemLeft == item || heldItemRight == item;
+    }
+    
+    public static bool CanInteract(Interactable item) => CanInteract(item.requirement);
+    public static bool CanInteract(Interactable.Requirement interactionRequirement)
+    {
+        if (interactionRequirement == Interactable.Requirement.NO_REQUIREMENT) return true;
+        if (interactionRequirement == Interactable.Requirement.REQUIRES_ONE_HAND &&
             (heldItemLeft == null || heldItemRight == null)) return true;
-        // Requires both hands to be empty.
         return heldItemLeft == null && heldItemRight == null;
     }
 
-    public static void HoldItem(Interactable item)
+    public static void HoldItem(Pickupable item)
     {
-        if (heldItem != null)
-            throw new Exception($"Cannot hold 2 items at once!");
+        if (!CanInteract(item))
+            throw new Exception($"Cannot hold item \"{item.Name}\"; already holding \"{heldItemLeft.Name}\" and/or \"{heldItemRight.Name}\". Make sure to check if item can be held before attempting to hold it.");
+
+        Debug.Print($"Player picked up {item.Name}");
         
-        heldItem = item;
-        item.Reparent(PlayerController.instance.heldObjectPoint);
-        item.Position = Vector3.Zero;
-        item.RotationDegrees = Vector3.Zero;
+        Node3D itemNewParent;
+        if (item.requirement == Interactable.Requirement.REQUIRES_BOTH_HANDS)
+        {
+            heldItemLeft = item;
+            heldItemRight = item;
+            itemNewParent = PlayerController.instance.heldObjectPointCentre;
+        }
+        else if (heldItemRight == null)
+        {
+            heldItemRight = item;
+            itemNewParent = PlayerController.instance.heldObjectPointRightHand;
+        }
+        else
+        {
+            heldItemLeft = item;
+            itemNewParent = PlayerController.instance.heldObjectPointLeftHand;
+        }
+        
+        // Reposition item
+        item.Reparent(itemNewParent);
+        item.Position = Vector3.Zero; // Relative to parent position.
+        item.RotationDegrees = Vector3.Zero; // Relative to parent rotation.
+        
         foreach (var callback in OnItemHoldChangedCallbacks)
             callback.Invoke();
     }
 
-    public static void StopHoldingItem()
+    public static void StopHoldingItem(Interactable item)
     {
-        heldItem = null;
+        Debug.Print($"Player put down {item.Name}");
+        
+        if (heldItemLeft == item) 
+            heldItemLeft = null;
+        if (heldItemRight == item)
+            heldItemRight = null;
         foreach (var callback in OnItemHoldChangedCallbacks)
             callback.Invoke();
     }
