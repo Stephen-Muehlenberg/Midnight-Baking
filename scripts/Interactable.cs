@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Godot;
 using Godot.Collections;
-using MidnightBaking.scripts.interactables;
-using MidnightBaking.scripts.tasks;
 
 namespace MidnightBaking.scripts;
 
@@ -25,9 +23,9 @@ public partial class Interactable : Node3D, Resetable
     
     public ItemId id { get; private set; }
     /// <summary>Meshes to highlight when this object's interactions are enabled.</summary>
-    [Export] public MeshInstance3D[] highlightMeshes;
+    [Export] public Array<MeshInstance3D> highlightMeshes;
     /// <summary>CSGs to highlight when this object's interactions are enabled.</summary>
-    [Export] public CsgPrimitive3D[] highlightCsgs;
+    [Export] public Array<CsgPrimitive3D> highlightCsgs;
     /// <summary>Default player status required to interact with this object. Individual <see cref="InteractionRequest"/>s can optionally specify their own requirement.</summary>
     [Export] public Requirement requirement;
     

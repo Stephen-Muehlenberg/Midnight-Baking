@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using Godot;
 using MidnightBaking.scripts.interactables;
 
@@ -8,6 +9,8 @@ namespace MidnightBaking.scripts;
 
 public static class Player
 {
+    private const float PICKUP_TWEEN_DURATION = 0.2f;
+    
     public static Interactable heldItemLeft { get; private set; }
     public static Interactable heldItemRight { get; private set; }
     private static readonly List<Action> OnItemHoldChangedCallbacks = new();
@@ -34,6 +37,26 @@ public static class Player
         if (item == null) return heldItemLeft == null && heldItemRight == null;
         return heldItemLeft == item || heldItemRight == item;
     }
+
+    /// <summary>
+    /// Returns true if the player is holding the specified item in the left hand.
+    /// If no item is specified (null argument), returns true if left hand is empty.
+    /// </summary>
+    public static bool IsHoldingInLeftHand(Interactable item)
+    {
+        if (item == null && heldItemLeft == null) return true;
+        return heldItemLeft == item;
+    }
+
+    /// <summary>
+    /// Returns true if the player is holding the specified item in the right hand.
+    /// If no item is specified (null argument), returns true if right hand is empty.
+    /// </summary>
+    public static bool IsHoldingInRightHand(Interactable item)
+    {
+        if (item == null && heldItemRight == null) return true;
+        return heldItemRight == item;
+    }
     
     public static bool CanInteract(Interactable item) => CanInteract(item.requirement);
     public static bool CanInteract(Interactable.Requirement interactionRequirement)
@@ -44,7 +67,7 @@ public static class Player
         return heldItemLeft == null && heldItemRight == null;
     }
 
-    public static void HoldItem(Pickupable item)
+    public static void PickUpItem(Pickupable item, bool skipPickupAnimation = false, Action onAnimationEndCallback = null)
     {
         if (!CanInteract(item))
             throw new Exception($"Cannot hold item \"{item.Name}\"; already holding \"{heldItemLeft.Name}\" and/or \"{heldItemRight.Name}\". Make sure to check if item can be held before attempting to hold it.");
@@ -68,11 +91,45 @@ public static class Player
             heldItemLeft = item;
             itemNewParent = PlayerController.instance.heldObjectPointLeftHand;
         }
-        
+
         // Reposition item
         item.Reparent(itemNewParent);
-        item.Position = Vector3.Zero; // Relative to parent position.
-        item.RotationDegrees = Vector3.Zero; // Relative to parent rotation.
+        Tween tween = Game.instance.GetTree().CreateTween();
+        tween.SetParallel(true);
+        tween.TweenProperty(item, "position", Vector3.Zero, PICKUP_TWEEN_DURATION);
+        tween.TweenProperty(item, "rotation_degrees", Vector3.Zero, PICKUP_TWEEN_DURATION);
+        if (onAnimationEndCallback != null)
+        {
+            tween.SetParallel(false);
+            tween.TweenCallback(Callable.From(onAnimationEndCallback));
+        }
+        
+        foreach (var callback in OnItemHoldChangedCallbacks)
+            callback.Invoke();
+    }
+
+    public static void PutDownItem(Pickupable item, Node3D newParent, Action onAnimationEndCallback = null)
+    {
+        if (!IsHolding(item))
+            throw new Exception($"Cannot put down item {item.Name}: player is not currently holding it. Currently holding: {heldItemLeft?.Name ?? "null"} (left) and {heldItemRight?.Name ?? "null"} (right).");
+        Debug.Print($"Player put down {item.Name}");
+        
+        if (heldItemLeft == item) 
+            heldItemLeft = null;
+        if (heldItemRight == item)
+            heldItemRight = null;
+        
+        // Reposition item
+        item.Reparent(newParent); // TODO This MIGHT cause errors. See Interactable.SetPlacement().
+        Tween tween = Game.instance.GetTree().CreateTween();
+        tween.SetParallel(true);
+        tween.TweenProperty(item, "position", Vector3.Zero, PICKUP_TWEEN_DURATION);
+        tween.TweenProperty(item, "rotation_degrees", Vector3.Zero, PICKUP_TWEEN_DURATION);
+        if (onAnimationEndCallback != null)
+        {
+            tween.SetParallel(false);
+            tween.TweenCallback(Callable.From(onAnimationEndCallback));
+        }
         
         foreach (var callback in OnItemHoldChangedCallbacks)
             callback.Invoke();
@@ -88,5 +145,11 @@ public static class Player
             heldItemRight = null;
         foreach (var callback in OnItemHoldChangedCallbacks)
             callback.Invoke();
+    }
+
+    public static void EnableNormalControls(bool enable)
+    {
+        PlayerController.instance.canLook = enable;
+        PlayerController.instance.canMove = enable;
     }
 }

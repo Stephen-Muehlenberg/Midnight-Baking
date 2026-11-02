@@ -141,19 +141,6 @@ public partial class PlayerController : CharacterBody3D
             throw new Exception("Missing input map for back movement.");
     }
 
-/*    public void HoldItem(Interactable item)
-    {
-        holdingItem = true;
-        item.Reparent(heldObjectPoint);
-        item.Position = Vector3.Zero;
-        item.RotationDegrees = Vector3.Zero;
-    }
-
-    public void StopHoldingItem()
-    {
-        holdingItem = false;
-    }*/
-
     public void Save(Dictionary data)
     {
         data["position"] = Position;
@@ -177,12 +164,12 @@ public partial class PlayerController : CharacterBody3D
         if (rightItemId != ItemId.UNDEFINED)
         {
             var rightItem = Items.All[rightItemId] as Pickupable;
-            Player.HoldItem(rightItem);
+            Player.PickUpItem(rightItem);
         }
         if (leftItemId != ItemId.UNDEFINED && leftItemId != rightItemId)
         {
             var leftItem = Items.All[leftItemId] as Pickupable;
-            Player.HoldItem(leftItem);
+            Player.PickUpItem(leftItem);
         }
     }
 }

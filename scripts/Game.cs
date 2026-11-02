@@ -21,7 +21,8 @@ public partial class Game : Node
     [Export] public Control pauseMenu;
     [Export] public ui.ChecklistManager checklistUi;
     [Export] public Material _flashMaterialOverlay;
-    [Export] private Node3D[] _locations;
+    // TODO if we get several more interactions, consider moving them to Game.Interactions.InteractionX
+    [Export] public SieveShakeInteraction sieveShakeInteraction;
     
     private static int currentTaskGroupIndex = -1;
     

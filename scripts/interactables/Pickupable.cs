@@ -16,7 +16,7 @@ public partial class Pickupable : Interactable
     {
         if (!Player.CanInteract(this))
             throw new Exception($"Attempted to pick up item {Name} but player is already holding {Player.HeldItemsToString()}.");
-        Player.HoldItem(this);
+        Player.PickUpItem(this);
     }
 
     protected override void _ResetToGameStartState()

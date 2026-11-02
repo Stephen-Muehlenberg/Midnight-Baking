@@ -12,11 +12,11 @@ public enum ItemId
     /// and which are just using the default value.</summary>
     UNDEFINED,
     Apron,
-    BakingSoda_Jar, BenchPrepArea, BrownSugar_Jar, Butter,
+    BakingSoda_Jar, BakingSoda_Lid, BenchPrepArea, BrownSugar_Jar, Butter,
     ChocChips_Jar, Cupboard_Upper,
     Drawer_Utensils,
     EggCarton,
-    FlourJar, FlourJar_Lid, Fridge,
+    Flour_Jar, Flour_Lid, Fridge,
     KitchenLight_Switch,
     MeasuringCup_One, MeasuringCup_Half, Measuring_Teaspoon, Microwave, MixingBowl_Medium,
     Oven, Oven_Dial, Oven_Door,

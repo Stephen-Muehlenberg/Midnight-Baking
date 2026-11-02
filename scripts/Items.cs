@@ -27,12 +27,12 @@ public static class Items
     public static Tablet Tablet => All[ItemId.Tablet] as Tablet;
 
     // Ingredients
-    public static Pickupable BakingSoda => All[ItemId.BakingSoda_Jar] as Pickupable;
+    public static BakingSoda BakingSoda => All[ItemId.BakingSoda_Jar] as BakingSoda;
     public static Pickupable BrownSugarJar => All[ItemId.BrownSugar_Jar] as Pickupable;
     public static Pickupable ChocChipBag => All[ItemId.ChocChips_Jar] as Pickupable;
     public static Butter Butter => All[ItemId.Butter] as Butter;
     public static EggCarton EggCarton => All[ItemId.EggCarton] as EggCarton;
-    public static FlourJar FlourJar => All[ItemId.FlourJar] as FlourJar;
+    public static FlourJar FlourJar => All[ItemId.Flour_Jar] as FlourJar;
     public static Pickupable SugarJar => All[ItemId.WhiteSugar_Jar] as Pickupable;
     public static Pickupable VanillaJar => All[ItemId.VanillaJar] as Pickupable;
 
@@ -42,7 +42,7 @@ public static class Items
     public static MeasuringCupHalf MeasuringCupHalf => All[ItemId.MeasuringCup_Half] as MeasuringCupHalf;
     public static Pickupable MeasuringSpoon => All[ItemId.Measuring_Teaspoon] as Pickupable;
     public static MixingBowlMedium MixingBowlMedium => All[ItemId.MixingBowl_Medium] as MixingBowlMedium;
-    public static Pickupable Sieve => All[ItemId.Sieve] as Pickupable;
+    public static Sieve Sieve => All[ItemId.Sieve] as Sieve;
     
     // Other
     public static Interactable Soap => All[ItemId.Soap];
