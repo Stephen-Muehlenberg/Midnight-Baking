@@ -37,13 +37,14 @@ public partial class Interactable : Node3D, Resetable
     /// are mutually exclusive; the highlightCheck method is only used if no specific true or false value is
     /// supplied for highlight.
     /// </summary>
-    protected class InteractionRequest(Action onClickCallback, bool? highlightValue, Func<bool> highlightCheck, Requirement? requirementOverride = null)
+    protected class InteractionRequest(Action onClickCallback, bool? highlightValue, Func<bool> highlightCheck, Requirement? requirementOverride, bool autoUnsubscribe)
     {
-        public Action onClickCallback = onClickCallback;
+        public readonly Action onClickCallback = onClickCallback;
         public bool? highlightValue = highlightValue;
-        public Func<bool> highlightCheck = highlightCheck;
-        public Requirement? requirementOverride = requirementOverride;
+        public readonly Func<bool> highlightCheck = highlightCheck;
         public bool highlight => highlightValue ?? highlightCheck.Invoke();
+        public Requirement? requirementOverride = requirementOverride;
+        public bool autoUnsubscribe = autoUnsubscribe;
     }
     
     public override void _Ready()
@@ -67,6 +68,8 @@ public partial class Interactable : Node3D, Resetable
         UpdateHighlights();
     }
     
+    // TODO can we have click listeners auto unsubscribe on click, by default? can pass an optional argument which
+    // tells it *not* to unsubscribe on click.
     /// <summary>
     /// Register a callback to be invoked when this Interactable is clicked. Highlights the interactable by default,
     /// though this can be toggled off. Note that the Interactable may still be highlighted even if the highlight is
@@ -75,13 +78,15 @@ public partial class Interactable : Node3D, Resetable
     /// <param name="callback">Invoked on click, if the interaction requirements are currently met.</param>
     /// <param name="highlight">Method which checks if the highlight should be enabled. This is only used during <see cref="UpdateHighlights()"/>, though you can invoke UpdateHighlights manually outside of its normal uses. Note that the highlight will be on while <i>any</i> listener has it turned on.</param>
     /// <param name="interactionRequirement">Optionally specifies a minimum player state requirement in order to trigger this callback. If no value is specified, uses this Interactable's default <see cref="requirement"/> property.</param>
+    /// <param name="autoUnsubscribe">If true, automatically remove this click listener when it is first invoked.</param>
     /// <param name="debug_callbackName">Optionally provide a name or description of the callback, for debugging purposes.<br/><br/>Should be provided by default; it's only optional for backwards compatibility.</param>
     public void AddClickListener(
         Action callback,
         Func<bool> highlight,
         Requirement? interactionRequirement = null,
+        bool autoUnsubscribe = true,
         string debug_callbackName = null)
-    => AddClickListener(callback, highlight: null, highlight, interactionRequirement, debug_callbackName);
+    => AddClickListener(callback, null, highlight, interactionRequirement, autoUnsubscribe, debug_callbackName);
 
     /// <summary>
     /// Register a callback to be invoked when this Interactable is clicked. Highlights the interactable by default,
@@ -90,22 +95,29 @@ public partial class Interactable : Node3D, Resetable
     /// </summary>
     /// <param name="callback">Invoked on click, if the interaction requirements are currently met.</param>
     /// <param name="highlight">Turn the object's highlight on? Note that the highlight will be on while <i>any</i> listener has it turned on.</param>
+    /// <param name="autoUnsubscribe">If true, automatically remove this click listener when it is first invoked.</param>
     /// <param name="interactionRequirement">Optionally specifies a minimum player state requirement in order to trigger this callback. If no value is specified, uses this Interactable's default <see cref="requirement"/> property.</param>
     /// <param name="debug_callbackName">Optionally provide a name or description of the callback, for debugging purposes.<br/><br/>Should be provided by default; it's only optional for backwards compatibility.</param>
     public void AddClickListener(
         Action callback,
         bool highlight = true,
         Requirement? interactionRequirement = null,
+        bool autoUnsubscribe = true,
         string debug_callbackName = null)
-    => AddClickListener(callback, highlight, highlightPredicate: null, interactionRequirement, debug_callbackName);
+    => AddClickListener(callback, highlight, null, interactionRequirement, autoUnsubscribe, debug_callbackName);
     
-    // highlight and highlightPredicate are mutually exclusive; one must have a value and the other must be null.
+    /// <summary>
+    /// See the public AddClickListener() methods for description.
+    /// <br/>Note: <paramref name="highlight"/> and <paramref name="highlightPredicate"/> are mutually exclusive; exactly
+    /// one must have a value, while the other must be null.
+    /// </summary>
     private void AddClickListener(
         Action callback,
         bool? highlight,
         Func<bool> highlightPredicate,
-        Requirement? interactionRequirement = null,
-        string debug_callbackName = null)
+        Requirement? interactionRequirement,
+        bool autoUnsubscribe,
+        string debug_callbackName)
     {
         foreach (string itemToLog in DEBUG_ITEMS_TO_LOG)
             if (itemToLog == Name)
@@ -116,7 +128,7 @@ public partial class Interactable : Node3D, Resetable
 
         if (interactionRequests.Count == 0)
             Player.RegisterItemHoldChangedListener(UpdateHighlights);
-        interactionRequests.Add(new InteractionRequest(callback, highlight, highlightPredicate, interactionRequirement));
+        interactionRequests.Add(new InteractionRequest(callback, highlight, highlightPredicate, interactionRequirement, autoUnsubscribe));
         UpdateHighlights();
     }
 
@@ -205,7 +217,11 @@ public partial class Interactable : Node3D, Resetable
         {
             var interaction = interactionRequests[i];
             if (Player.CanInteract(interaction.requirementOverride ?? requirement))
+            {
+                if (interaction.autoUnsubscribe)
+                    RemoveClickListener(interaction.onClickCallback);
                 interaction.onClickCallback.Invoke();
+            }
         }
     }
     

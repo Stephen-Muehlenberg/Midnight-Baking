@@ -28,19 +28,19 @@ public static class Items
 
     // Ingredients
     public static BakingSoda BakingSoda => All[ItemId.BakingSoda_Jar] as BakingSoda;
-    public static Pickupable BrownSugarJar => All[ItemId.BrownSugar_Jar] as Pickupable;
-    public static Pickupable ChocChipBag => All[ItemId.ChocChips_Jar] as Pickupable;
+    public static BrownSugar BrownSugarJar => All[ItemId.BrownSugar_Jar] as BrownSugar;
+    public static ChocChipsJar ChocChipBag => All[ItemId.ChocChips_Jar] as ChocChipsJar;
     public static Butter Butter => All[ItemId.Butter] as Butter;
     public static EggCarton EggCarton => All[ItemId.EggCarton] as EggCarton;
     public static FlourJar FlourJar => All[ItemId.Flour_Jar] as FlourJar;
-    public static Pickupable SugarJar => All[ItemId.WhiteSugar_Jar] as Pickupable;
-    public static Pickupable VanillaJar => All[ItemId.VanillaJar] as Pickupable;
+    public static WhiteSugar SugarJar => All[ItemId.WhiteSugar_Jar] as WhiteSugar;
+    public static VanillaJar VanillaJar => All[ItemId.VanillaJar] as VanillaJar;
 
     // Utensils
     public static Apron Apron => All[ItemId.Apron] as Apron;
     public static MeasuringCupOne MeasuringCupOne => All[ItemId.MeasuringCup_One] as MeasuringCupOne;
     public static MeasuringCupHalf MeasuringCupHalf => All[ItemId.MeasuringCup_Half] as MeasuringCupHalf;
-    public static Pickupable MeasuringSpoon => All[ItemId.Measuring_Teaspoon] as Pickupable;
+    public static MeasuringSpoon MeasuringSpoon => All[ItemId.Measuring_Teaspoon] as MeasuringSpoon;
     public static MixingBowlMedium MixingBowlMedium => All[ItemId.MixingBowl_Medium] as MixingBowlMedium;
     public static Sieve Sieve => All[ItemId.Sieve] as Sieve;
     

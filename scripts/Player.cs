@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using System.Text;
 using Godot;
 using MidnightBaking.scripts.interactables;
 
@@ -92,16 +93,28 @@ public static class Player
             itemNewParent = PlayerController.instance.heldObjectPointLeftHand;
         }
 
-        // Reposition item
         item.Reparent(itemNewParent);
-        Tween tween = Game.instance.GetTree().CreateTween();
-        tween.SetParallel(true);
-        tween.TweenProperty(item, "position", Vector3.Zero, PICKUP_TWEEN_DURATION);
-        tween.TweenProperty(item, "rotation_degrees", Vector3.Zero, PICKUP_TWEEN_DURATION);
-        if (onAnimationEndCallback != null)
+        
+        // Snap to new position...
+        if (skipPickupAnimation)
         {
-            tween.SetParallel(false);
-            tween.TweenCallback(Callable.From(onAnimationEndCallback));
+            item.Position = Vector3.Zero;
+            item.RotationDegrees = Vector3.Zero;
+            onAnimationEndCallback?.Invoke();
+        }
+        
+        // ...Or animate to new position.
+        else
+        {
+            Tween tween = Game.instance.GetTree().CreateTween();
+            tween.SetParallel(true);
+            tween.TweenProperty(item, "position", Vector3.Zero, PICKUP_TWEEN_DURATION);
+            tween.TweenProperty(item, "rotation_degrees", Vector3.Zero, PICKUP_TWEEN_DURATION);
+            if (onAnimationEndCallback != null)
+            {
+                tween.SetParallel(false);
+                tween.TweenCallback(Callable.From(onAnimationEndCallback));
+            }
         }
         
         foreach (var callback in OnItemHoldChangedCallbacks)
@@ -151,5 +164,10 @@ public static class Player
     {
         PlayerController.instance.canLook = enable;
         PlayerController.instance.canMove = enable;
+    }
+
+    public static void Debug_LogHeldItems()
+    {
+        Debug.Print($"Player is holding {(heldItemLeft == null ? "nothing" : heldItemLeft.Name.ToString())} (left) and {(heldItemRight == null ? "nothing" : heldItemRight.Name.ToString())} (right).");
     }
 }

@@ -49,7 +49,6 @@ public static class Tasks
             PlayerController.instance.OnPlayerLook -= Complete;
         }
     }
-
     private class Group0_Move : ParentTask
     {
         // TODO dynamically set keys based on keybindings
@@ -65,7 +64,6 @@ public static class Tasks
             PlayerController.instance.OnPlayerMove -= Complete;
         }
     }
-
     private class Group0_Interact : ParentTask
     {
         public override string description => "Use the left mouse button to interact";
@@ -73,7 +71,7 @@ public static class Tasks
         protected override void SetState_TaskStart()
         {
             hints.Add("Turn on the lights by using the light switch by the door");
-            Items.LightSwitch.AddClickListener(Complete);
+            AddClickListener(Items.LightSwitch, Complete);
         }
 
         public override void DoTeardown()
@@ -95,7 +93,7 @@ public static class Tasks
         protected override void SetState_TaskStart()
         {
             hints.Add("(It's on the pantry door)");
-            Items.Apron.AddClickListener(Complete);
+            AddClickListener(Items.Apron, Complete);
         }
 
         public override void DoTeardown()
@@ -116,22 +114,19 @@ public static class Tasks
         protected override void SetState_TaskStart()
         {
             hints.Add("Use sink");
-            Items.Sink.AddClickListener(OnSinkClicked);
+            AddClickListener(Items.Sink, OnSinkClicked);
         }
 
         private void OnSinkClicked()
         {
-            GD.Print("OnSinkClicked()");
-            Items.Sink.RemoveClickListener(OnSinkClicked);
-            Items.Soap.AddClickListener(OnSoapClicked);
+            AddClickListener(Items.Soap, OnSoapClicked);
             hints.Add("Use soap");
             Game.UpdateUi();
         }
 
         private void OnSoapClicked()
         {
-            Items.Soap.RemoveClickListener(OnSoapClicked);
-            Items.Towel.AddClickListener(Complete);
+            AddClickListener(Items.Towel, Complete);
             hints.Add("Dry hands on towel");
             Game.UpdateUi();
         }
@@ -174,7 +169,7 @@ public static class Tasks
         protected override void SetState_TaskStart()
         {
             hints.Add("See what's on the radio");
-            AddClickListener(Items.Radio, OnRadioClicked);
+            AddClickListener(Items.Radio, OnRadioClicked, autoUnsubscribe: false);
             stationsRemaining = 5;
             timer = null;
         }
@@ -185,6 +180,7 @@ public static class Tasks
 
             if (stationsRemaining > 0)
             {
+                GD.Print($"Stations remaining {stationsRemaining}");
                 string secondHint = $"Check {stationsRemaining} more stations, or stick with this one";
                 if (hints.Count == 1)
                     hints.Add(secondHint);
@@ -196,7 +192,12 @@ public static class Tasks
                 timer = Game.instance.GetTree().CreateTimer(6, false);
                 timer.Timeout += Complete;
             }
-            else Complete();
+            else
+            {
+                hints[1] = "Check 0 more stations, or stick with this one";
+                Game.UpdateUi();
+                Complete();
+            }
         }
 
         public override void DoTeardown()
@@ -241,7 +242,6 @@ public static class Tasks
         private void OnFridgeClicked()
         {
             var fridge = Items.Fridge;
-            fridge.RemoveClickListener(OnFridgeClicked);
             AddClickListener(fridge, OnFridgeClicked, highlight: !fridge.isOpen, Interactable.Requirement.REQUIRES_ONE_HAND);
         }
 
@@ -252,17 +252,11 @@ public static class Tasks
             
             Items.Fridge.RemoveClickListener(OnFridgeClicked);
             var butter = Items.Butter;
-            butter.RemoveClickListener(OnButterClicked);
             Player.PickUpItem(butter);
-            AddClickListener(Items.BenchPrepArea, OnBenchClicked);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(butter, butter.positionBenchPrepArea, Complete));
         }
-
-        private void OnBenchClicked()
-        {
-            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked);
-            Player.PutDownItem(Items.Butter, Items.Butter.positionBenchPrepArea, Complete);
-        }
-
+        
         public override void DoTeardown()
         {
             Items.Fridge.RemoveClickListener(OnFridgeClicked);
@@ -289,7 +283,6 @@ public static class Tasks
         private void OnFridgeClicked()
         {
             var fridge = Items.Fridge;
-            fridge.RemoveClickListener(OnFridgeClicked);
             AddClickListener(fridge, OnFridgeClicked, highlight: () => !fridge.isOpen, Interactable.Requirement.REQUIRES_ONE_HAND);
         }
 
@@ -298,18 +291,12 @@ public static class Tasks
             if (!Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND)) return;
             
             Items.Fridge.RemoveClickListener(OnFridgeClicked);
-            var eggCarton = Items.EggCarton;
-            eggCarton.RemoveClickListener(OnCartonPickedUp);
-            Player.PickUpItem(eggCarton);
-            AddClickListener(Items.BenchPrepArea, OnBenchClicked);
+            var eggs = Items.EggCarton;
+            Player.PickUpItem(eggs);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(eggs, eggs.positionBenchPrepArea, Complete));
         }
-
-        private void OnBenchClicked()
-        {
-            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked);
-            Player.PutDownItem(Items.EggCarton, Items.EggCarton.positionBenchPrepArea, Complete);
-        }
-
+        
         public override void DoTeardown()
         {
             Items.Fridge.RemoveClickListener(OnFridgeClicked);
@@ -336,9 +323,7 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
-
         }
 
         private void OnFlourClicked()
@@ -347,15 +332,9 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var flour = Items.FlourJar;
-            flour.RemoveClickListener(OnFlourClicked);
             Player.PickUpItem(flour);
-            AddClickListener(Items.BenchPrepArea, OnBenchClicked);
-        }
-
-        private void OnBenchClicked()
-        {
-            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked);
-            Player.PutDownItem(Items.FlourJar, Items.FlourJar.positionBenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(flour, flour.positionBenchPrepArea, Complete));
         }
 
         public override void DoTeardown()
@@ -384,7 +363,6 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
         }
 
@@ -394,11 +372,11 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var sugar = Items.SugarJar;
-            sugar.RemoveClickListener(OnSugarClicked);
             Player.PickUpItem(sugar);
-            AddClickListener(Items.BenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, Complete));
         }
-
+        
         public override void DoTeardown()
         {
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
@@ -411,7 +389,6 @@ public static class Tasks
             Items.SugarJar.SetPlacement(Items.BenchPrepArea.sugarPlacement);
         }
     }
-
     private class Group2_Sub_BrownSugar : Subtask
     {
         public override string description => "Brown sugar";
@@ -426,7 +403,6 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
 
         }
@@ -437,9 +413,9 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var sugar = Items.BrownSugarJar;
-            sugar.RemoveClickListener(OnSugarClicked);
             Player.PickUpItem(sugar);
-            AddClickListener(Items.BenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, Complete));
         }
 
         public override void DoTeardown()
@@ -454,7 +430,6 @@ public static class Tasks
             Items.BrownSugarJar.SetPlacement(Items.BenchPrepArea.brownSugarPlacement);
         }
     }
-
     private class Group2_Sub_BakingSoda : Subtask
     {
         public override string description => "Bicarb soda";
@@ -469,7 +444,6 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
         }
 
@@ -479,9 +453,9 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var soda = Items.BakingSoda;
-            soda.RemoveClickListener(OnSodaClicked);
             Player.PickUpItem(soda);
-            AddClickListener(Items.BenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(soda, soda.positionBenchPrepArea, Complete));
         }
 
         public override void DoTeardown()
@@ -496,7 +470,6 @@ public static class Tasks
             Items.BakingSoda.SetPlacement(Items.BenchPrepArea.bakingSodaPlacement);
         }
     }
-
     private class Group2_Sub_Vanilla : Subtask
     {
         public override string description => "Vanilla extract";
@@ -511,7 +484,6 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
         }
 
@@ -521,9 +493,9 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var vanilla = Items.VanillaJar;
-            vanilla.RemoveClickListener(OnVanillaClicked);
             Player.PickUpItem(vanilla);
-            AddClickListener(Items.BenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(vanilla, vanilla.positionBenchPrepArea, Complete));
         }
 
         public override void DoTeardown()
@@ -538,7 +510,6 @@ public static class Tasks
             Items.VanillaJar.SetPlacement(Items.BenchPrepArea.vanillaPlacement);
         }
     }
-
     private class Group2_Sub_ChocChips : Subtask
     {
         public override string description => "Dark chocolate chips";
@@ -553,7 +524,6 @@ public static class Tasks
         private void OnCupboardClicked()
         {
             var cupboard = Items.CupboardUpper;
-            cupboard.RemoveClickListener(OnCupboardClicked);
             AddClickListener(cupboard, OnCupboardClicked, highlight: () => !cupboard.isOpen);
         }
 
@@ -563,9 +533,9 @@ public static class Tasks
             
             Items.CupboardUpper.RemoveClickListener(OnCupboardClicked);
             var chocChips = Items.ChocChipBag;
-            chocChips.RemoveClickListener(OnChocClicked);
             Player.PickUpItem(chocChips);
-            AddClickListener(Items.BenchPrepArea, Complete);
+            AddClickListener(Items.BenchPrepArea,
+                () => Player.PutDownItem(chocChips, chocChips.positionBenchPrepArea, Complete));
         }
 
         public override void DoTeardown()
@@ -589,14 +559,23 @@ public static class Tasks
 
         protected override void SetState_TaskStart()
         {
-            Items.Oven.TemperatureDial.AddClickListener(Complete);
+            var oven = Items.Oven;
+            AddClickListener(oven.TemperatureDial, OnDialClicked);
+        }
+
+        private void OnDialClicked()
+        {
+            Items.Oven.AnimateOn(Complete);
+        }
+
+        public override void DoTeardown()
+        {
+            Items.Oven.TemperatureDial.RemoveClickListener(OnDialClicked);
         }
 
         public override void SetState_TaskComplete()
         {
-            var oven = Items.Oven;
-            oven.TemperatureDial.RemoveClickListener(Complete);
-            oven.SetOn(true);
+            Items.Oven.SetOn(true);
         }
     }
     #endregion
@@ -646,27 +625,22 @@ public static class Tasks
         private void OnSodaAdded()
         {
             var siftTask = new Group4_SubSiftIngredients();
-            siftTask.onCompleteCallback += OnSodaAdded; // TODO this isn't actually the end; add next step when ready.
+            siftTask.onCompleteCallback += Complete; // TODO this isn't actually the end; add next step when ready.
             AddSubtask(siftTask, startSubtask: true);
-        }
-
-        public override void SetState_TaskComplete()
-        {
-            // TODO
         }
     }
     private class Group4_SubCups : Subtask
     {
         public override string description => "Get measuring cups (1 cup and 1/2 cup) and spoon (1 teaspoon)";
         private int cupsPickedUp;
-        private int cupsPlaced;
+        private int measuringToolsPlaced;
 
         protected override void SetState_TaskStart()
         {
             cupsPickedUp = 0;
-            cupsPlaced = 0;
+            measuringToolsPlaced = 0;
             var drawer = Items.DrawerUtensils;
-            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen);
+            AddClickListener(drawer, OnDrawerClicked, highlight: !drawer.IsOpen);
             AddClickListener(Items.MeasuringCupOne, OnCupOneClicked);
             AddClickListener(Items.MeasuringCupHalf, OnCupHalfClicked);
             AddClickListener(Items.MeasuringSpoon, OnSpoonClicked);
@@ -675,8 +649,7 @@ public static class Tasks
         private void OnDrawerClicked()
         {
             var drawer = Items.DrawerUtensils;
-            drawer.RemoveClickListener(OnDrawerClicked);
-            drawer.AddClickListener(OnDrawerClicked, highlight: !drawer.IsOpen && cupsPickedUp < 2);
+            AddClickListener(drawer, OnDrawerClicked, highlight: !drawer.IsOpen && cupsPickedUp < 2);
         }
 
         private void OnCupOneClicked()
@@ -685,7 +658,6 @@ public static class Tasks
 
             cupsPickedUp++;
             var cup = Items.MeasuringCupOne;
-            cup.RemoveClickListener(OnCupOneClicked);
             Player.PickUpItem(cup);
             AddClickListener(Items.BenchPrepArea, OnFullCupPlaced);
         }
@@ -696,7 +668,6 @@ public static class Tasks
 
             cupsPickedUp++;
             var cup = Items.MeasuringCupHalf;
-            cup.RemoveClickListener(OnCupHalfClicked);
             Player.PickUpItem(cup);
             AddClickListener(Items.BenchPrepArea, OnHalfCupPlaced);
         }
@@ -707,51 +678,50 @@ public static class Tasks
 
             cupsPickedUp++;
             var spoon = Items.MeasuringSpoon;
-            spoon.RemoveClickListener(OnSpoonClicked);
             Player.PickUpItem(spoon);
             AddClickListener(Items.BenchPrepArea, OnSpoonPlaced);
         }
 
         private void OnFullCupPlaced()
         {
-            cupsPlaced++;
-            if (cupsPlaced < 3)
-            {
-                var bench = Items.BenchPrepArea;
-                bench.RemoveClickListener(OnFullCupPlaced);
-                var cup = Player.IsHoldingInLeftHand(Items.MeasuringCupOne)
-                    ? Player.heldItemLeft
-                    : Player.heldItemRight;
-                cup.SetPlacement(bench.measuringCupOnePlacement);
-            }
-            else Complete();
+            var bench = Items.BenchPrepArea;
+            var cup = Player.IsHoldingInLeftHand(Items.MeasuringCupOne)
+                ? Player.heldItemLeft
+                : Player.heldItemRight;
+            Player.PutDownItem(cup as Pickupable, bench.measuringCupOnePlacement,
+                () =>
+                {
+                    measuringToolsPlaced++;
+                    if (measuringToolsPlaced == 3)
+                        Complete();
+                });
         }
 
         private void OnHalfCupPlaced()
         {
-            cupsPlaced++;
-            if (cupsPlaced < 3)
-            {
-                var bench = Items.BenchPrepArea;
-                bench.RemoveClickListener(OnHalfCupPlaced);
-                var cup = Player.IsHoldingInLeftHand(Items.MeasuringCupHalf)
-                    ? Player.heldItemLeft
-                    : Player.heldItemRight;
-                cup.SetPlacement(bench.measuringCupHalfPlacement);
-            }
-            else Complete();
+            var bench = Items.BenchPrepArea;
+            var cup = Player.IsHoldingInLeftHand(Items.MeasuringCupHalf)
+                ? Player.heldItemLeft
+                : Player.heldItemRight;
+            Player.PutDownItem(cup as Pickupable, bench.measuringCupHalfPlacement,
+                () =>
+                {
+                    measuringToolsPlaced++;
+                    if (measuringToolsPlaced == 3)
+                        Complete();
+                });
         }
 
         private void OnSpoonPlaced()
         {
-            cupsPlaced++;
-            if (cupsPlaced < 3)
-            {
-                var bench = Items.BenchPrepArea;
-                bench.RemoveClickListener(OnSpoonPlaced);
-                Items.MeasuringSpoon.SetPlacement(bench.measuringSpoonPlacement);
-            }
-            else Complete();
+            var spoon = Items.MeasuringSpoon;
+            Player.PutDownItem(spoon, spoon.positionBenchPrepArea,
+                () =>
+                {
+                    measuringToolsPlaced++;
+                    if (measuringToolsPlaced == 3)
+                        Complete();
+                });
         }
 
         public override void DoTeardown()
@@ -779,21 +749,25 @@ public static class Tasks
 
         protected override void SetState_TaskStart()
         {
-            Items.MixingBowlMedium.AddClickListener(OnBowlClicked);
+            AddClickListener(Items.MixingBowlMedium, OnBowlClicked);
         }
 
         private void OnBowlClicked()
         {
+            Player.PickUpItem(Items.MixingBowlMedium);
+            AddClickListener(Items.BenchPrepArea, OnBenchClicked);
+        }
+
+        private void OnBenchClicked()
+        {
             var bowl = Items.MixingBowlMedium;
-            bowl.RemoveClickListener(OnBowlClicked);
-            Player.PickUpItem(bowl);
-            Items.BenchPrepArea.AddClickListener(Complete);
+            Player.PutDownItem(bowl, bowl.positionBenchPrepArea, Complete);
         }
 
         public override void DoTeardown()
         {
             Items.MixingBowlMedium.RemoveClickListener(OnBowlClicked);
-            Items.BenchPrepArea.RemoveClickListener(Complete);
+            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked);
         }
 
         public override void SetState_TaskComplete()
@@ -807,23 +781,24 @@ public static class Tasks
 
         protected override void SetState_TaskStart()
         {
-            Items.Sieve.AddClickListener(OnSieveClicked);
+            AddClickListener(Items.Sieve, OnSieveClicked);
         }
 
         private void OnSieveClicked()
         {
-            if (!Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND)) return;
-            
-            var sieve = Items.Sieve;
-            sieve.RemoveClickListener(OnSieveClicked);
-            Player.PickUpItem(sieve);
-            Items.MixingBowlMedium.AddClickListener(Complete, interactionRequirement: Interactable.Requirement.NO_REQUIREMENT);
+            Player.PickUpItem(Items.Sieve);
+            AddClickListener(Items.MixingBowlMedium, OnBowlClicked, requirementOverride: Interactable.Requirement.NO_REQUIREMENT);
+        }
+
+        private void OnBowlClicked()
+        {
+            Player.PutDownItem(Items.Sieve, Items.MixingBowlMedium.sievePivot, Complete);
         }
 
         public override void DoTeardown()
         {
             Items.Sieve.RemoveClickListener(OnSieveClicked);
-            Items.MixingBowlMedium.RemoveClickListener(Complete);
+            Items.MixingBowlMedium.RemoveClickListener(OnBowlClicked);
         }
 
         public override void SetState_TaskComplete()
@@ -847,25 +822,30 @@ public static class Tasks
             var cupHalf = Items.MeasuringCupHalf;
             var cupOne = Items.MeasuringCupOne;
 
-            flourJar.RemoveClickListener(OnFlourClicked_OpenJar);
             flourJar.Lid.SetPlacement(flourJar.Lid.positionBenchPrepArea);
             flourJar.SetLidAttached(false);
 
-            AddClickListener(cupHalf, OnMeasuringCupHalfClicked, highlight: () =>
-            {
-                if (Player.IsHolding(cupHalf)) return false;
-                return Player.IsHolding(cupOne) || Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND);
-            });
-            AddClickListener(cupOne, OnMeasuringCupOneClicked, highlight: () =>
-            {
-                if (Player.IsHolding(cupOne)) return false;
-                return Player.IsHolding(cupHalf) || Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND);
-            });
-            AddClickListener(flourJar, OnFlourClicked_ScoopFlour);
+            AddClickListener(cupHalf, OnMeasuringCupHalfClicked, 
+                highlight: () => {
+                    if (Player.IsHolding(cupHalf)) return false;
+                    return Player.IsHolding(cupOne) || Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND);
+                },
+                autoUnsubscribe: false);
+            AddClickListener(cupOne, OnMeasuringCupOneClicked,
+                highlight: () => {
+                    if (Player.IsHolding(cupOne)) return false;
+                    return Player.IsHolding(cupHalf) || Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND);
+                },
+                autoUnsubscribe: false);
+            AddClickListener(flourJar, OnFlourClicked_ScoopFlour,
+                highlight: () => Player.IsHolding(cupOne) || Player.IsHolding(cupHalf),
+                autoUnsubscribe: false);
         }
 
         private void OnFlourClicked_ScoopFlour()
         {
+            Debug.Print("OnFlourClicked_ScoopFlour()");
+            Player.Debug_LogHeldItems();
             var cupHalf = Items.MeasuringCupHalf;
             var cupOne = Items.MeasuringCupOne;
             if (Player.IsHolding(cupHalf))
@@ -883,7 +863,7 @@ public static class Tasks
             if (halfCupsFlourAdded == 4)
                 Items.MeasuringCupOne.RemoveClickListener(OnMeasuringCupOneClicked);
 
-            if (halfCupsFlourAdded < 5)
+            if (halfCupsFlourAdded > 0 && halfCupsFlourAdded < 5)
             {
                 string hint =
                     $"Added {Mathf.FloorToInt(halfCupsFlourAdded / 2f)}{(halfCupsFlourAdded % 2 == 0 ? "" : ".5")} cup{(halfCupsFlourAdded == 2 ? "" : "s")}";
@@ -899,32 +879,19 @@ public static class Tasks
 
         private void OnMeasuringCupHalfClicked()
         {
-            bool wasHoldingCupOne = false;
             var cupOne = Items.MeasuringCupOne;
             if (Player.IsHolding(cupOne))
-            {
-                wasHoldingCupOne = true;
                 Player.PutDownItem(cupOne, cupOne.positionBenchPrepArea);
-            }
 
             if (Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND))
-            {
                 Player.PickUpItem(Items.MeasuringCupHalf);
-                if (halfCupsFlourAdded == 4 && wasHoldingCupOne)
-                {
-                    AddClickListener(Items.FlourJar, OnFlourClicked_ScoopFlour);
-                }
-            }
         }
 
         private void OnMeasuringCupOneClicked()
         {
-            var cupHalf = Items.MeasuringCupOne;
+            var cupHalf = Items.MeasuringCupHalf;
             if (Player.IsHolding(cupHalf))
-            {
-                Player.StopHoldingItem(cupHalf);
-                cupHalf.SetPlacement(cupHalf.positionBenchPrepArea);
-            }
+                Player.PutDownItem(cupHalf, cupHalf.positionBenchPrepArea);
 
             if (Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND))
                 Player.PickUpItem(Items.MeasuringCupOne);
@@ -945,6 +912,20 @@ public static class Tasks
             flourJar.SetLidAttached(false);
             Items.Sieve.SetPowderLevel(2.5f);
             hints.Clear();
+            
+            // If this task is completed normally, then the player should always
+            // end with one cup in hand and one on the bench. This is an assumption
+            // the next Task relies upon.
+            // But if we skip to the end of this task (e.g. with debug commands),
+            // this might not be the case. In which case, just pick up one cup
+            // and put the other down (doesn't matter which; the choice is arbitrarily).
+            var cupOne = Items.MeasuringCupOne;
+            var cupHalf = Items.MeasuringCupHalf;
+            if (!Player.IsHolding(cupOne) && !Player.IsHolding(cupHalf))
+            {
+                Player.PickUpItem(cupHalf, skipPickupAnimation: true);
+                cupOne.SetPlacement(cupOne.positionBenchPrepArea);
+            }
         }
     }
     private class Group4_SubAddBakingSoda : Subtask
@@ -957,18 +938,17 @@ public static class Tasks
 
         private void OnBenchClicked_PlaceMeasuringCup()
         {
-            if (Player.IsHolding(Items.MeasuringCupHalf))
-                Items.MeasuringCupHalf.SetPlacement(Items.MeasuringCupHalf.positionBenchPrepArea);
+            var cupHalf = Items.MeasuringCupHalf;
+            if (Player.IsHolding(cupHalf))
+                Player.PutDownItem(cupHalf, cupHalf.positionBenchPrepArea);
             else
-                Items.MeasuringCupOne.SetPlacement(Items.MeasuringCupOne.positionBenchPrepArea);
-            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked_PlaceMeasuringCup);
+                Player.PutDownItem(Items.MeasuringCupOne, Items.MeasuringCupOne.positionBenchPrepArea);
             AddClickListener(Items.BakingSoda, OnSodaClicked_RemoveLid, requirementOverride: Interactable.Requirement.REQUIRES_BOTH_HANDS);
         }
 
         private void OnSodaClicked_RemoveLid()
         {
             var bakingSoda = Items.BakingSoda;
-            bakingSoda.RemoveClickListener(OnSodaClicked_RemoveLid);
             bakingSoda.Lid.SetPlacement(bakingSoda.Lid.positionBenchPrepArea);
             bakingSoda.SetLidAttached(false);
             AddClickListener(Items.MeasuringSpoon, OnSpoonClicked);
@@ -977,15 +957,31 @@ public static class Tasks
         private void OnSpoonClicked()
         {
             Items.MeasuringSpoon.RemoveClickListener(OnSpoonClicked);
-            AddClickListener(Items.BakingSoda, Complete);
+            Player.PickUpItem(Items.MeasuringSpoon, onAnimationEndCallback: () =>
+            {
+                AddClickListener(Items.BakingSoda, OnSodaClicked_ScoopSoda);
+            });
+        }
+
+        private void OnSodaClicked_ScoopSoda()
+        {
+            // TODO scoop play animation, wait for animation to end.
+            AddClickListener(Items.BenchPrepArea, OnBenchClicked_PlaceSpoon);
+        }
+
+        private void OnBenchClicked_PlaceSpoon()
+        {
+            var spoon = Items.MeasuringSpoon;
+            Player.PutDownItem(spoon, spoon.positionBenchPrepArea, Complete);
         }
 
         public override void DoTeardown()
         {
             Items.BenchPrepArea.RemoveClickListener(OnBenchClicked_PlaceMeasuringCup);
+            Items.BenchPrepArea.RemoveClickListener(OnBenchClicked_PlaceSpoon);
             Items.BakingSoda.RemoveClickListener(OnSodaClicked_RemoveLid);
+            Items.BakingSoda.RemoveClickListener(OnSodaClicked_ScoopSoda);
             Items.MeasuringSpoon.RemoveClickListener(OnSpoonClicked);
-            Items.BakingSoda.RemoveClickListener(Complete);
         }
 
         public override void SetState_TaskComplete()

@@ -59,13 +59,13 @@ public abstract class Task
     /// Syntactic sugar, equivalent to calling <see cref="Interactable.AddClickListener()"/>.
     /// <br/>Provides optional extra debug information automatically.
     /// </summary>
-    protected void AddClickListener(Interactable interactable, Action callback, bool highlight = true, Interactable.Requirement? requirementOverride = null)
-        => interactable.AddClickListener(callback, highlight, requirementOverride, GetType().Name);
+    protected void AddClickListener(Interactable interactable, Action callback, bool highlight = true, Interactable.Requirement? requirementOverride = null, bool autoUnsubscribe = true)
+        => interactable.AddClickListener(callback, highlight, requirementOverride, autoUnsubscribe, GetType().Name);
 
     /// <summary>
     /// Syntactic sugar, equivalent to calling <see cref="Interactable.AddClickListener()"/>.
     /// <br/>Provides optional extra debug information automatically.
     /// </summary>
-    protected void AddClickListener(Interactable interactable, Action callback, Func<bool> highlight, Interactable.Requirement? requirementOverride = null)
-        => interactable.AddClickListener(callback, highlight, requirementOverride, GetType().Name);
+    protected void AddClickListener(Interactable interactable, Action callback, Func<bool> highlight, Interactable.Requirement? requirementOverride = null, bool autoUnsubscribe = true)
+        => interactable.AddClickListener(callback, highlight, requirementOverride, autoUnsubscribe, GetType().Name);
 }

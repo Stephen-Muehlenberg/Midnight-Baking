@@ -1010,6 +1010,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.008)
 script = ExtResource("6_cycrt")
 highlightMeshes = [NodePath("Base"), NodePath("Handle bit")]
 highlightCsgs = []
+requirement = 1
 
 [node name="Base" type="MeshInstance3D" parent="Kitchen/Counter South/Oven/Control Panel/Oven Dial" unique_id=1182541703]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -1154,7 +1155,7 @@ transform = Transform3D(-0.41435966, 0, -0.9101132, 0, 1, 0, 0.9101132, 0, -0.41
 
 [node name="Measuring Teaspoon" type="Node3D" parent="Kitchen/Counter South/Drawers/Drawer Utensils/Teaspoon origin" unique_id=1733000580 node_paths=PackedStringArray("positionBenchPrepArea", "initialPosition", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("28_rh4vw")
-positionBenchPrepArea = NodePath("..")
+positionBenchPrepArea = NodePath("../../../../../Counter North (Window)/BenchPrepArea/Item Placement Points/Teaspoon")
 initialPosition = NodePath("..")
 highlightMeshes = [NodePath("Handle")]
 highlightCsgs = [NodePath("Mesh")]
@@ -1906,8 +1907,9 @@ shape = SubResource("BoxShape3D_431h0")
 [node name="Bowls origin" type="Node3D" parent="Kitchen/Upper Cupboard South" unique_id=1492499764]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.541747, 0.025, 0.0810716)
 
-[node name="Mixing Bowl medium" type="Node3D" parent="Kitchen/Upper Cupboard South/Bowls origin" unique_id=733179489 node_paths=PackedStringArray("sievePivot", "initialPosition", "highlightMeshes", "highlightCsgs")]
+[node name="Mixing Bowl medium" type="Node3D" parent="Kitchen/Upper Cupboard South/Bowls origin" unique_id=733179489 node_paths=PackedStringArray("positionBenchPrepArea", "sievePivot", "initialPosition", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("54_cuuiy")
+positionBenchPrepArea = NodePath("../../../Counter North (Window)/BenchPrepArea/Item Placement Points/Bowl")
 sievePivot = NodePath("Sieve pivot")
 initialPosition = NodePath("..")
 highlightMeshes = []
