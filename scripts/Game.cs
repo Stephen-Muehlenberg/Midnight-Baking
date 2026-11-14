@@ -236,4 +236,7 @@ public partial class Game : Node
             interactable.Load(itemData);
         }
     }
+    
+    // Syntactic sugar.
+    public new static Tween CreateTween() => instance.GetTree().CreateTween();
 }

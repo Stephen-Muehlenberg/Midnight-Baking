@@ -86,6 +86,7 @@
 [ext_resource type="Script" uid="uid://bfh3k6wxc07tl" path="res://scripts/interactables/Sieve.cs" id="61_2fwsq"]
 [ext_resource type="Script" uid="uid://cbn0h3vfa72rv" path="res://scripts/interactables/ContainerLid.cs" id="62_415ni"]
 [ext_resource type="Script" uid="uid://7doubfm7t7oq" path="res://scripts/interactables/VanillaJar.cs" id="62_ll0xv"]
+[ext_resource type="Texture2D" uid="uid://ctylit2errnou" path="res://images/dust_cloud_PLACEHOLDER.png" id="66_fah3h"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ynsf8"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -483,6 +484,10 @@ size = Vector3(0.08, 0.178, 0.08)
 height = 0.11
 radius = 0.12
 
+[sub_resource type="SphereMesh" id="SphereMesh_415ni"]
+radius = 0.09
+height = 0.08
+
 [sub_resource type="BoxMesh" id="BoxMesh_d4rc7"]
 material = ExtResource("7_3iae7")
 size = Vector3(0.04, 0.01, 0.15)
@@ -490,6 +495,82 @@ size = Vector3(0.04, 0.01, 0.15)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mqkar"]
 height = 0.11
 radius = 0.12
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_415ni"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.01
+emission_ring_radius = 0.1
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+spread = 5.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, -1, 0)
+collision_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_415ni"]
+transparency = 1
+albedo_texture = ExtResource("1_v3uhd")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_fah3h"]
+material = SubResource("StandardMaterial3D_415ni")
+size = Vector2(0.002, 0.002)
+
+[sub_resource type="Curve" id="Curve_4dd15"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_baihr"]
+curve = SubResource("Curve_4dd15")
+
+[sub_resource type="Curve" id="Curve_gbc3i"]
+_data = [Vector2(0, 0.62552047), 0.0, 0.73608685, 0, 0, Vector2(0.5022624, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_db0rk"]
+curve = SubResource("Curve_gbc3i")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f26yd"]
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.17999999
+angular_velocity_min = -10.000016
+angular_velocity_max = 9.999984
+gravity = Vector3(0, 0, 0)
+damping_min = 0.1
+damping_max = 0.1
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_db0rk")
+alpha_curve = SubResource("CurveTexture_baihr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmvgu"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.078431375)
+albedo_texture = ExtResource("66_fah3h")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_j8s5l"]
+material = SubResource("StandardMaterial3D_bmvgu")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fah3h"]
+albedo_color = Color(0.97, 0.97, 0.97, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_4dd15"]
+material = SubResource("StandardMaterial3D_fah3h")
+radius = 0.09
+height = 0.06
 
 [sub_resource type="BoxMesh" id="BoxMesh_bekbe"]
 material = ExtResource("13_iycfq")
@@ -1563,20 +1644,18 @@ omni_range = 3.2371
 [node name="Bounce Light East" type="OmniLight3D" parent="Kitchen/Kitchen Light Switch" unique_id=521536796]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4324, 1.26712, 0)
 light_energy = 0.015
-shadow_enabled = true
 omni_range = 5.1696
 
 [node name="Bounce Light West" type="OmniLight3D" parent="Kitchen/Kitchen Light Switch" unique_id=875991801]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.432, 1.267, 0)
 light_energy = 0.015
-shadow_enabled = true
 omni_range = 5.1696
 
 [node name="Unlit Kitchen Light" type="OmniLight3D" parent="Kitchen/Kitchen Light Switch" unique_id=252465211]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38253, 0)
 visible = false
 light_color = Color(0.89, 0.908333, 1, 1)
-light_energy = 0.016
+light_energy = 0.022
 light_specular = 0.0
 omni_range = 3.2371
 omni_attenuation = 0.0
@@ -1907,10 +1986,11 @@ shape = SubResource("BoxShape3D_431h0")
 [node name="Bowls origin" type="Node3D" parent="Kitchen/Upper Cupboard South" unique_id=1492499764]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.541747, 0.025, 0.0810716)
 
-[node name="Mixing Bowl medium" type="Node3D" parent="Kitchen/Upper Cupboard South/Bowls origin" unique_id=733179489 node_paths=PackedStringArray("positionBenchPrepArea", "sievePivot", "initialPosition", "highlightMeshes", "highlightCsgs")]
+[node name="Mixing Bowl medium" type="Node3D" parent="Kitchen/Upper Cupboard South/Bowls origin" unique_id=733179489 node_paths=PackedStringArray("positionBenchPrepArea", "sievePivot", "powderMesh", "initialPosition", "highlightMeshes", "highlightCsgs")]
 script = ExtResource("54_cuuiy")
 positionBenchPrepArea = NodePath("../../../Counter North (Window)/BenchPrepArea/Item Placement Points/Bowl")
 sievePivot = NodePath("Sieve pivot")
+powderMesh = NodePath("Flour mesh")
 initialPosition = NodePath("..")
 highlightMeshes = []
 highlightCsgs = [NodePath("CSGSphere3D")]
@@ -1945,14 +2025,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.051797, 0)
 shape = SubResource("CylinderShape3D_lyxqv")
 
 [node name="Sieve pivot" type="Node3D" parent="Kitchen/Upper Cupboard South/Bowls origin/Mixing Bowl medium" unique_id=77314650]
-transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0.12549914, 2.2223874e-09)
+transform = Transform3D(-0.258819, 0, -0.9659258, 8.4443926e-08, -1, -2.2626697e-08, -0.9659258, -8.742279e-08, 0.258819, 0, 0.12549914, 2.2223874e-09)
+
+[node name="Flour mesh" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South/Bowls origin/Mixing Bowl medium" unique_id=1079904978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.049678445, 0)
+mesh = SubResource("SphereMesh_415ni")
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Kitchen/Upper Cupboard South/Bowls origin/Mixing Bowl medium" unique_id=1589605542]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.067222, 0)
+size = Vector3(0.15, 0.05, 0.15)
+
+[node name="GPUParticlesCollisionSDF3D" type="GPUParticlesCollisionSDF3D" parent="Kitchen/Upper Cupboard South/Bowls origin/Mixing Bowl medium" unique_id=641121010]
 
 [node name="Sieve origin" type="Node3D" parent="Kitchen/Upper Cupboard South" unique_id=1981832146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.274521, 0.025, 0.157957)
 
-[node name="Sieve" type="Node3D" parent="Kitchen/Upper Cupboard South/Sieve origin" unique_id=526119950 node_paths=PackedStringArray("positionInBowl", "initialPosition", "highlightMeshes", "highlightCsgs")]
+[node name="Sieve" type="Node3D" parent="Kitchen/Upper Cupboard South/Sieve origin" unique_id=526119950 node_paths=PackedStringArray("positionInBowl", "powderMesh", "particlesFalling", "particlesCloud", "initialPosition", "highlightMeshes", "highlightCsgs")]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0)
 script = ExtResource("61_2fwsq")
 positionInBowl = NodePath("../../Bowls origin/Mixing Bowl medium/Sieve pivot")
+powderMesh = NodePath("Flour mesh")
+particlesFalling = NodePath("Particles specks")
+particlesCloud = NodePath("Particles cloud")
 initialPosition = NodePath("..")
 highlightMeshes = [NodePath("Handle")]
 highlightCsgs = [NodePath("Mesh")]
@@ -1989,6 +2083,24 @@ maxInteractionDistance = 1.5
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/Upper Cupboard South/Sieve origin/Sieve/Area3D" unique_id=649204366]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.051797, 0)
 shape = SubResource("CylinderShape3D_mqkar")
+
+[node name="Particles specks" type="GPUParticles3D" parent="Kitchen/Upper Cupboard South/Sieve origin/Sieve" unique_id=1034503253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08010852, 0)
+amount = 500
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_415ni")
+draw_pass_1 = SubResource("QuadMesh_fah3h")
+
+[node name="Particles cloud" type="GPUParticles3D" parent="Kitchen/Upper Cupboard South/Sieve origin/Sieve" unique_id=168629985]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054097176, 0)
+amount = 20
+lifetime = 4.0
+process_material = SubResource("ParticleProcessMaterial_f26yd")
+draw_pass_1 = SubResource("QuadMesh_j8s5l")
+
+[node name="Flour mesh" type="MeshInstance3D" parent="Kitchen/Upper Cupboard South/Sieve origin/Sieve" unique_id=1666813792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06495583, 0)
+mesh = SubResource("SphereMesh_4dd15")
 
 [node name="Choc Chips origin" type="Node3D" parent="Kitchen/Upper Cupboard South" unique_id=287813135]
 transform = Transform3D(0.951691, 0, 0.307058, 0, 1, 0, -0.307058, 0, 0.951691, 0.527937, 0.025, 0.205988)
@@ -2280,7 +2392,7 @@ title = NodePath("../Title Label3D")
 [node name="Pause Menu" parent="." unique_id=531559525 instance=ExtResource("51_hj1cc")]
 
 [node name="Title Label3D" type="Label3D" parent="." unique_id=1448453385]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.383871, 1.64347, 1.14205)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.383871, 1.64347, 1.296135)
 modulate = Color(0.3344, 0.35024, 0.44, 0.670588)
 text = "Midnight Baking"
 

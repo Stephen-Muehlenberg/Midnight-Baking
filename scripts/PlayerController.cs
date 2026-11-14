@@ -40,7 +40,7 @@ public partial class PlayerController : CharacterBody3D
     private Vector2 lookRotation;
     private float currentMoveSpeed;
 
-    private Node3D head;
+    public Node3D head;
     private CollisionShape3D collider;
 
     private readonly float MIN_VERTICAL_ANGLE_RADIANS = float.DegreesToRadians(-85);
@@ -102,6 +102,8 @@ public partial class PlayerController : CharacterBody3D
         }
         else
             Velocity = Vector3.Zero;
+
+//        Debug.Print($"Player pos {Position}, rot ({Mathf.RadToDeg(this.Quaternion.GetEuler().X)}, {Mathf.RadToDeg(head.Quaternion.GetEuler().Y)}, 0)");
         
         // Move based on velocity.
         MoveAndSlide();

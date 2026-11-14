@@ -50,8 +50,9 @@ public partial class Interactable : Node3D, Resetable
     public override void _Ready()
     {
         id = Items.RegisterInteractable(this);
+        ResetToGameStartState();
     }
-
+    
     public void ResetToGameStartState() => _ResetToGameStartState();
     
     /// <summary>
@@ -151,7 +152,7 @@ public partial class Interactable : Node3D, Resetable
         UpdateHighlights();
     }
     
-    private void UpdateHighlights()
+    public void UpdateHighlights()
     {
         var minimumInteractionRequirement = Requirement.NO_REQUIREMENT;
         if (interactionRequests.Count > 0)
@@ -162,6 +163,8 @@ public partial class Interactable : Node3D, Resetable
                             && Player.CanInteract(minimumInteractionRequirement)
             ? Game.flashMaterialOverlay
             : null;
+        if (Name == "Flour Jar")
+            Debug.Print($"Flour Jar.UpdateHighlights() - interactions on ? {interactionsOn}, interaction requests ? {interactionRequests.Count(it => it.highlight)}, requirement: {minimumInteractionRequirement}, can interact ? {Player.CanInteract(minimumInteractionRequirement)}");
         
         foreach (string itemToLog in DEBUG_ITEMS_TO_LOG)
             if (itemToLog == Name)

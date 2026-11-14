@@ -77,6 +77,5 @@ unit_size = 50.0
 [node name="Now playing label" type="Label3D" parent="." unique_id=1812247869]
 transform = Transform3D(-1, 2.0493e-08, -8.498694e-08, 0, 0.9721372, 0.2344126, 8.742278e-08, 0.2344126, -0.9721372, 0, 0.241, 0)
 pixel_size = 0.0015
-text = "Now Playing: Jazz"
 
 [connection signal="OnClicked" from="Area3D" to="." method="OnInteractableClicked"]

@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Godot;
 
@@ -14,6 +13,7 @@ public partial class ThunderController : Node
     
     private RandomNumberGenerator random = new();
     private float timeTillNextLightning;
+    /// <summary>Indices of the three most recently played thunder sounds.</summary>
     private int[] recentThunderAudioIndices = [-1, -1, -1];
 
     /// <summary>Speed of sound, in metres per second. Used for calculating thunder delay.</summary>
@@ -24,12 +24,16 @@ public partial class ThunderController : Node
     private const float MAX_LIGHTNING_INTENSITY = 3;
     /// <summary>Intensity multiplier at distance = 0, relative to multiplier of 1 at distance = max.</summary>
     private const float LIGHTNING_DISTANCE_INTENSITY_MULTIPLIER = 3;
+
+    private float GetRandomTimeTillNextLightning() => random.RandfRange(1, 50);
     
     public override void _Ready()
     {
         directionalLight.LightEnergy = 0;
         omniLight.LightEnergy = 0;
-        timeTillNextLightning = GetRandomTimeTillNextLightning();
+        // No lightning for the first 4 seconds, then equal chance of lightning from then until
+        // the normal maximum lightning delay.
+        timeTillNextLightning = (GetRandomTimeTillNextLightning() - 4) * random.Randf() + 4;
     }
 
     public override void _Process(double delta)
@@ -41,18 +45,10 @@ public partial class ThunderController : Node
     
     public override void _Input(InputEvent @event)
     {
-        // Only listen for left mouse click events.
-        if (@event is InputEventKey keyEvent)
-        {
-            if (keyEvent.Keycode == Key.L && keyEvent.Pressed)
-                TriggerLightning();
-        }
-    }
-
-    private float GetRandomTimeTillNextLightning()
-    {
-        //return random.RandfRange(1, 70);
-        return random.RandfRange(1, 50);
+        if (@event is InputEventKey keyEvent
+            && keyEvent.Keycode == Key.L
+            && keyEvent.Pressed)
+            TriggerLightning();
     }
 
     public void TriggerLightning()
@@ -61,28 +57,22 @@ public partial class ThunderController : Node
 
         bool instantFlash = random.Randf() < 0.9f; // 90% chance of instant flash, 10% of slower flash
         
-        // todo audio + delay
-        // todo flash + brightness
         // todo screen shake (rare)
         
-        LightningTest(lightning.intensity);
-        GetTree().CreateTimer(lightning.audioDelay).Timeout += PlayThunderSound;
-        
-        timeTillNextLightning = GetRandomTimeTillNextLightning();
-    }
-
-    private void LightningTest(float intensity)
-    {
-        directionalLight.LightEnergy = 2*intensity + 0.5f;
-        omniLight.LightEnergy = intensity / 9f;
+        directionalLight.LightEnergy = 2 * lightning.intensity + 0.5f;
+        omniLight.LightEnergy = lightning.intensity / 9f;
         GetTree().CreateTimer(0.16f).Timeout += () =>
         {
             directionalLight.LightEnergy = 0;
             omniLight.LightEnergy = 0;
         };
+        
+        GetTree().CreateTimer(lightning.audioDelay).Timeout += PlayRandomThunderSound;
+        
+        timeTillNextLightning = GetRandomTimeTillNextLightning();
     }
 
-    private void PlayThunderSound()
+    private void PlayRandomThunderSound()
     {
         // Pick a random thunder sound that we haven't played recently.
         int thunderIndex = 0;
@@ -108,12 +98,13 @@ public partial class ThunderController : Node
 
         // Queue the audio player instance for deletion once it's finished playing.
         double clipDuration = audioSource.Stream.GetLength();
-        GetTree().CreateTimer(clipDuration).Timeout += () =>
-        {
-            audioSource.QueueFree();
-        };
+        GetTree().CreateTimer(clipDuration).Timeout += () => audioSource.QueueFree();
     }
 
+    /// <summary>
+    /// Randomly selects a lightning strike location, and calculates details used to display that lightning
+    /// (direction, intensity, thunder delay, etc).
+    /// </summary>
     private LightningDetails GenerateRandomLightning()
     {
         // Constants used in later calculations.

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Godot;
+using Godot.Collections;
 using MidnightBaking.scripts.interactables;
 
 namespace MidnightBaking.scripts.tasks;
@@ -31,6 +32,9 @@ public static class Tasks
         ]),
         new (name: "Sift dry ingredients", tasks: [
             new Group4_SiftDryIngredients(),
+        ]),
+        new (name: "Soften butter", tasks: [
+            new Group5_SoftenButter(),
         ]),
     ];
     
@@ -254,7 +258,7 @@ public static class Tasks
             var butter = Items.Butter;
             Player.PickUpItem(butter);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(butter, butter.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(butter, butter.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
         
         public override void DoTeardown()
@@ -294,7 +298,7 @@ public static class Tasks
             var eggs = Items.EggCarton;
             Player.PickUpItem(eggs);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(eggs, eggs.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(eggs, eggs.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
         
         public override void DoTeardown()
@@ -334,7 +338,7 @@ public static class Tasks
             var flour = Items.FlourJar;
             Player.PickUpItem(flour);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(flour, flour.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(flour, flour.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
 
         public override void DoTeardown()
@@ -374,7 +378,7 @@ public static class Tasks
             var sugar = Items.SugarJar;
             Player.PickUpItem(sugar);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
         
         public override void DoTeardown()
@@ -415,7 +419,7 @@ public static class Tasks
             var sugar = Items.BrownSugarJar;
             Player.PickUpItem(sugar);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(sugar, sugar.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
 
         public override void DoTeardown()
@@ -455,7 +459,7 @@ public static class Tasks
             var soda = Items.BakingSoda;
             Player.PickUpItem(soda);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(soda, soda.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(soda, soda.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
 
         public override void DoTeardown()
@@ -495,7 +499,7 @@ public static class Tasks
             var vanilla = Items.VanillaJar;
             Player.PickUpItem(vanilla);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(vanilla, vanilla.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(vanilla, vanilla.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
 
         public override void DoTeardown()
@@ -535,7 +539,7 @@ public static class Tasks
             var chocChips = Items.ChocChipBag;
             Player.PickUpItem(chocChips);
             AddClickListener(Items.BenchPrepArea,
-                () => Player.PutDownItem(chocChips, chocChips.positionBenchPrepArea, Complete));
+                () => Player.PutDownItem(chocChips, chocChips.positionBenchPrepArea, onAnimationEndCallback: Complete));
         }
 
         public override void DoTeardown()
@@ -582,10 +586,25 @@ public static class Tasks
     #region Group 4 Sift Dry Ingredients
     private class Group4_SiftDryIngredients : ParentTask
     {
+        private bool cupsPlaced, bowlPlaced, sievePlaced, flourAdded, sodaAdded;
         private int cupsAndSievePlacedCount = 0;
         
         // TODO allow user to set metrics vs imperial in the menu
         public override string description => "Sift flour and bicarb soda into a medium bowl";
+
+        public override void Save(Dictionary data)
+        {
+            data["cups"] = cupsPlaced;
+            data["bowl"] = bowlPlaced;
+            data["sieve"] = sievePlaced;
+            data["flour"] = flourAdded;
+            data["soda"] = sodaAdded;
+        }
+
+        public override void Load(Dictionary data)
+        {
+            // TODO handle loading when some subtasks are already complete.
+        }
 
         protected override void SetState_TaskStart()
         {
@@ -689,7 +708,7 @@ public static class Tasks
                 ? Player.heldItemLeft
                 : Player.heldItemRight;
             Player.PutDownItem(cup as Pickupable, bench.measuringCupOnePlacement,
-                () =>
+                onAnimationEndCallback: () =>
                 {
                     measuringToolsPlaced++;
                     if (measuringToolsPlaced == 3)
@@ -704,7 +723,7 @@ public static class Tasks
                 ? Player.heldItemLeft
                 : Player.heldItemRight;
             Player.PutDownItem(cup as Pickupable, bench.measuringCupHalfPlacement,
-                () =>
+                onAnimationEndCallback: () =>
                 {
                     measuringToolsPlaced++;
                     if (measuringToolsPlaced == 3)
@@ -716,7 +735,7 @@ public static class Tasks
         {
             var spoon = Items.MeasuringSpoon;
             Player.PutDownItem(spoon, spoon.positionBenchPrepArea,
-                () =>
+                onAnimationEndCallback: () =>
                 {
                     measuringToolsPlaced++;
                     if (measuringToolsPlaced == 3)
@@ -761,7 +780,7 @@ public static class Tasks
         private void OnBenchClicked()
         {
             var bowl = Items.MixingBowlMedium;
-            Player.PutDownItem(bowl, bowl.positionBenchPrepArea, Complete);
+            Player.PutDownItem(bowl, bowl.positionBenchPrepArea, onAnimationEndCallback: Complete);
         }
 
         public override void DoTeardown()
@@ -792,7 +811,7 @@ public static class Tasks
 
         private void OnBowlClicked()
         {
-            Player.PutDownItem(Items.Sieve, Items.MixingBowlMedium.sievePivot, Complete);
+            Player.PutDownItem(Items.Sieve, Items.MixingBowlMedium.sievePivot, onAnimationEndCallback: Complete);
         }
 
         public override void DoTeardown()
@@ -838,25 +857,27 @@ public static class Tasks
                 },
                 autoUnsubscribe: false);
             AddClickListener(flourJar, OnFlourClicked_ScoopFlour,
-                highlight: () => Player.IsHolding(cupOne) || Player.IsHolding(cupHalf),
+                highlight: () => (Player.IsHolding(cupOne) && halfCupsFlourAdded < 4) || Player.IsHolding(cupHalf),
                 autoUnsubscribe: false);
         }
 
         private void OnFlourClicked_ScoopFlour()
         {
-            Debug.Print("OnFlourClicked_ScoopFlour()");
             Player.Debug_LogHeldItems();
             var cupHalf = Items.MeasuringCupHalf;
             var cupOne = Items.MeasuringCupOne;
             if (Player.IsHolding(cupHalf))
+            {
                 halfCupsFlourAdded++;
+                Items.Sieve.SetPowderLevel_AsCups(halfCupsFlourAdded / 2f);
+                Items.FlourJar.UpdateHighlights();
+            }
             else if (Player.IsHolding(cupOne))
             {
                 if (halfCupsFlourAdded >= 4) return;
                 halfCupsFlourAdded += 2;
-                // Can't add any more full cups; user must switch to half cup to continue.
-                if (halfCupsFlourAdded == 4)
-                    Items.FlourJar.RemoveClickListener(OnFlourClicked_ScoopFlour);
+                Items.Sieve.SetPowderLevel_AsCups(halfCupsFlourAdded / 2f);
+                Items.FlourJar.UpdateHighlights();
             }
 
             // No use for the full measuring cup at this point, so prevent user from picking it up.
@@ -873,7 +894,6 @@ public static class Tasks
                 return;
             }
 
-            Items.Sieve.SetPowderLevel(halfCupsFlourAdded / 2f);
             Complete();
         }
 
@@ -884,7 +904,10 @@ public static class Tasks
                 Player.PutDownItem(cupOne, cupOne.positionBenchPrepArea);
 
             if (Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND))
+            {
                 Player.PickUpItem(Items.MeasuringCupHalf);
+                Items.FlourJar.UpdateHighlights();
+            }
         }
 
         private void OnMeasuringCupOneClicked()
@@ -894,7 +917,10 @@ public static class Tasks
                 Player.PutDownItem(cupHalf, cupHalf.positionBenchPrepArea);
 
             if (Player.CanInteract(Interactable.Requirement.REQUIRES_ONE_HAND))
+            {
                 Player.PickUpItem(Items.MeasuringCupOne);
+                Items.FlourJar.UpdateHighlights();
+            }
         }
 
         public override void DoTeardown()
@@ -910,7 +936,7 @@ public static class Tasks
             var flourJar = Items.FlourJar;
             flourJar.Lid.SetPlacement(flourJar.Lid.positionBenchPrepArea);
             flourJar.SetLidAttached(false);
-            Items.Sieve.SetPowderLevel(2.5f);
+            Items.Sieve.SetPowderLevel_AsCups(2.5f);
             hints.Clear();
             
             // If this task is completed normally, then the player should always
@@ -966,13 +992,19 @@ public static class Tasks
         private void OnSodaClicked_ScoopSoda()
         {
             // TODO scoop play animation, wait for animation to end.
+            AddClickListener(Items.Sieve, OnSieveClicked);
+        }
+
+        private void OnSieveClicked()
+        {
+            Items.Sieve.SetPowderLevel_AsFraction(1);
             AddClickListener(Items.BenchPrepArea, OnBenchClicked_PlaceSpoon);
         }
 
         private void OnBenchClicked_PlaceSpoon()
         {
             var spoon = Items.MeasuringSpoon;
-            Player.PutDownItem(spoon, spoon.positionBenchPrepArea, Complete);
+            Player.PutDownItem(spoon, spoon.positionBenchPrepArea, onAnimationEndCallback: Complete);
         }
 
         public override void DoTeardown()
@@ -982,6 +1014,7 @@ public static class Tasks
             Items.BakingSoda.RemoveClickListener(OnSodaClicked_RemoveLid);
             Items.BakingSoda.RemoveClickListener(OnSodaClicked_ScoopSoda);
             Items.MeasuringSpoon.RemoveClickListener(OnSpoonClicked);
+            Items.Sieve.RemoveClickListener(OnSieveClicked);
         }
 
         public override void SetState_TaskComplete()
@@ -989,6 +1022,17 @@ public static class Tasks
             var soda = Items.BakingSoda;
             soda.Lid.SetPlacement(soda.Lid.positionBenchPrepArea);
             soda.SetLidAttached(false);
+            // This task assumes you start with a measuring cup in hand, and will
+            // place it down during the course of the task.
+            // So if we skip to the end of the task (e.g. via debug controls)
+            // then we need to ensure the cup is placed down.
+            var cupHalf = Items.MeasuringCupHalf;
+            if (Player.IsHolding(cupHalf))
+                Player.PutDownItem(cupHalf, cupHalf.positionBenchPrepArea, skipAnimation: true);
+            var cupOne = Items.MeasuringCupOne;
+            if (Player.IsHolding(cupOne))
+                Player.PutDownItem(cupOne, cupOne.positionBenchPrepArea, skipAnimation: true);
+            Items.Sieve.SetPowderLevel_AsFraction(1);
         }
     }
     private class Group4_SubSiftIngredients : Subtask
@@ -1012,6 +1056,60 @@ public static class Tasks
 
         public override void SetState_TaskComplete()
         {
+            var sieve = Items.Sieve;
+            sieve.SetPowderLevel_AsFraction(0);
+            // TODO take into account spillage. Actual powder level will usually be slightly less than 1.
+            Items.MixingBowlMedium.SetPowderLevel(1);
+            
+            if (!Player.IsHolding(sieve))
+                Player.PickUpItem(sieve, skipPickupAnimation: true);
+        }
+    }
+    #endregion
+    #region Group 5 Soften Butter
+    private class Group5_SoftenButter : ParentTask
+    {
+        public override string description => "Soften butter";
+
+        public override void Save(Dictionary data)
+        {
+            // TODO
+        }
+
+        public override void Load(Dictionary data)
+        {
+            // TODO
+        }
+
+        protected override void SetState_TaskStart()
+        {
+            var measureTask = new Group5_MeasureButter();
+            measureTask.onCompleteCallback += OnButterMeasured;
+            subtasks.Add(measureTask);
+        }
+
+        private void OnButterMeasured()
+        {
+            // TODO
+        }
+    }
+    private class Group5_MeasureButter : Subtask
+    {
+        public override string description => "Measure butter";
+
+        protected override void SetState_TaskStart()
+        {
+            // TODO
+        }
+        
+        public override void DoTeardown()
+        {
+            // TODO
+        }
+
+        public override void SetState_TaskComplete()
+        {
+            // TODO
         }
     }
     #endregion
