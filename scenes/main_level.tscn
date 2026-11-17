@@ -1008,7 +1008,7 @@ mesh = SubResource("CylinderMesh_6nivd")
 script = ExtResource("21_ujyw0")
 Door = NodePath("OvenDoor")
 TemperatureDial = NodePath("Control Panel/Oven Dial")
-light = NodePath("OmniLight3D")
+light = NodePath("Oven Light")
 
 [node name="OvenDoor" type="Node3D" parent="Kitchen/Counter South/Oven" unique_id=1231483264 node_paths=PackedStringArray("highlightMeshes", "highlightCsgs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.248343, 0.305845)
@@ -1063,11 +1063,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0700392)
 operation = 2
 size = Vector3(0.54, 0.46, 0.5)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Kitchen/Counter South/Oven" unique_id=1792606265]
+[node name="Oven Light" type="OmniLight3D" parent="Kitchen/Counter South/Oven" unique_id=1792606265]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.172013, 0)
 light_color = Color(1, 0.801833, 0.71, 1)
 light_energy = 0.1
-shadow_enabled = true
 omni_range = 1.03869
 
 [node name="Control Panel" type="Node3D" parent="Kitchen/Counter South/Oven" unique_id=1082841715]
@@ -1346,7 +1345,6 @@ skeleton = NodePath("../..")
 [node name="Fridge Light" type="OmniLight3D" parent="Kitchen/Fridge" unique_id=805700084]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40792, 0)
 light_energy = 0.5
-shadow_enabled = true
 omni_range = 2.0
 
 [node name="Beep audio" type="AudioStreamPlayer3D" parent="Kitchen/Fridge" unique_id=843095882]
@@ -1638,7 +1636,6 @@ omni_range = 3.2371
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27259, 0)
 light_energy = 0.4
 light_cull_mask = 4294967294
-shadow_enabled = true
 omni_range = 3.2371
 
 [node name="Bounce Light East" type="OmniLight3D" parent="Kitchen/Kitchen Light Switch" unique_id=521536796]
@@ -2218,19 +2215,19 @@ initial_velocity_max = 20.0
 
 [node name="Thunder Controller" type="Node3D" parent="Outside" unique_id=834050469 node_paths=PackedStringArray("directionalLight", "omniLight", "thunderAudio")]
 script = ExtResource("7_u2c82")
-directionalLight = NodePath("Directional Light")
-omniLight = NodePath("Omni Light")
+directionalLight = NodePath("Lightning Directional Light")
+omniLight = NodePath("Lightning Indirect Light")
 thunderAudio = NodePath("Thunder Audio")
 thunderSounds = Array[Object]([ExtResource("8_uk2yf"), ExtResource("9_ondrs"), ExtResource("10_0e4v7"), ExtResource("11_6nivd"), ExtResource("12_al56o"), ExtResource("13_1bmon"), ExtResource("14_siio1"), ExtResource("15_ndwfr")])
 
-[node name="Directional Light" type="DirectionalLight3D" parent="Outside/Thunder Controller" unique_id=1953590707]
+[node name="Lightning Directional Light" type="DirectionalLight3D" parent="Outside/Thunder Controller" unique_id=1953590707]
 transform = Transform3D(1, 0, 0, 0, 0.732579, 0.680683, 0, -0.680683, 0.732579, 0, 3, 0)
 light_color = Color(0.952941, 1, 1, 1)
 light_energy = 0.2
 light_specular = 0.0
 shadow_enabled = true
 
-[node name="Omni Light" type="OmniLight3D" parent="Outside/Thunder Controller" unique_id=451344520]
+[node name="Lightning Indirect Light" type="OmniLight3D" parent="Outside/Thunder Controller" unique_id=451344520]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_energy = 0.0
 light_specular = 0.0
